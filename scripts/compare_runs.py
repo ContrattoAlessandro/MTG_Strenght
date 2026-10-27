@@ -72,6 +72,9 @@ def main() -> None:
     ap.add_argument("--folds", nargs="+", default=["V1", "V2", "V3"])
     ap.add_argument("--epoch", type=int, default=None, help="validation epoch (default: best)")
     ap.add_argument("--ens", action="store_true", help="test only: also avg(run, gbt_tfidf)")
+    ap.add_argument("--blend", default=None,
+                    help="also score w*run + (1-w)*BLEND for every run (e.g. gbt_tfidf_folds)")
+    ap.add_argument("--blend-w", type=float, nargs="+", default=[0.5])
     ap.add_argument("--boot", type=int, default=500, help="bootstrap replicates (0 = off)")
     ap.add_argument("--csv", default=None)
     args = ap.parse_args()
@@ -79,7 +82,8 @@ def main() -> None:
         ap.error("--test needs --why: every test look goes into out/TEST_LOG.md")
     runs_dir = os.path.join(args.out_dir, "phase2", "runs")
     cards = pd.read_parquet(os.path.join(args.out_dir, "phase2", "cards.parquet"))[LABEL_COLS]
-    names = list(dict.fromkeys(args.runs + ([args.ref] if args.ref else [])))
+    names = list(dict.fromkeys(args.runs + ([args.ref] if args.ref else [])
+                               + ([args.blend] if args.blend else [])))
 
     preds, info = {}, {}   # name -> DataFrame(set, oracle_id, pred); name -> (seeds, seed SD, epoch)
     if args.test:
@@ -118,6 +122,13 @@ def main() -> None:
             print(f"{name}: epoch curve " + " ".join(f"{e}:{s:.3f}" for e, s in sorted(curve.items()))
                   + f" -> epoch {ep}")
 
+    if args.blend and args.blend in preds:
+        for name in [n for n in list(preds) if n not in (args.blend, "gbt_tfidf")]:
+            for wt in args.blend_w:
+                e = preds[name].merge(preds[args.blend], on=["set", "oracle_id"], suffixes=("", "_b"))
+                key = f"{wt:g}*{name} + {1 - wt:g}*{args.blend}"
+                preds[key] = e.assign(pred=wt * e["pred"] + (1 - wt) * e["pred_b"])
+                info[key] = (info[name][0], np.nan, info[name][2])
     # Restrict every model to the cards all of them predict, so deltas are paired.
     common = None
     for p in preds.values():
