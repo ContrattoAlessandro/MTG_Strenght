@@ -327,10 +327,14 @@ Done so far (Oct 27):
   (no gain on the structured or the fine-tuned model).
 - **Structured-model screening** (5 seeds, `runs/s_*`): base 0.587 / NDCG
   0.800; no-ctx 0.589 / 0.811; env 0.592 / 0.810; LambdaRank 0.582–0.585.
-- **Early update** (`scripts/early_update.py`, `out/early_update/`): prior =
-  Phase 2 ensemble; data = first D days; target = labels from games after day
-  7. TMT pilot: prior + day-1 games 0.76 (prior 0.69, day-1 alone 0.65); day 3
-  0.85–0.88. Numbers are provisional until step H reruns it with the final prior.
+- **Early update** (`scripts/early_update.py`, `out/early_update/REPORT.md`,
+  all 7 test sets): prior = Phase 2 ensemble; data = first D days of games;
+  target = labels from games after day 7. Day 1: prior 0.621, data alone
+  0.633, model_prior 0.732 (NDCG@20 0.905), ATA 0.603. Days 2–7: the naive
+  precision update is best (0.822, 0.851, 0.875, 0.886); model_prior falls
+  ~0.02 behind by day 7 (its residual τ² over-shrinks); adding ATA hurts once
+  game data exists. Product rule: ensemble pre-release, model_prior on day 1,
+  naive update from day 2. Provisional until step H reruns it with the final prior.
 
 ## What is not done (next steps, in rough priority)
 

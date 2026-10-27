@@ -21,7 +21,7 @@ rolling-origin backtest (11 sets never used for any choice) as well.
 | 4 | ft_embeddinggemma2_k4_commander, Commander/Constructed heads, interaction search | TF-IDF ridge as Commander head |
 | Oct 27 | ft_embeddinggemma2_k4_saved; s_base, s_noctx, s_env, s_env_ctx, s_env_emb, s_fixvar, s_fixvar_noctx_env, s_lam05, s_lam09_k20, s_lam1, s_lam1_k20, s_lam1_pw3 | none adopted (all ties) |
 | Oct 27 | ft_embeddinggemma2_k4_gpu (R0, GPU parity) | none (pipeline check) |
-| Oct 27 | early_update (TLA, ECL, TMT so far) | none yet |
+| Oct 27 | early_update (all 7 sets, finished 16:25) | display rule: ensemble pre-release, model_prior day 1, naive update from day 2 |
 
 ## Looks from 2026-10-27 on
 
