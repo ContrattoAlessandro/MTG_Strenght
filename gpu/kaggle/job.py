@@ -2,13 +2,13 @@
 
 Pushed with `kaggle kernels push -p gpu/kaggle`; it runs on a Kaggle T4 with
 no browser open. It clones the repo, installs the requirements, runs
-COMMANDS from the repo root, and copies every file under out/ and models/
-that the commands created or changed into /kaggle/working/results/, keeping
-repo-relative paths. Fetch them with
+LANES from the repo root (one lane per GPU, in parallel), and copies every
+file under out/ and models/ that the commands created or changed into
+/kaggle/working/results/, keeping repo-relative paths. Fetch them with
 `kaggle kernels output <user>/mtg-strength-gpu -p kaggle_out` and copy
 kaggle_out/results/* over the repo.
 
-Edit BRANCH and COMMANDS before each push. The Hugging Face token comes from
+Edit BRANCH and LANES before each push. The Hugging Face token comes from
 the Kaggle secret HF_TOKEN (attach it once to this notebook in the web UI,
 Add-ons > Secrets), needed for gated encoders such as EmbeddingGemma.
 """
@@ -22,10 +22,15 @@ REPO = "https://github.com/ContrattoAlessandro/mtg_strenght"
 BRANCH = "main"
 WORK = "/kaggle/temp" if os.path.isdir("/kaggle/temp") else "/tmp"
 CACHE = os.path.join(WORK, "cache")   # hidden-state caches: big, not worth downloading
-COMMANDS = [
-    "python scripts/phase2.py train --encoder google/embeddinggemma-2 --top-k 4"
-    " --name ft_embeddinggemma2_k4_gpu --max-epochs 6 --seeds 0 1 2"
-    f" --device cuda --cache-dir {CACHE} --save-dir models/phase2",
+BASE = ("python scripts/phase2.py train --encoder google/embeddinggemma-2 --top-k 4"
+        " --skip-val --epochs 4 --seeds 0 1 2 --device cuda --save-dir models/phase2")
+# One lane per GPU: lanes run in parallel (lane i sees only GPU i and gets its
+# own cache dir, {cache}); the commands within a lane run in order.
+LANES = [
+    [f"{BASE} --name ft_embeddinggemma2_k4_env --env set --no-ctx --cache-dir {{cache}}",
+     f"{BASE} --name ft_embeddinggemma2_k4_noctx --no-ctx --cache-dir {{cache}}"],
+    [f"{BASE} --name ft_embeddinggemma2_k4_lambda --lambda-w 1 --cache-dir {{cache}}",
+     f"{BASE} --name ft_embeddinggemma2_k4_e4_gpu --cache-dir {{cache}}"],
 ]
 # Data from a Kaggle dataset (dataset_sources in kernel-metadata.json) is
 # mounted read-only under /kaggle/input/<slug>/, e.g. for Phase 3:
@@ -51,13 +56,30 @@ def main() -> None:
     # torch with CUDA is preinstalled; requirements.txt leaves it as is.
     sh(f"{sys.executable} -m pip install -q -r requirements.txt", cwd=repo)
     sh(f"{sys.executable} -m pip install -q -U transformers sentence-transformers", cwd=repo)
+    import torch
+    n_gpu = max(torch.cuda.device_count(), 1)
+    if len(LANES) > n_gpu:   # fewer GPUs than lanes: run the lanes one after another
+        lanes = [[c for lane in LANES for c in lane]]
+    else:
+        lanes = LANES
+    os.makedirs(RESULTS, exist_ok=True)
+    procs = []
+    for i, lane in enumerate(lanes):
+        cache = f"{CACHE}{i}"
+        script = " && ".join(f"echo '$ {c.format(cache=cache)}' && {c.format(cache=cache)}" for c in lane)
+        log = open(os.path.join(RESULTS, f"lane{i}.log"), "w")
+        env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(i))
+        print(f"lane {i} on GPU {i}: {len(lane)} commands", flush=True)
+        procs.append((subprocess.Popen(script, shell=True, cwd=repo, env=env,
+                                       stdout=log, stderr=subprocess.STDOUT), log))
     failed = None
-    for cmd in COMMANDS:
-        try:
-            sh(cmd, cwd=repo)
-        except subprocess.CalledProcessError as e:
-            failed = e
-            break
+    for i, (p, log) in enumerate(procs):
+        rc = p.wait()
+        log.close()
+        print(f"--- lane {i} exit {rc} ---", flush=True)
+        print(open(log.name).read()[-20000:], flush=True)
+        if rc and failed is None:
+            failed = subprocess.CalledProcessError(rc, f"lane {i}")
     # Copy what changed even after a failure (logs, finished seeds).
     changed = subprocess.run("git ls-files --modified --others --exclude-standard out models;"
                              " git ls-files --others --ignored --exclude-standard out models",
