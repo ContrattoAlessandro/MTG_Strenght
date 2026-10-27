@@ -286,11 +286,12 @@ async function cardPage(id, params) {
     verdict = `
       <div class="verdict">${gradeBadge(c.lim_grade, "lg")}
         <div><div class="headline">${verdictWords(c.lim_pct)} in a typical Limited set <span class="muted" style="font-weight:500">(model estimate)</span></div>
-        <div class="sub">Would beat about ${fmt(c.lim_pct, 0)}% of the cards in a recent set</div></div>
+        <div class="sub">Would beat about ${fmt(c.lim_pct, 0)}% of the cards in a recent set · 80% range ${gradeOf(c.lim_pct_lo)} to ${gradeOf(c.lim_pct_hi)}</div></div>
       </div>`;
-    chart = `<div id="typicalChart"><div class="skeleton" style="height:150px"></div></div>`;
+    chart = distChart(c.lim_dist, { model: c.lim_pred, lo: c.lim_pred - 1.2816 * c.lim_sd, hi: c.lim_pred + 1.2816 * c.lim_sd }) + legendHTML({ model: true });
     tiles = `
       <div class="tile"><div class="k">Estimated win-rate impact</div><div class="v">${signed(pp(c.lim_pred))} pts</div><div class="s">80% range ${signed(pp(c.lim_pred - 1.2816 * c.lim_sd))} to ${signed(pp(c.lim_pred + 1.2816 * c.lim_sd))}</div></div>
+      <div class="tile"><div class="k">Model</div><div class="v" style="font-size:17px">${c.lim_model === "ensemble" ? "Fine-tuned Gemma + GBT" : "Gradient boosting"}</div><div class="s">${c.lim_model === "ensemble" ? "Average of the two models" : "Fine-tuned encoder not loaded"}</div></div>
       <div class="tile"><div class="k">17lands data</div><div class="v" style="font-size:18px">None</div><div class="s">This card is not in one of the ${META.sets.length} sets with game data, so only the model can grade it.</div></div>`;
   }
 
@@ -351,14 +352,6 @@ async function cardPage(id, params) {
   if (c.image_back) {
     let back = false;
     $("#flipBtn").addEventListener("click", () => { back = !back; $("#cardFrame").innerHTML = cardImg(back ? c.image_back : c.image, c.name); });
-  }
-  if (!a) {
-    const p = await api("/api/predict", { method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...labInputFromCard(c), env: TYPICAL, use_ft: false }) });
-    const el = $("#typicalChart");
-    if (el) el.innerHTML = distChart(p.dist, { model: c.lim_pred, lo: c.lim_pred - 1.2816 * c.lim_sd, hi: c.lim_pred + 1.2816 * c.lim_sd }) + legendHTML({ model: true });
-    const sub = $(".verdict .sub");
-    if (sub) sub.innerHTML = `Would beat about ${fmt(c.lim_pct, 0)}% of the cards in a recent set · 80% range ${gradeOf(p.pct_lo)} to ${gradeOf(p.pct_hi)}`;
   }
 }
 

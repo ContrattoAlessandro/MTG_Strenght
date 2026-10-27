@@ -261,9 +261,17 @@ python app/server.py [--port 8000] [--ft-dir models/ft_card] [--no-ft] [--rebuil
 - **Fine-tuned encoder**: `engine.FineTuned` loads `seed*.pt` files saved by
   `phase2.py train --save-dir` (first run found under `--ft-dir`, default
   `models/ft_card/`), runs the frozen lower layers live and averages seeds;
-  custom cards are then scored by 0.5 FT + 0.5 GBT. Runs with `env="set"`
-  are not supported. Verified to reproduce saved `test_pred` to 5e-6 with a
-  tiny test encoder; not yet run with the real EmbeddingGemma-2 weights.
+  custom cards, and cards without 17lands data when their page is opened
+  (~0.5-1 s, cached), are then scored by 0.5 FT + 0.5 GBT. The FT features use
+  the curve and set context fitted on the 24 training sets (`ft_curve`,
+  `ft_ctx` in the bundle), as in `phase2.py prep`. Runs with `env="set"` are
+  not supported. With `ft_embeddinggemma2_k4_saved` (3 seeds, copy from
+  `/mnt/project-files/mtg_strength/models/ft_card/` to `models/ft_card/`,
+  git-ignored) the app pipeline (oracle data -> features -> model) reproduces
+  the saved test predictions to 8e-5 logits. Loading takes ~50 s and ~3 GB RAM.
+  The search dropdown grades and set pages stay precomputed (GBT for cards
+  without data; scoring all 33k Scryfall cards with Gemma would take ~3 h on
+  4 CPUs). Training-set cards show the CV GBT estimate (FT is in-sample there).
 
 ## Work in progress (Oct 27 round: steps 0, 3, 2, 4 of the plan)
 

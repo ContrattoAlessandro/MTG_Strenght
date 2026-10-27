@@ -139,6 +139,32 @@ def synergy_for(set_code: str, name: str) -> list[dict]:
     return out
 
 
+_typical_cache: dict[str, dict] = {}
+
+
+def typical_score(oracle_id: str, c: dict) -> dict:
+    """Limited estimate in a typical recent set for a card without 17lands
+    data: the precomputed GBT, averaged with the fine-tuned encoder when it
+    is loaded (computed on first view, about half a second, then cached)."""
+    mu, sd, model = c["lim_pred"], c["lim_sd"], "gbt"
+    if S.ft is not None:
+        if oracle_id not in _typical_cache:
+            b = S.bundle
+            kw = [k for k in (c.get("keywords") or "").split(", ") if k]
+            df = engine.normalise([{**c, "keywords": kw}], b["kw_vocab"])
+            df["front_name"] = c["front_name"]
+            m_f, s_f = S.ft.predict(df, lambda cols: engine.featurize(df, [TYPICAL], b, cols, ft=True))
+            _typical_cache[oracle_id] = {"ft": float(m_f[0]), "ft_sd": float(s_f[0])}
+        ft = _typical_cache[oracle_id]
+        mu, sd, model = 0.5 * (mu + ft["ft"]), math.sqrt(0.5 * (sd ** 2 + ft["ft_sd"] ** 2)), "ensemble"
+    ref = S.bundle["ref"][TYPICAL]
+    pct = lambda v: 100 * np.searchsorted(ref, v) / len(ref)  # noqa: E731
+    return {"lim_pred": clean(mu), "lim_sd": clean(sd), "lim_model": model, "lim_pct": clean(pct(mu)),
+            "lim_grade": engine.grade(pct(mu)), "lim_pct_lo": clean(pct(mu - engine.Z80 * sd)),
+            "lim_pct_hi": clean(pct(mu + engine.Z80 * sd)),
+            "lim_dist": [round(float(x), 4) for x in ref[:: max(1, len(ref) // 400)]]}
+
+
 @app.get("/api/card/{oracle_id}")
 def card(oracle_id: str):
     if oracle_id not in S.by_id.index:
@@ -159,6 +185,8 @@ def card(oracle_id: str):
         r["neighbours"] = records(nb[["oracle_id", "name", "rank_obs", "theta_vs_repl", "grade_obs",
                                       "image_small", "rarity"]])
         c["appearances"].append(r)
+    if not c["appearances"]:
+        c.update(typical_score(oracle_id, c))
     c["cmd_incl_pred"] = clean(engine.sigmoid(c["cmd_pred"])) if c.get("cmd_pred") is not None else None
     obs = c.get("edhrec_incl")
     cmd = math.log(obs / (1 - obs)) if obs is not None else c["cmd_pred"]
@@ -205,7 +233,7 @@ def predict(card: CustomCard):
     mu, sd = mu_g[0], sd_g[0]
     if card.use_ft and S.ft is not None:
         t = time.time()
-        m_f, s_f = S.ft.predict(df, lambda cols: engine.featurize(df, [env], b, cols))
+        m_f, s_f = S.ft.predict(df, lambda cols: engine.featurize(df, [env], b, cols, ft=True))
         out.update(ft=clean(m_f[0]), ft_sd=clean(s_f[0]), ft_seconds=round(time.time() - t, 1))
         mu, sd = 0.5 * (mu + m_f[0]), math.sqrt(0.5 * (sd ** 2 + s_f[0] ** 2))
         out["model"] = "ensemble"

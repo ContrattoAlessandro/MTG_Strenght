@@ -129,7 +129,15 @@ def main() -> None:
     kw_colmap = {f"kw_{k.lower().replace(' ', '_')}": k for k in sorted(all_kw | set(vocab))}
     ctx = f_lib.assign(set=df["set"]).groupby("set")[engine.CTX_BASE].first()
     ctx.loc[TYPICAL] = ctx.loc[sets[-N_TYPICAL:]].mean()
+    # The fine-tuned encoder was trained with the curve fitted on the 24
+    # training sets only (scripts/phase2.py prep); keep that version too.
+    f_tr = features.add_keywords(features.engineered(df), df, vocab)
+    f_tr, ft_curve = features.add_curve_and_context(
+        f_tr, df.assign(is_train=df["set_idx"] < order[FIRST_TEST]))
+    ft_ctx = f_tr.assign(set=df["set"]).groupby("set")[engine.CTX_BASE].first()
+    ft_ctx.loc[TYPICAL] = ft_ctx.loc[sets[-N_TYPICAL:]].mean()
     bundle = {"kw_vocab": vocab, "kw_colmap": kw_colmap, "curve": curve, "ctx": ctx,
+              "ft_curve": ft_curve, "ft_ctx": ft_ctx,
               "cols": list(f_lib.columns)}
     f = engine.featurize(df, df["set"], bundle)
     assert np.allclose(f.fillna(-999).to_numpy(), f_lib.astype(float).fillna(-999).to_numpy()), \

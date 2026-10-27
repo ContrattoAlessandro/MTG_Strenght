@@ -121,16 +121,18 @@ def input_text(df: pd.DataFrame) -> pd.Series:
 
 
 def featurize(df: pd.DataFrame, env: pd.Series | list, bundle: dict,
-              cols: list[str] | None = None) -> pd.DataFrame:
+              cols: list[str] | None = None, ft: bool = False) -> pd.DataFrame:
     """Engineered features + keywords + stat efficiency + set context of env,
-    as the columns ``cols`` (default: the app models' columns)."""
+    as the columns ``cols`` (default: the app models' columns). With ``ft``,
+    the vanilla curve and set context are the ones the fine-tuned encoder was
+    trained with (fitted on the 24 training sets only)."""
     cols = cols or bundle["cols"]
+    curve, ctx = (bundle["ft_curve"], bundle["ft_ctx"]) if ft else (bundle["curve"], bundle["ctx"])
     f = features.engineered(df)
     kw = [bundle["kw_colmap"][c] for c in cols if c.startswith("kw_") and c in bundle["kw_colmap"]]
     f = features.add_keywords(f, df, kw)
     crea = (f["type_creature"] == 1) & f["pt_sum"].notna() & (f["pt_star"] == 0)
-    f["stat_eff"] = np.where(crea, f["pt_sum"] - np.polyval(bundle["curve"], f["mana_value"]), np.nan)
-    ctx = bundle["ctx"]
+    f["stat_eff"] = np.where(crea, f["pt_sum"] - np.polyval(curve, f["mana_value"]), np.nan)
     env = pd.Series(list(env), index=f.index)
     for c in CTX_BASE:
         f[c] = env.map(ctx[c]).astype(float)
@@ -214,26 +216,36 @@ class FineTuned:
             hook.remove()
         return ids, states
 
-    def predict(self, df: pd.DataFrame, f) -> tuple[np.ndarray, np.ndarray]:
-        """f: function from a list of feature columns to the feature frame."""
+    def predict(self, df: pd.DataFrame, f, cache_dir: str | None = None,
+                batch: int = 64) -> tuple[np.ndarray, np.ndarray]:
+        """f: function from a list of feature columns to the feature frame.
+        With ``cache_dir`` the lower-layer states are computed in batches and
+        cached on disk (mtgstrength.partial.cache_hidden, as in training);
+        otherwise they are computed one card at a time."""
         import torch
         from phase2 import struct_apply
-        from mtgstrength.partial import pad_batch
+        from mtgstrength.partial import cache_hidden, pad_batch
         texts = input_text(df).tolist()
-        if self.encoder:
+        if self.encoder and cache_dir:
+            ids = self.tok(texts, truncation=True, max_length=self.max_len)["input_ids"]
+            states = cache_hidden(self.encoder, texts, self.top_k, self.max_len, cache_dir)
+        elif self.encoder:
             ids, states = self._lower_states(texts)
+        xs = [torch.tensor(struct_apply(f(meta["struct"]["cols"]), meta["struct"]))
+              if not meta["config"]["no_struct"] else None for _, meta in self.models]
         mus, sds = [], []
         with torch.no_grad():
-            for model, meta in self.models:
-                kw = {}
-                if not meta["config"]["no_struct"]:
-                    kw["x"] = torch.tensor(struct_apply(f(meta["struct"]["cols"]), meta["struct"]))
-                if self.encoder:
-                    t, h, m = pad_batch(states, ids, list(range(len(texts))), self.tok.pad_token_id or 0)
-                    kw.update(input_ids=t, h=h, attention_mask=m)
-                mu, var = model(**kw)
-                mus.append(mu.numpy() * meta["y_sd"] + meta["y_mu"])
-                sds.append(np.sqrt(var.numpy()) * meta["y_sd"])
+            for (model, meta), x in zip(self.models, xs):
+                mu_all, sd_all = np.empty(len(texts)), np.empty(len(texts))
+                for j in np.array_split(np.arange(len(texts)), max(1, len(texts) // batch)):
+                    kw = {} if x is None else {"x": x[j]}
+                    if self.encoder:
+                        t, h, m = pad_batch(states, ids, list(j), self.tok.pad_token_id or 0)
+                        kw.update(input_ids=t, h=h, attention_mask=m)
+                    mu, var = model(**kw)
+                    mu_all[j], sd_all[j] = mu.numpy(), np.sqrt(var.numpy())
+                mus.append(mu_all * meta["y_sd"] + meta["y_mu"])
+                sds.append(sd_all * meta["y_sd"])
         return np.mean(mus, 0), np.mean(sds, 0)
 
 
