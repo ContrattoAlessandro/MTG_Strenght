@@ -19,3 +19,4 @@ data/raw/draft/
 
 # Web app data (rebuilt by app/build.py on first start)
 app/data/
+data/raw/cards.csv

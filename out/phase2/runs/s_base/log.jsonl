@@ -1,0 +1,58 @@
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "none", "name": "s_base", "no_struct": false, "seeds": [0, 1, 2, 3, 4], "max_epochs": 30, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 2, "top_k": 0, "cache_dir": "work/cache", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": "work/models"}}
+{"epoch": 1, "nll": 0.3463, "bt": 0.6272, "sec": 3, "val_spearman": 0.5206, "val_ndcg": 0.8076, "val_mae": 0.0839, "val_nll": -1.7702}
+{"epoch": 2, "nll": 0.1225, "bt": 0.5647, "sec": 3, "val_spearman": 0.5432, "val_ndcg": 0.7878, "val_mae": 0.0868, "val_nll": -1.748}
+{"epoch": 3, "nll": 0.0729, "bt": 0.5418, "sec": 3, "val_spearman": 0.5396, "val_ndcg": 0.8092, "val_mae": 0.0839, "val_nll": -1.812}
+{"epoch": 4, "nll": 0.0171, "bt": 0.5281, "sec": 2, "val_spearman": 0.5402, "val_ndcg": 0.8122, "val_mae": 0.0857, "val_nll": -1.7886}
+{"epoch": 5, "nll": -0.0222, "bt": 0.5086, "sec": 3, "val_spearman": 0.5364, "val_ndcg": 0.8342, "val_mae": 0.0865, "val_nll": -1.7731}
+{"epoch": 6, "nll": -0.0685, "bt": 0.4979, "sec": 2, "val_spearman": 0.5444, "val_ndcg": 0.8188, "val_mae": 0.0873, "val_nll": -1.778}
+{"epoch": 7, "nll": -0.1078, "bt": 0.4836, "sec": 3, "val_spearman": 0.4989, "val_ndcg": 0.8068, "val_mae": 0.0899, "val_nll": -1.6924}
+{"epoch": 8, "nll": -0.1569, "bt": 0.4699, "sec": 2, "val_spearman": 0.5107, "val_ndcg": 0.8169, "val_mae": 0.0906, "val_nll": -1.6321}
+{"epoch": 9, "nll": -0.1955, "bt": 0.4608, "sec": 2, "val_spearman": 0.5149, "val_ndcg": 0.821, "val_mae": 0.0874, "val_nll": -1.6606}
+{"epoch": 10, "nll": -0.2411, "bt": 0.4454, "sec": 2, "val_spearman": 0.4909, "val_ndcg": 0.798, "val_mae": 0.0932, "val_nll": -1.5025}
+{"epoch": 11, "nll": -0.2835, "bt": 0.4347, "sec": 3, "val_spearman": 0.5022, "val_ndcg": 0.8137, "val_mae": 0.0904, "val_nll": -1.41}
+{"epoch": 12, "nll": -0.3282, "bt": 0.4224, "sec": 2, "val_spearman": 0.4812, "val_ndcg": 0.8054, "val_mae": 0.0923, "val_nll": -1.3391}
+{"epoch": 13, "nll": -0.3421, "bt": 0.4199, "sec": 3, "val_spearman": 0.4689, "val_ndcg": 0.8076, "val_mae": 0.09, "val_nll": -1.292}
+{"epoch": 14, "nll": -0.3955, "bt": 0.4077, "sec": 3, "val_spearman": 0.4706, "val_ndcg": 0.8196, "val_mae": 0.0928, "val_nll": -1.0702}
+{"epoch": 15, "nll": -0.4322, "bt": 0.3998, "sec": 3, "val_spearman": 0.4834, "val_ndcg": 0.8114, "val_mae": 0.093, "val_nll": -0.8768}
+{"epoch": 16, "nll": -0.4508, "bt": 0.3946, "sec": 2, "val_spearman": 0.4842, "val_ndcg": 0.8011, "val_mae": 0.0926, "val_nll": -0.9377}
+{"epoch": 17, "nll": -0.49, "bt": 0.3847, "sec": 2, "val_spearman": 0.4616, "val_ndcg": 0.7978, "val_mae": 0.0922, "val_nll": -0.8256}
+{"epoch": 18, "nll": -0.5132, "bt": 0.3832, "sec": 2, "val_spearman": 0.4642, "val_ndcg": 0.8173, "val_mae": 0.0932, "val_nll": -0.3802}
+{"epoch": 19, "nll": -0.5451, "bt": 0.3756, "sec": 2, "val_spearman": 0.4525, "val_ndcg": 0.8056, "val_mae": 0.095, "val_nll": -0.3676}
+{"epoch": 20, "nll": -0.5626, "bt": 0.3724, "sec": 2, "val_spearman": 0.4456, "val_ndcg": 0.8247, "val_mae": 0.093, "val_nll": -0.2263}
+{"epoch": 21, "nll": -0.5949, "bt": 0.3673, "sec": 2, "val_spearman": 0.4521, "val_ndcg": 0.7929, "val_mae": 0.0929, "val_nll": -0.06}
+{"epoch": 22, "nll": -0.6295, "bt": 0.3607, "sec": 3, "val_spearman": 0.4505, "val_ndcg": 0.8155, "val_mae": 0.095, "val_nll": 0.1784}
+{"epoch": 23, "nll": -0.6487, "bt": 0.3571, "sec": 2, "val_spearman": 0.4555, "val_ndcg": 0.8091, "val_mae": 0.0939, "val_nll": 0.4772}
+{"epoch": 24, "nll": -0.6715, "bt": 0.3517, "sec": 2, "val_spearman": 0.4535, "val_ndcg": 0.8235, "val_mae": 0.0933, "val_nll": 0.5307}
+{"epoch": 25, "nll": -0.6848, "bt": 0.3501, "sec": 2, "val_spearman": 0.4424, "val_ndcg": 0.8281, "val_mae": 0.095, "val_nll": 0.7074}
+{"epoch": 26, "nll": -0.7057, "bt": 0.3458, "sec": 2, "val_spearman": 0.4444, "val_ndcg": 0.8221, "val_mae": 0.0949, "val_nll": 0.8804}
+{"epoch": 27, "nll": -0.719, "bt": 0.3466, "sec": 2, "val_spearman": 0.44, "val_ndcg": 0.8223, "val_mae": 0.0953, "val_nll": 1.1684}
+{"epoch": 28, "nll": -0.7488, "bt": 0.3402, "sec": 3, "val_spearman": 0.4401, "val_ndcg": 0.8152, "val_mae": 0.0956, "val_nll": 1.3475}
+{"epoch": 29, "nll": -0.7503, "bt": 0.3408, "sec": 2, "val_spearman": 0.4415, "val_ndcg": 0.8174, "val_mae": 0.0955, "val_nll": 1.2987}
+{"epoch": 30, "nll": -0.7447, "bt": 0.3395, "sec": 2, "val_spearman": 0.4405, "val_ndcg": 0.8172, "val_mae": 0.0952, "val_nll": 1.3246}
+{"chosen_epochs": 5}
+{"epoch": 1, "nll": 0.2365, "bt": 0.5998, "sec": 3}
+{"epoch": 2, "nll": 0.0734, "bt": 0.5488, "sec": 3}
+{"epoch": 3, "nll": 0.0261, "bt": 0.5327, "sec": 3}
+{"epoch": 4, "nll": -0.0171, "bt": 0.5168, "sec": 3}
+{"epoch": 5, "nll": -0.0653, "bt": 0.506, "sec": 3}
+{"epoch": 1, "nll": 0.2318, "bt": 0.5988, "sec": 3}
+{"epoch": 2, "nll": 0.0824, "bt": 0.5525, "sec": 3}
+{"epoch": 3, "nll": 0.0225, "bt": 0.531, "sec": 3}
+{"epoch": 4, "nll": -0.0238, "bt": 0.5182, "sec": 3}
+{"epoch": 5, "nll": -0.0659, "bt": 0.507, "sec": 3}
+{"epoch": 1, "nll": 0.245, "bt": 0.5973, "sec": 3}
+{"epoch": 2, "nll": 0.0843, "bt": 0.5546, "sec": 3}
+{"epoch": 3, "nll": 0.0272, "bt": 0.5352, "sec": 2}
+{"epoch": 4, "nll": -0.0195, "bt": 0.5181, "sec": 3}
+{"epoch": 5, "nll": -0.0577, "bt": 0.5093, "sec": 3}
+{"epoch": 1, "nll": 0.2286, "bt": 0.5943, "sec": 4}
+{"epoch": 2, "nll": 0.0804, "bt": 0.5506, "sec": 4}
+{"epoch": 3, "nll": 0.0281, "bt": 0.5314, "sec": 3}
+{"epoch": 4, "nll": -0.0141, "bt": 0.5191, "sec": 3}
+{"epoch": 5, "nll": -0.0568, "bt": 0.5091, "sec": 4}
+{"epoch": 1, "nll": 0.229, "bt": 0.5989, "sec": 3}
+{"epoch": 2, "nll": 0.0688, "bt": 0.549, "sec": 4}
+{"epoch": 3, "nll": 0.0234, "bt": 0.5331, "sec": 4}
+{"epoch": 4, "nll": -0.0238, "bt": 0.5168, "sec": 3}
+{"epoch": 5, "nll": -0.0675, "bt": 0.5049, "sec": 3}
+{"done": true, "epochs": 5}

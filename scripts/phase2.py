@@ -277,15 +277,21 @@ def set_batches(sets: np.ndarray, idx: np.ndarray, bs: int, rng) -> list[np.ndar
     return out
 
 
-def loss_fn(mu, var, y, s, bt_scale, pair_w, lambda_w=0.0, n_set=None):
+def loss_fn(mu, var, y, s, bt_scale, pair_w, lambda_w=0.0, n_set=None, lambda_k=0,
+            fixed_var=0.0):
     """Gaussian NLL + within-set Bradley-Terry. With ``lambda_w`` > 0 each
     pair is reweighted LambdaRank-style by the NDCG change of swapping the two
     cards: |y_i - y_j| (linear gain, as in the NDCG metric) times the
     difference of their rank discounts 1/log2(1 + rank). Ranks are the
     current predicted ranks in the batch, scaled up to the set size
     ``n_set``. Weights are normalised to mean 1 and mixed with uniform
-    weights: w = (1 - lambda_w) + lambda_w * lambda_ij."""
+    weights: w = (1 - lambda_w) + lambda_w * lambda_ij. With ``lambda_k``
+    the discount is cut to 0 below rank k, as in NDCG@k."""
     import torch
+    if fixed_var:
+        # Homoscedastic ablation: one residual variance for every card, so
+        # rare cards with noisy labels are not discounted by a learned variance.
+        var = torch.full_like(var, fixed_var)
     tv = var + s ** 2
     nll = 0.5 * (torch.log(tv) + (y - mu) ** 2 / tv)
     d = mu[:, None] - mu[None, :]
@@ -300,6 +306,8 @@ def loss_fn(mu, var, y, s, bt_scale, pair_w, lambda_w=0.0, n_set=None):
             rank[torch.argsort(mu, descending=True)] = torch.arange(n, dtype=torch.float32)
             rank = (rank + 0.5) * (n_set or n) / n + 0.5
             disc = 1.0 / torch.log2(1.0 + rank)
+            if lambda_k:
+                disc = torch.where(rank <= lambda_k, disc, torch.zeros_like(disc))
             lam = (y[:, None] - y[None, :]).abs() * (disc[:, None] - disc[None, :]).abs()
             lam = lam[off]
             w = (1 - lambda_w) + lambda_w * lam / lam.mean().clamp(min=1e-8)
@@ -423,7 +431,9 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
             lab = torch.from_numpy(labelled[b])
             if lab.sum() >= 2:
                 loss, nll, bt = loss_fn(mu[lab], var[lab], yz[b][lab], sz[b][lab], model.bt_scale,
-                                        args.pair_w, args.lambda_w, set_size[sets[b[0]]])
+                                        args.pair_w, args.lambda_w, set_size[sets[b[0]]],
+                                        getattr(args, "lambda_k", 0),
+                                        getattr(args, "fixed_var", 0.0))
             else:
                 loss, nll, bt = mu.sum() * 0, 0.0, 0.0
             if aux_w:
@@ -779,6 +789,10 @@ def main() -> None:
     ap.add_argument("--limit-sets", nargs="*", default=None, help="debugging")
     ap.add_argument("--lambda-w", type=float, default=0.0,
                     help="LambdaRank-style NDCG weighting of the pairwise loss (0 = off, 1 = full)")
+    ap.add_argument("--lambda-k", type=int, default=0,
+                    help="truncate the LambdaRank discount at this rank (NDCG@k); 0 = no cut")
+    ap.add_argument("--fixed-var", type=float, default=0.0,
+                    help="ablation: fixed residual variance (z-units) instead of the learned one")
     ap.add_argument("--env", choices=["none", "set"], default="none",
                     help="set: Set Transformer environment encoder over the set's card pool")
     ap.add_argument("--env-dim", type=int, default=64)

@@ -265,6 +265,30 @@ python app/server.py [--port 8000] [--ft-dir models/ft_card] [--no-ft] [--rebuil
   are not supported. Verified to reproduce saved `test_pred` to 5e-6 with a
   tiny test encoder; not yet run with the real EmbeddingGemma-2 weights.
 
+## Work in progress (Oct 27 round: steps 0, 3, 2, 4 of the plan)
+
+Approved order: save fine-tuned weights, then next step 3 (Bayesian update
+with early 17lands data), 2 (top-of-ranking), 4 (environment encoder).
+
+- **Weights.** `phase2.py train --save-dir DIR` saves each seed as
+  `DIR/<name>/seed<k>.pt` (trained params only: top-k encoder layers in fp16,
+  struct MLP, head, plus struct stats and y_mu/y_sd); `phase2.py predict
+  --model-path ...` reloads and checks against the saved test predictions.
+  Run `ft_embeddinggemma2_k4_saved` (3 seeds) is training; weights go to
+  `/mnt/project-files/mtg_strength/models/ft_card/` (too big for git).
+- **Early update** (`scripts/early_update.py`, results `out/early_update/`):
+  prior = Phase 2 ensemble; data = first D days of games; target = labels
+  from games after day 7 only. Pilot on TMT: model prior + day-1 games 0.76
+  Spearman vs late label (prior 0.69, day-1 data alone 0.65, ATA day 1 0.68);
+  by day 3 the data dominates (0.85-0.88). All 7 sets running.
+- **New phase2 options**: `--lambda-w/--lambda-k` (LambdaRank pair weights),
+  `--env set` (Set Transformer over the set pool; `--env-emb` adds frozen
+  embeddings to pool tokens), `--no-ctx` (drop hand-made set-context
+  features), `--fixed-var` (homoscedastic ablation). `scripts/compare_runs.py`
+  scores runs. Fast structured-model ablation (5 seeds, `runs/s_*`):
+  base 0.587 / NDCG 0.800; no-ctx 0.589 / 0.811; env 0.592 / 0.810;
+  LambdaRank 0.582-0.585 / 0.80-0.81 (no gain). Fine-tuned versions pending.
+
 ## What is not done (next steps, in rough priority)
 
 1. **Constructed history**: rerun `python scripts/phase4_data.py goldfish`

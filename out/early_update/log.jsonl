@@ -1,0 +1,5 @@
+{"config": {"out_dir": "out", "raw_dir": "data/raw", "draft_dir": "data/raw/draft", "pred_csv": "out/phase2/test_predictions.csv", "prior_col": "ens_embeddinggemma2_k4+gbt_tfidf", "prior_sd_col": "ft_embeddinggemma2_k4_sd", "name": "early_update", "sets": ["TLA", "ECL", "TMT", "SOS", "MSH", "HOB", "FRA"]}}
+{"config": {"out_dir": "out", "raw_dir": "data/raw", "draft_dir": "data/raw/draft", "pred_csv": "out/phase2/test_predictions.csv", "prior_col": "ens_embeddinggemma2_k4+gbt_tfidf", "prior_sd_col": "ft_embeddinggemma2_k4_sd", "name": "early_update", "sets": ["TLA", "ECL", "TMT", "SOS", "MSH", "HOB", "FRA"]}}
+TLA: day one 2025-11-18 (game_time)
+TLA: late target from 400,988 games (705s)
+{"set": "TLA", "days": 1, "games": 9868, "b": 1.051, "tau2_resid": 0.009, "sec": 233}

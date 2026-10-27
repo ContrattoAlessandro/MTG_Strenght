@@ -1,0 +1,58 @@
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "none", "name": "s_lam1_k20", "no_struct": false, "seeds": [0, 1, 2, 3, 4], "max_epochs": 30, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 1, "top_k": 0, "cache_dir": "work/cache", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 1.0, "lambda_k": 20, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": null}}
+{"epoch": 1, "nll": 0.3632, "bt": 0.4855, "sec": 1, "val_spearman": 0.5015, "val_ndcg": 0.8057, "val_mae": 0.0854, "val_nll": -1.7426}
+{"epoch": 2, "nll": 0.1386, "bt": 0.2782, "sec": 1, "val_spearman": 0.5336, "val_ndcg": 0.7924, "val_mae": 0.0892, "val_nll": -1.7211}
+{"epoch": 3, "nll": 0.0925, "bt": 0.2432, "sec": 1, "val_spearman": 0.5317, "val_ndcg": 0.8038, "val_mae": 0.0838, "val_nll": -1.808}
+{"epoch": 4, "nll": 0.0356, "bt": 0.1835, "sec": 1, "val_spearman": 0.5556, "val_ndcg": 0.8392, "val_mae": 0.0834, "val_nll": -1.8162}
+{"epoch": 5, "nll": -0.0026, "bt": 0.1434, "sec": 1, "val_spearman": 0.5349, "val_ndcg": 0.8272, "val_mae": 0.0872, "val_nll": -1.7665}
+{"epoch": 6, "nll": -0.0461, "bt": 0.1451, "sec": 1, "val_spearman": 0.5446, "val_ndcg": 0.819, "val_mae": 0.0874, "val_nll": -1.7981}
+{"epoch": 7, "nll": -0.0793, "bt": 0.1201, "sec": 1, "val_spearman": 0.5105, "val_ndcg": 0.8175, "val_mae": 0.0883, "val_nll": -1.7209}
+{"epoch": 8, "nll": -0.1275, "bt": 0.0825, "sec": 1, "val_spearman": 0.5027, "val_ndcg": 0.8176, "val_mae": 0.0901, "val_nll": -1.6758}
+{"epoch": 9, "nll": -0.1624, "bt": 0.0803, "sec": 1, "val_spearman": 0.5084, "val_ndcg": 0.8092, "val_mae": 0.0885, "val_nll": -1.682}
+{"epoch": 10, "nll": -0.2014, "bt": 0.0659, "sec": 1, "val_spearman": 0.5005, "val_ndcg": 0.8131, "val_mae": 0.0908, "val_nll": -1.5851}
+{"epoch": 11, "nll": -0.2496, "bt": 0.0853, "sec": 1, "val_spearman": 0.5133, "val_ndcg": 0.8066, "val_mae": 0.0898, "val_nll": -1.4693}
+{"epoch": 12, "nll": -0.2865, "bt": 0.0557, "sec": 1, "val_spearman": 0.4943, "val_ndcg": 0.8104, "val_mae": 0.0903, "val_nll": -1.5013}
+{"epoch": 13, "nll": -0.2986, "bt": 0.0748, "sec": 1, "val_spearman": 0.4983, "val_ndcg": 0.7908, "val_mae": 0.0886, "val_nll": -1.3571}
+{"epoch": 14, "nll": -0.3574, "bt": 0.0441, "sec": 1, "val_spearman": 0.4783, "val_ndcg": 0.802, "val_mae": 0.092, "val_nll": -1.247}
+{"epoch": 15, "nll": -0.3833, "bt": 0.0523, "sec": 2, "val_spearman": 0.501, "val_ndcg": 0.8199, "val_mae": 0.0938, "val_nll": -1.0976}
+{"epoch": 16, "nll": -0.4069, "bt": 0.0337, "sec": 1, "val_spearman": 0.5025, "val_ndcg": 0.799, "val_mae": 0.0925, "val_nll": -1.0375}
+{"epoch": 17, "nll": -0.4412, "bt": 0.0356, "sec": 1, "val_spearman": 0.4762, "val_ndcg": 0.8042, "val_mae": 0.0922, "val_nll": -0.9425}
+{"epoch": 18, "nll": -0.4698, "bt": 0.0344, "sec": 1, "val_spearman": 0.467, "val_ndcg": 0.8099, "val_mae": 0.0936, "val_nll": -0.4207}
+{"epoch": 19, "nll": -0.5117, "bt": 0.0415, "sec": 1, "val_spearman": 0.4728, "val_ndcg": 0.8248, "val_mae": 0.0929, "val_nll": -0.4029}
+{"epoch": 20, "nll": -0.5245, "bt": 0.0403, "sec": 1, "val_spearman": 0.4569, "val_ndcg": 0.8153, "val_mae": 0.0946, "val_nll": -0.2772}
+{"epoch": 21, "nll": -0.5569, "bt": 0.0312, "sec": 1, "val_spearman": 0.4713, "val_ndcg": 0.8049, "val_mae": 0.0933, "val_nll": -0.1798}
+{"epoch": 22, "nll": -0.586, "bt": 0.0292, "sec": 1, "val_spearman": 0.4663, "val_ndcg": 0.8087, "val_mae": 0.0954, "val_nll": 0.1419}
+{"epoch": 23, "nll": -0.6023, "bt": 0.0213, "sec": 1, "val_spearman": 0.4631, "val_ndcg": 0.7845, "val_mae": 0.0946, "val_nll": 0.3427}
+{"epoch": 24, "nll": -0.6307, "bt": 0.0302, "sec": 1, "val_spearman": 0.4699, "val_ndcg": 0.7998, "val_mae": 0.0939, "val_nll": 0.4324}
+{"epoch": 25, "nll": -0.6452, "bt": 0.0191, "sec": 1, "val_spearman": 0.4643, "val_ndcg": 0.7968, "val_mae": 0.0948, "val_nll": 0.5678}
+{"epoch": 26, "nll": -0.6679, "bt": 0.0297, "sec": 1, "val_spearman": 0.4649, "val_ndcg": 0.8022, "val_mae": 0.0941, "val_nll": 0.7713}
+{"epoch": 27, "nll": -0.6811, "bt": 0.0289, "sec": 1, "val_spearman": 0.4608, "val_ndcg": 0.8086, "val_mae": 0.0947, "val_nll": 1.0304}
+{"epoch": 28, "nll": -0.7048, "bt": 0.0221, "sec": 1, "val_spearman": 0.4625, "val_ndcg": 0.8114, "val_mae": 0.0946, "val_nll": 1.0711}
+{"epoch": 29, "nll": -0.7139, "bt": 0.0236, "sec": 1, "val_spearman": 0.459, "val_ndcg": 0.8072, "val_mae": 0.0952, "val_nll": 1.0966}
+{"epoch": 30, "nll": -0.7183, "bt": 0.0235, "sec": 1, "val_spearman": 0.4601, "val_ndcg": 0.8043, "val_mae": 0.0949, "val_nll": 1.1708}
+{"chosen_epochs": 5}
+{"epoch": 1, "nll": 0.2546, "bt": 0.3857, "sec": 1}
+{"epoch": 2, "nll": 0.0871, "bt": 0.2481, "sec": 2}
+{"epoch": 3, "nll": 0.0376, "bt": 0.185, "sec": 2}
+{"epoch": 4, "nll": -0.0027, "bt": 0.1827, "sec": 2}
+{"epoch": 5, "nll": -0.0441, "bt": 0.1625, "sec": 1}
+{"epoch": 1, "nll": 0.2496, "bt": 0.3565, "sec": 1}
+{"epoch": 2, "nll": 0.0947, "bt": 0.266, "sec": 1}
+{"epoch": 3, "nll": 0.0349, "bt": 0.2166, "sec": 2}
+{"epoch": 4, "nll": -0.0069, "bt": 0.1656, "sec": 1}
+{"epoch": 5, "nll": -0.0473, "bt": 0.1483, "sec": 2}
+{"epoch": 1, "nll": 0.2565, "bt": 0.3658, "sec": 2}
+{"epoch": 2, "nll": 0.0966, "bt": 0.256, "sec": 1}
+{"epoch": 3, "nll": 0.0426, "bt": 0.2023, "sec": 1}
+{"epoch": 4, "nll": -0.0018, "bt": 0.1656, "sec": 1}
+{"epoch": 5, "nll": -0.0366, "bt": 0.1362, "sec": 1}
+{"epoch": 1, "nll": 0.2461, "bt": 0.3695, "sec": 1}
+{"epoch": 2, "nll": 0.0907, "bt": 0.2373, "sec": 1}
+{"epoch": 3, "nll": 0.0379, "bt": 0.1938, "sec": 1}
+{"epoch": 4, "nll": -0.0015, "bt": 0.1426, "sec": 1}
+{"epoch": 5, "nll": -0.0391, "bt": 0.1538, "sec": 1}
+{"epoch": 1, "nll": 0.2477, "bt": 0.3732, "sec": 1}
+{"epoch": 2, "nll": 0.0779, "bt": 0.2408, "sec": 2}
+{"epoch": 3, "nll": 0.036, "bt": 0.2314, "sec": 1}
+{"epoch": 4, "nll": -0.0072, "bt": 0.164, "sec": 1}
+{"epoch": 5, "nll": -0.0479, "bt": 0.1496, "sec": 1}
+{"done": true, "epochs": 5}
