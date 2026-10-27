@@ -98,7 +98,7 @@ Face (EmbeddingGemma) are gated: accept the licence and `huggingface-cli login`.
 | 17lands `draft_data_public.<SET>.PremierDraft.csv.gz` | downloaded by `human_baselines.py --draft-dir` (test sets only) |
 | `out/phase1/emb/*.parquet` (35–95 MB each) | `scripts/embed.py`, see below. Phase 3 needs `embeddinggemma2.parquet`. |
 | Phase 3 deck-game arrays (`<SET>.npz`) | `phase3_data.py`. The trained deck model **is** in git: `models/deck_model.pt` (36 MB); pass `--model-dir models` to `phase3.py values` / `phase4_interactions.py`, or retrain with `phase3.py train`. |
-| fine-tuned encoder weights | never saved (only predictions are). Retrain with `phase2.py train`. |
+| fine-tuned encoder weights | `phase2.py train --save-dir`; the Oct 27 Gemma-2 k4 seeds are in `/mnt/project-files/mtg_strength/models/ft_card/` (too big for git). |
 
 Defaults for `--work-dir`, `--model-dir`, `--cache-dir` point at
 `/tmp/claude-0/...` (the sandbox). Pass local paths, e.g. `--work-dir work/p3
@@ -281,31 +281,61 @@ python app/server.py [--port 8000] [--ft-dir models/ft_card] [--no-ft] [--rebuil
   `app/build.py` then makes Gemma + GBT the precomputed score in search and
   card pages. On hold until the research thread fixes the final card model.
 
-## Work in progress (Oct 27 round: steps 0, 3, 2, 4 of the plan)
+## Research queue (from Oct 27): one ordered plan
 
-Approved order: save fine-tuned weights, then next step 3 (Bayesian update
-with early 17lands data), 2 (top-of-ranking), 4 (environment encoder).
+**All remaining research follows `docs/RESEARCH_PLAN.md`** (steps A–H, each
+run only after every step that could change it: protocol → contamination →
+recipe on EmbeddingGemma-2 → encoder choice → architecture/heads → final model
+→ app, early update, distillation). Work happens on branch `research-queue`.
+Its "Log of progress" section is the status; results land here when a step closes.
 
-- **Weights.** `phase2.py train --save-dir DIR` saves each seed as
-  `DIR/<name>/seed<k>.pt` (trained params only: top-k encoder layers in fp16,
-  struct MLP, head, plus struct stats and y_mu/y_sd); `phase2.py predict
-  --model-path ...` reloads and checks against the saved test predictions.
-  Run `ft_embeddinggemma2_k4_saved` (3 seeds) is training; weights go to
-  `/mnt/project-files/mtg_strength/models/ft_card/` (too big for git).
-- **Early update** (`scripts/early_update.py`, results `out/early_update/`):
-  prior = Phase 2 ensemble; data = first D days of games; target = labels
-  from games after day 7 only. Pilot on TMT: model prior + day-1 games 0.76
-  Spearman vs late label (prior 0.69, day-1 data alone 0.65, ATA day 1 0.68);
-  by day 3 the data dominates (0.85-0.88). All 7 sets running.
-- **New phase2 options**: `--lambda-w/--lambda-k` (LambdaRank pair weights),
-  `--env set` (Set Transformer over the set pool; `--env-emb` adds frozen
-  embeddings to pool tokens), `--no-ctx` (drop hand-made set-context
-  features), `--fixed-var` (homoscedastic ablation). `scripts/compare_runs.py`
-  scores runs. Fast structured-model ablation (5 seeds, `runs/s_*`):
-  base 0.587 / NDCG 0.800; no-ctx 0.589 / 0.811; env 0.592 / 0.810;
-  LambdaRank 0.582-0.585 / 0.80-0.81 (no gain). Fine-tuned versions pending.
+Protocol rules (binding for every new run):
+- **Selection on validation only**: `phase2.py train --val-fold V1 V2 V3`
+  (forward-chaining folds V1 = MKM OTJ MH3, V2 = BLB DSK FDN, V3 = TDM FIN EOE;
+  each trained on the sets before it; per-epoch val predictions in
+  `runs/<name>/val_pred_<fold>_seed<k>.csv`; test is never predicted).
+- **Test looks are logged**: `compare_runs.py --test --why "..."` appends to
+  `out/TEST_LOG.md` (earlier looks backfilled there). The final model is scored
+  on test once (step G).
+- **Paired stats**: `compare_runs.py RUN... --ref REF` prints Δ ± SE across
+  sets, sets won, a card-level bootstrap and a verdict (real only if Δ > 2 SE
+  and won on ≥ 2/3 of sets). `--blend gbt_tfidf_folds --blend-w ...` scores
+  ensembles with the fold version of gbt_tfidf (`scripts/baseline_folds.py`,
+  val 0.593).
+- **Pre-registration**: each Kaggle job's commit message states hypotheses and
+  go/no-go thresholds before it runs.
+
+New `phase2.py` options: `--top-k -1` (full fine-tuning, no cache),
+`--peft lora --lora-r R --enc-fp16`, `--amp fp16`, `--grad-ckpt`, `--llrd`,
+`--optim adamw8bit`, `--weight-decay`, `--warmup`, `--dropout`,
+`--text-variant {no_reminder,reorder,this_card}`; `--save-dir` also works in
+fold mode (`<fold>_seed<k>.pt`). `scripts/contamination_probe.py` has the
+name-only and paraphrase probes. Kaggle: `gpu/kaggle/job.py` runs one lane per
+T4 in parallel and bills session time, so two lanes cost the same as one;
+lane logs are kept in `gpu/kaggle/logs/`. Uploads over ~16 MB from the cloud
+sandbox are cut off, so weights are produced inside the Kaggle job.
+
+Done so far (Oct 27):
+- **Weights saved**: `--save-dir`, `phase2.py predict`; run
+  `ft_embeddinggemma2_k4_saved` (3 seeds, CPU) 0.626 test Spearman, weights in
+  `/mnt/project-files/mtg_strength/models/ft_card/`.
+- **R0 GPU parity**: GPU 0.6226 vs CPU 0.6231 (Δ −0.0005 ± 0.0033), ~50 s/epoch on a T4.
+- **Screening on test (step B, untuned Gemma-2 top-4, 4 epochs, 3 seeds, vs
+  matched baseline 0.626)**: env encoder +0.005 ± 0.003 (6/7), no-ctx
+  +0.003 ± 0.004, LambdaRank −0.006 ± 0.003 (1/7). All ties; nothing adopted.
+  Env and no-ctx are re-decided on validation in step F; LambdaRank is dropped
+  (no gain on the structured or the fine-tuned model).
+- **Structured-model screening** (5 seeds, `runs/s_*`): base 0.587 / NDCG
+  0.800; no-ctx 0.589 / 0.811; env 0.592 / 0.810; LambdaRank 0.582–0.585.
+- **Early update** (`scripts/early_update.py`, `out/early_update/`): prior =
+  Phase 2 ensemble; data = first D days; target = labels from games after day
+  7. TMT pilot: prior + day-1 games 0.76 (prior 0.69, day-1 alone 0.65); day 3
+  0.85–0.88. Numbers are provisional until step H reruns it with the final prior.
 
 ## What is not done (next steps, in rough priority)
+
+Superseded by the ordered plan and its "parked items" table in
+`docs/RESEARCH_PLAN.md`; kept for the descriptions.
 
 1. **Constructed history**: rerun `python scripts/phase4_data.py goldfish`
    from a network that reaches web.archive.org to add the monthly MTGGoldfish
