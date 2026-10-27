@@ -154,6 +154,8 @@ class TopLayers(nn.Module):
             text = inject_adapter_in_model(cfg, text)
             for nm, p in text.named_parameters():
                 p.requires_grad = "lora_" in nm
+                if p.requires_grad:
+                    p.data = p.data.float()   # fp32 adapters on fp16 base weights
         else:
             # Trainable: the top k layers and any module applied after them
             # (final norm, output projection).
