@@ -1,0 +1,14 @@
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "ft_embeddinggemma2_k4_e4_gpu", "no_struct": false, "seeds": [0, 1, 2], "max_epochs": 8, "epochs": 4, "skip_val": true, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": 4, "cache_dir": "/tmp/cache1", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": "models/phase2"}}
+{"epoch": 1, "nll": 0.4377, "bt": 0.7253, "sec": 57}
+{"epoch": 2, "nll": 0.0779, "bt": 0.53, "sec": 55}
+{"epoch": 3, "nll": -0.0328, "bt": 0.4975, "sec": 55}
+{"epoch": 4, "nll": -0.1424, "bt": 0.4614, "sec": 55}
+{"epoch": 1, "nll": 1.9782, "bt": 0.7768, "sec": 56}
+{"epoch": 2, "nll": 0.0893, "bt": 0.5368, "sec": 55}
+{"epoch": 3, "nll": -0.0152, "bt": 0.5022, "sec": 55}
+{"epoch": 4, "nll": -0.1358, "bt": 0.4665, "sec": 55}
+{"epoch": 1, "nll": 0.4227, "bt": 0.7457, "sec": 56}
+{"epoch": 2, "nll": 0.0826, "bt": 0.5352, "sec": 54}
+{"epoch": 3, "nll": -0.0203, "bt": 0.5026, "sec": 56}
+{"epoch": 4, "nll": -0.1222, "bt": 0.4669, "sec": 55}
+{"done": true, "epochs": 4}

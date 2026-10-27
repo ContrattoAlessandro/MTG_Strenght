@@ -1,0 +1,20 @@
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "ft_embeddinggemma2_k4_lambda", "no_struct": false, "seeds": [0, 1, 2], "max_epochs": 8, "epochs": 4, "skip_val": true, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": 4, "cache_dir": "/tmp/cache1", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 1.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": "models/phase2"}}
+cache google/embeddinggemma-2 k=4: batch 0
+cache google/embeddinggemma-2 k=4: batch 100
+cache google/embeddinggemma-2 k=4: batch 200
+cache google/embeddinggemma-2 k=4: batch 300
+cache google/embeddinggemma-2 k=4: batch 400
+cache google/embeddinggemma-2 k=4: batch 500
+{"epoch": 1, "nll": 0.4631, "bt": 0.5886, "sec": 57}
+{"epoch": 2, "nll": 0.0852, "bt": 0.2265, "sec": 55}
+{"epoch": 3, "nll": -0.0237, "bt": 0.1666, "sec": 55}
+{"epoch": 4, "nll": -0.1338, "bt": 0.1191, "sec": 56}
+{"epoch": 1, "nll": 1.9831, "bt": 0.5964, "sec": 57}
+{"epoch": 2, "nll": 0.0854, "bt": 0.209, "sec": 55}
+{"epoch": 3, "nll": -0.0102, "bt": 0.1655, "sec": 56}
+{"epoch": 4, "nll": -0.1316, "bt": 0.116, "sec": 55}
+{"epoch": 1, "nll": 0.4388, "bt": 0.5767, "sec": 56}
+{"epoch": 2, "nll": 0.1018, "bt": 0.2251, "sec": 55}
+{"epoch": 3, "nll": -0.0165, "bt": 0.1671, "sec": 56}
+{"epoch": 4, "nll": -0.1271, "bt": 0.1257, "sec": 55}
+{"done": true, "epochs": 4}

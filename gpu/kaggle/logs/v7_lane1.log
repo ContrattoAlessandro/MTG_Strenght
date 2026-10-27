@@ -1,0 +1,45 @@
+$ python scripts/phase2.py train --encoder google/embeddinggemma-2 --top-k 4 --skip-val --epochs 4 --seeds 0 1 2 --device cuda --save-dir models/phase2 --name ft_embeddinggemma2_k4_lambda --lambda-w 1 --cache-dir /tmp/cache1
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "ft_embeddinggemma2_k4_lambda", "no_struct": false, "seeds": [0, 1, 2], "max_epochs": 8, "epochs": 4, "skip_val": true, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": 4, "cache_dir": "/tmp/cache1", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 1.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": "models/phase2"}}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  11%|█         | 151/1376 [00:00<00:00, 1459.76it/s]Loading weights:  23%|██▎       | 313/1376 [00:00<00:00, 1541.06it/s]Loading weights:  34%|███▍      | 468/1376 [00:00<00:00, 1256.61it/s]Loading weights:  44%|████▎     | 599/1376 [00:00<00:00, 1127.83it/s]Loading weights:  52%|█████▏    | 716/1376 [00:00<00:00, 1006.69it/s]Loading weights:  60%|█████▉    | 820/1376 [00:01<00:01, 315.46it/s] Loading weights:  76%|███████▋  | 1050/1376 [00:01<00:00, 528.20it/s]Loading weights:  93%|█████████▎| 1281/1376 [00:01<00:00, 767.07it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 774.14it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  12%|█▏        | 168/1376 [00:00<00:00, 1605.73it/s]Loading weights:  26%|██▌       | 360/1376 [00:00<00:00, 1786.44it/s]Loading weights:  40%|████      | 556/1376 [00:00<00:00, 1847.79it/s]Loading weights:  54%|█████▍    | 741/1376 [00:00<00:00, 1612.92it/s]Loading weights:  66%|██████▌   | 907/1376 [00:01<00:00, 637.16it/s] Loading weights:  79%|███████▉  | 1093/1376 [00:01<00:00, 826.06it/s]Loading weights:  90%|████████▉ | 1236/1376 [00:01<00:00, 935.28it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 961.99it/s]
+cache google/embeddinggemma-2 k=4: batch 0
+cache google/embeddinggemma-2 k=4: batch 100
+cache google/embeddinggemma-2 k=4: batch 200
+cache google/embeddinggemma-2 k=4: batch 300
+cache google/embeddinggemma-2 k=4: batch 400
+cache google/embeddinggemma-2 k=4: batch 500
+{"epoch": 1, "nll": 0.4631, "bt": 0.5886, "sec": 57}
+{"epoch": 2, "nll": 0.0852, "bt": 0.2265, "sec": 55}
+{"epoch": 3, "nll": -0.0237, "bt": 0.1666, "sec": 55}
+{"epoch": 4, "nll": -0.1338, "bt": 0.1191, "sec": 56}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  20%|██        | 280/1376 [00:00<00:00, 2790.23it/s]Loading weights:  41%|████      | 560/1376 [00:00<00:00, 2348.27it/s]Loading weights:  58%|█████▊    | 800/1376 [00:00<00:00, 800.69it/s] Loading weights:  85%|████████▌ | 1175/1376 [00:00<00:00, 1291.11it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1170.09it/s]
+{"epoch": 1, "nll": 1.9831, "bt": 0.5964, "sec": 57}
+{"epoch": 2, "nll": 0.0854, "bt": 0.209, "sec": 55}
+{"epoch": 3, "nll": -0.0102, "bt": 0.1655, "sec": 56}
+{"epoch": 4, "nll": -0.1316, "bt": 0.116, "sec": 55}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  17%|█▋        | 240/1376 [00:00<00:00, 2321.70it/s]Loading weights:  34%|███▍      | 473/1376 [00:00<00:00, 2114.07it/s]Loading weights:  54%|█████▎    | 739/1376 [00:00<00:00, 2336.25it/s]Loading weights:  71%|███████   | 975/1376 [00:00<00:00, 964.13it/s] Loading weights:  94%|█████████▎| 1287/1376 [00:00<00:00, 1356.49it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1324.66it/s]
+{"epoch": 1, "nll": 0.4388, "bt": 0.5767, "sec": 56}
+{"epoch": 2, "nll": 0.1018, "bt": 0.2251, "sec": 55}
+{"epoch": 3, "nll": -0.0165, "bt": 0.1671, "sec": 56}
+{"epoch": 4, "nll": -0.1271, "bt": 0.1257, "sec": 55}
+{"done": true, "epochs": 4}
+$ python scripts/phase2.py train --encoder google/embeddinggemma-2 --top-k 4 --skip-val --epochs 4 --seeds 0 1 2 --device cuda --save-dir models/phase2 --name ft_embeddinggemma2_k4_e4_gpu --cache-dir /tmp/cache1
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "ft_embeddinggemma2_k4_e4_gpu", "no_struct": false, "seeds": [0, 1, 2], "max_epochs": 8, "epochs": 4, "skip_val": true, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": 4, "cache_dir": "/tmp/cache1", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": "models/phase2"}}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  12%|█▏        | 165/1376 [00:00<00:00, 1574.07it/s]Loading weights:  23%|██▎       | 323/1376 [00:00<00:00, 1330.13it/s]Loading weights:  33%|███▎      | 459/1376 [00:00<00:00, 1311.18it/s]Loading weights:  43%|████▎     | 592/1376 [00:00<00:00, 1200.23it/s]Loading weights:  53%|█████▎    | 731/1376 [00:00<00:00, 1254.54it/s]Loading weights:  62%|██████▏   | 858/1376 [00:01<00:00, 547.67it/s] Loading weights:  78%|███████▊  | 1068/1376 [00:01<00:00, 799.50it/s]Loading weights:  96%|█████████▌| 1324/1376 [00:01<00:00, 1120.61it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1003.71it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+{"epoch": 1, "nll": 0.4377, "bt": 0.7253, "sec": 57}
+{"epoch": 2, "nll": 0.0779, "bt": 0.53, "sec": 55}
+{"epoch": 3, "nll": -0.0328, "bt": 0.4975, "sec": 55}
+{"epoch": 4, "nll": -0.1424, "bt": 0.4614, "sec": 55}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  10%|▉         | 133/1376 [00:00<00:00, 1264.17it/s]Loading weights:  19%|█▉        | 260/1376 [00:00<00:00, 1235.98it/s]Loading weights:  31%|███▏      | 433/1376 [00:00<00:00, 1414.87it/s]Loading weights:  42%|████▏     | 575/1376 [00:00<00:00, 1298.01it/s]Loading weights:  53%|█████▎    | 724/1376 [00:00<00:00, 1353.72it/s]Loading weights:  63%|██████▎   | 861/1376 [00:00<00:00, 683.19it/s] Loading weights:  87%|████████▋ | 1195/1376 [00:01<00:00, 1180.41it/s]Loading weights: 100%|█████████▉| 1373/1376 [00:01<00:00, 1039.40it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1054.98it/s]
+{"epoch": 1, "nll": 1.9782, "bt": 0.7768, "sec": 56}
+{"epoch": 2, "nll": 0.0893, "bt": 0.5368, "sec": 55}
+{"epoch": 3, "nll": -0.0152, "bt": 0.5022, "sec": 55}
+{"epoch": 4, "nll": -0.1358, "bt": 0.4665, "sec": 55}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  19%|█▉        | 259/1376 [00:00<00:00, 2577.32it/s]Loading weights:  38%|███▊      | 517/1376 [00:00<00:00, 2379.03it/s]Loading weights:  55%|█████▍    | 756/1376 [00:00<00:00, 766.90it/s] Loading weights:  82%|████████▏ | 1125/1376 [00:00<00:00, 1254.99it/s]Loading weights:  99%|█████████▉| 1363/1376 [00:01<00:00, 1447.27it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1319.36it/s]
+{"epoch": 1, "nll": 0.4227, "bt": 0.7457, "sec": 56}
+{"epoch": 2, "nll": 0.0826, "bt": 0.5352, "sec": 54}
+{"epoch": 3, "nll": -0.0203, "bt": 0.5026, "sec": 56}
+{"epoch": 4, "nll": -0.1222, "bt": 0.4669, "sec": 55}
+{"done": true, "epochs": 4}

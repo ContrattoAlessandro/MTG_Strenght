@@ -41,7 +41,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.dirname(__file__))
 
 from phase1 import SETS  # noqa: E402
-from phase2 import FOLDS, SET_DATES  # noqa: E402
+from phase2 import FOLDS, SET_DATES, text_variants  # noqa: E402
 
 # Arena release of the validation sets (spoilers start about 4 weeks earlier).
 VAL_DATES = {"MKM": "2024-02-06", "OTJ": "2024-04-16", "MH3": "2024-06-11", "BLB": "2024-07-30",
@@ -126,6 +126,7 @@ def names(args) -> None:
         if os.path.exists(path):
             E = np.load(path)
         else:
+          try:
             fp16 = args.device == "cuda" and "gemma" not in hf   # EmbeddingGemma needs fp32
             model = SentenceTransformer(hf, device=args.device, trust_remote_code=True,
                                         model_kwargs={"dtype": torch.float16 if fp16 else torch.float32})
@@ -136,6 +137,9 @@ def names(args) -> None:
             del model
             if args.device == "cuda":
                 torch.cuda.empty_cache()
+          except Exception as e:   # one encoder failing (download, remote code) skips it
+            print(f"{short}: FAILED {type(e).__name__}: {e}", flush=True)
+            continue
         pos = {n: i for i, n in enumerate(uniq)}
         M = np.hstack([E[[pos[n] for n in cards["name"]]], R])
         for s, v in ridge_scores(M, cards).items():
@@ -172,36 +176,6 @@ def summarise_names(per: pd.DataFrame, res: str) -> None:
     print(t.round(3))
 
 
-def paraphrases(cards: pd.DataFrame) -> dict[str, pd.Series]:
-    """Rewritten input texts (same format as phase2.card_input_text) and a
-    mask of cards where the rewrite applies. Cards whose text cannot be split
-    into prefix + rules text keep the original."""
-    out = {"reorder": [], "no_reminder": [], "this_card": []}
-    for text, ot, name in zip(cards["text"], cards["oracle_text"].fillna(""), cards["name"]):
-        rules = ot
-        for n in {name, *str(name).split(" // ")}:
-            rules = rules.replace(n, "CARDNAME")
-            if "," in n:
-                rules = rules.replace(n.split(",")[0], "CARDNAME")
-        flat = rules.replace("\n", " ")
-        if not flat or not text.endswith(flat):
-            for k in out:
-                out[k].append(text)
-            continue
-        prefix = text[: len(text) - len(flat)]
-        # Ability blocks: a modal header keeps its bullet lines.
-        blocks = []
-        for line in rules.split("\n"):
-            if line.startswith("•") and blocks:
-                blocks[-1] += " " + line
-            else:
-                blocks.append(line)
-        out["reorder"].append(prefix + " ".join(reversed(blocks)))
-        out["no_reminder"].append(prefix + re.sub(r"\s*\([^)]*\)", "", flat).strip())
-        out["this_card"].append(prefix + flat.replace("CARDNAME", "this card"))
-    return {k: pd.Series(v, index=cards.index) for k, v in out.items()}
-
-
 def paraphrase(args) -> None:
     import torch
     from phase2 import load_model, predict_with
@@ -210,8 +184,11 @@ def paraphrase(args) -> None:
     cards = pd.read_parquet(os.path.join(args.out_dir, "phase2", "cards.parquet"))
     f = pd.read_parquet(os.path.join(args.out_dir, "phase2", "struct.parquet"))
     sets = list(SET_DATES) if args.sets == ["test"] else args.sets
-    mask = cards["set"].isin(sets).to_numpy()
-    variants = {"original": cards["text"], **paraphrases(cards)}
+    # Only the probed sets (whole sets, so env pools stay complete).
+    keep = cards["set"].isin(sets).to_numpy()
+    cards, f = cards[keep].reset_index(drop=True), f[keep].reset_index(drop=True)
+    mask = np.ones(len(cards), bool)
+    variants = {"original": cards["text"], **text_variants(cards)}
     preds = {k: [] for k in variants}
     for path in args.model_path:
         model, meta = load_model(path)

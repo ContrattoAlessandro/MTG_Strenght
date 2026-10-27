@@ -64,6 +64,38 @@ def card_input_text(df: pd.DataFrame) -> pd.Series:
             + df.apply(features.card_text, axis=1)).str.replace("\n", " ")
 
 
+def text_variants(cards: pd.DataFrame) -> dict[str, pd.Series]:
+    """Meaning-preserving rewrites of the input text (same format as
+    card_input_text): ability blocks in reverse order, reminder text (in
+    parentheses) removed, CARDNAME -> "this card". Cards whose text cannot be
+    split into prefix + rules text keep the original. Used by --text-variant
+    and the paraphrase probe (scripts/contamination_probe.py)."""
+    import re
+    out = {"reorder": [], "no_reminder": [], "this_card": []}
+    for text, ot, name in zip(cards["text"], cards["oracle_text"].fillna(""), cards["name"]):
+        rules = ot
+        for n in {name, *str(name).split(" // ")}:
+            rules = rules.replace(n, "CARDNAME")
+            if "," in n:
+                rules = rules.replace(n.split(",")[0], "CARDNAME")
+        flat = rules.replace("\n", " ")
+        if not flat or not text.endswith(flat):
+            for k in out:
+                out[k].append(text)
+            continue
+        prefix = text[: len(text) - len(flat)]
+        blocks = []   # a modal header keeps its bullet lines
+        for line in rules.split("\n"):
+            if line.startswith("•") and blocks:
+                blocks[-1] += " " + line
+            else:
+                blocks.append(line)
+        out["reorder"].append(prefix + " ".join(reversed(blocks)))
+        out["no_reminder"].append(prefix + re.sub(r"\s*\([^)]*\)", "", flat).strip())
+        out["this_card"].append(prefix + flat.replace("CARDNAME", "this card"))
+    return {k: pd.Series(v, index=cards.index) for k, v in out.items()}
+
+
 def prep(args) -> None:
     res_dir = os.path.join(args.out_dir, RES)
     os.makedirs(res_dir, exist_ok=True)
@@ -519,6 +551,8 @@ def train(args) -> None:
     f = pd.read_parquet(os.path.join(res_dir, "struct.parquet"))
     if args.no_ctx:
         f = f.drop(columns=CTX_COLS)
+    if args.text_variant != "original":
+        cards["text"] = text_variants(cards)[args.text_variant]
     if args.limit_sets:
         keep = cards["set"].isin(args.limit_sets).to_numpy()
         cards, f = cards[keep].reset_index(drop=True), f[keep].reset_index(drop=True)
@@ -893,6 +927,9 @@ def main() -> None:
     ap.add_argument("--weight-decay", type=float, default=0.01)
     ap.add_argument("--warmup", type=float, default=0.06, help="warm-up share of the steps")
     ap.add_argument("--dropout", type=float, default=0.1)
+    ap.add_argument("--text-variant", default="original",
+                    choices=["original", "no_reminder", "reorder", "this_card"],
+                    help="train on rewritten input text (step D1)")
     ap.add_argument("--cache-dir", default="/tmp/claude-0/cache")
     ap.add_argument("--deck-values", default=None,
                     help="out/phase3/deck_values.csv: enables --target deck and --aux-w")

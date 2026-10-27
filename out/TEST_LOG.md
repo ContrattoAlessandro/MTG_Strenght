@@ -28,3 +28,5 @@ rolling-origin backtest (11 sets never used for any choice) as well.
 | date (UTC) | runs | why |
 |---|---|---|
 | 2026-10-27 14:33 | ft_embeddinggemma2_k4, ft_embeddinggemma2_k4_gpu, ft_embeddinggemma2_k4_saved | R0 GPU parity check (also tests the new compare_runs.py) |
+| 2026-10-27 14:47 | ft_embeddinggemma2_k4_e4_gpu, ft_embeddinggemma2_k4_env, ft_embeddinggemma2_k4_noctx, ft_embeddinggemma2_k4_lambda | step B: Kaggle v7 screening (env, no-ctx, LambdaRank vs matched e4 baseline); no adoption, F re-decides on validation |
+| 2026-10-27 14:47 | ft_embeddinggemma2_k4_e4_gpu, ft_embeddinggemma2_k4_env, ft_embeddinggemma2_k4_noctx, ft_embeddinggemma2_k4_lambda | re-print of the previous look (same runs, table format) |
