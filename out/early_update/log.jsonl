@@ -3,3 +3,23 @@
 TLA: day one 2025-11-18 (game_time)
 TLA: late target from 400,988 games (705s)
 {"set": "TLA", "days": 1, "games": 9868, "b": 1.051, "tau2_resid": 0.009, "sec": 233}
+{"set": "TLA", "days": 2, "games": 37907, "b": 1.039, "tau2_resid": 0.0084, "sec": 331}
+{"set": "TLA", "days": 3, "games": 64212, "b": 1.01, "tau2_resid": 0.0086, "sec": 383}
+{"set": "TLA", "days": 5, "games": 114616, "b": 0.988, "tau2_resid": 0.0082, "sec": 455}
+{"set": "TLA", "days": 7, "games": 161936, "b": 0.989, "tau2_resid": 0.0076, "sec": 597}
+ECL: day one 2026-01-20 (game_time)
+ECL: late target from 354,788 games (438s)
+{"set": "ECL", "days": 1, "games": 11548, "b": 1.096, "tau2_resid": 0.0094, "sec": 216}
+{"set": "ECL", "days": 2, "games": 43587, "b": 1.2, "tau2_resid": 0.0096, "sec": 296}
+{"set": "ECL", "days": 3, "games": 71606, "b": 1.16, "tau2_resid": 0.0096, "sec": 341}
+{"set": "ECL", "days": 5, "games": 128975, "b": 1.198, "tau2_resid": 0.01, "sec": 427}
+{"set": "ECL", "days": 7, "games": 181778, "b": 1.17, "tau2_resid": 0.0106, "sec": 549}
+TMT: day one 2026-03-03 (game_time)
+TMT: late target from 115,751 games (121s)
+{"set": "TMT", "days": 1, "games": 4015, "b": 1.098, "tau2_resid": 0.0095, "sec": 56}
+{"set": "TMT", "days": 2, "games": 15416, "b": 1.15, "tau2_resid": 0.0113, "sec": 69}
+{"set": "TMT", "days": 3, "games": 25762, "b": 1.062, "tau2_resid": 0.012, "sec": 99}
+{"set": "TMT", "days": 5, "games": 45892, "b": 1.136, "tau2_resid": 0.012, "sec": 142}
+{"set": "TMT", "days": 7, "games": 64453, "b": 1.168, "tau2_resid": 0.0142, "sec": 187}
+{"config": {"out_dir": "out", "raw_dir": "data/raw", "draft_dir": "data/raw/draft", "pred_csv": "out/phase2/test_predictions.csv", "prior_col": "ens_embeddinggemma2_k4+gbt_tfidf", "prior_sd_col": "ft_embeddinggemma2_k4_sd", "name": "early_update", "sets": ["TLA", "ECL", "TMT", "SOS", "MSH", "HOB", "FRA"]}}
+SOS: day one 2026-04-21 (game_time)
