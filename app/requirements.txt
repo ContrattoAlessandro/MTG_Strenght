@@ -1,0 +1,11 @@
+# Web app (on top of ../requirements.txt; torch/transformers only needed for
+# the fine-tuned encoder, the app runs without them).
+numpy
+pandas
+pyarrow
+scipy
+scikit-learn
+lightgbm
+joblib
+fastapi
+uvicorn

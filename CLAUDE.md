@@ -63,6 +63,7 @@ scripts/
   phase4_data.py    EDHREC + MTGGoldfish scraping -> out/phase4/
   phase4.py         Commander and Constructed heads -> out/phase4/
   phase4_interactions.py  card-pair synergy search -> out/phase4/interactions_*.csv
+app/                web app (server.py, build.py, engine.py, static/), see "Web app"
 data/raw/human/     Draftsim pre-release snapshots (small, in git)
 out/<SET>/          Phase 0 labels per set (card_labels.csv, summary.json, ...)
 out/phaseN/         results per phase
@@ -229,6 +230,40 @@ encoders don't help.
   per set), infeasible on CPU.
 - Takeaway: Limited, Commander and Constructed strength are close to unrelated,
   so use separate format heads, not one shared strength score.
+
+## Web app (`app/`)
+
+Local FastAPI app plus a no-build vanilla JS frontend, CPU only.
+
+```
+pip install -r requirements.txt -r app/requirements.txt
+python app/server.py [--port 8000] [--ft-dir models/ft_card] [--no-ft] [--rebuild]
+```
+
+- `app/build.py` (~1 min, run automatically when `app/data/` is missing;
+  `app/data/` is git-ignored) writes `bundle.joblib`, `set_cards.parquet`,
+  `cards.parquet` (every Scryfall card), `synergy.json`, `meta.json`.
+- **Limited model for live scoring**: `gbt_tfidf` (167 features + 32 TF-IDF SVD
+  comps, 305 rounds) refitted on all 31 labelled sets; a second small GBT on
+  |out-of-fold residual| gives a card-specific SD, rescaled so OOF z-scores have
+  SD 1 (80% interval coverage 0.80).
+- **Estimates shown for labelled cards are out-of-sample**: test sets use the
+  Phase 2 ensemble (0.5 FT Gemma-2 + 0.5 gbt_tfidf, from
+  `out/phase2/test_predictions.csv`); training sets use 6-fold CV over whole sets.
+- **Grades** are within-set percentiles (A+ ≥ 99, A ≥ 95, A- ≥ 90, B+ ≥ 80 …
+  D- ≥ 4, F below). Observed grades rank θ; model grades rank model estimates,
+  and custom cards are placed among the model estimates of the chosen set (or
+  the pooled newest 8 sets, "typical").
+- **Commander**: TF-IDF ridge on logit EDHREC inclusion; **Constructed**: GBT
+  binary on MTGGoldfish staple status. Observed values are shown when they
+  exist. Both are rough for cards outside the Limited sets.
+- **Synergy**: top positive pairs from `out/phase4/interactions_*.csv` (test sets only).
+- **Fine-tuned encoder**: `engine.FineTuned` loads `seed*.pt` files saved by
+  `phase2.py train --save-dir` (first run found under `--ft-dir`, default
+  `models/ft_card/`), runs the frozen lower layers live and averages seeds;
+  custom cards are then scored by 0.5 FT + 0.5 GBT. Runs with `env="set"`
+  are not supported. Verified to reproduce saved `test_pred` to 5e-6 with a
+  tiny test encoder; not yet run with the real EmbeddingGemma-2 weights.
 
 ## What is not done (next steps, in rough priority)
 

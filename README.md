@@ -8,6 +8,26 @@ Setup: `pip install -r requirements.txt` (CPU builds of torch are fine).
 Large files are not in git (Scryfall bulk data, 17lands dumps, frozen embeddings,
 fine-tuned encoder weights); `CLAUDE.md` says how to regenerate each one.
 
+## Web app: "is this card good?"
+
+A local web app (CPU only) on top of the models: search any card, see its
+Limited grade within its set (measured on 17lands and predicted by the model,
+with an 80% range), Commander and Constructed signals, synergy partners,
+set tier lists, and a Card Lab that grades a card you type in.
+
+```
+pip install -r requirements.txt -r app/requirements.txt
+python app/server.py            # open http://127.0.0.1:8000
+```
+
+The first start builds `app/data/` (about a minute; it downloads the Scryfall
+oracle file if missing). `python app/server.py --rebuild` rebuilds it after
+new labels or model outputs. To use fine-tuned EmbeddingGemma-2 weights for
+custom cards, put the `seed*.pt` files from `scripts/phase2.py train --save-dir`
+under `models/ft_card/<run>/` (or pass `--ft-dir`); this needs torch,
+transformers and access to `google/embeddinggemma-2` on Hugging Face. Without
+them the app uses the gradient-boosting model. Details: `CLAUDE.md`, "Web app".
+
 ## Phase 0: data pipeline
 
 Per-set debiased card-strength labels from the public 17lands game data,
