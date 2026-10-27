@@ -1,0 +1,30 @@
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "ft_embeddinggemma2_k4_gpu", "no_struct": false, "seeds": [0, 1, 2], "max_epochs": 6, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": 4, "cache_dir": "/tmp/cache", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": "models/phase2"}}
+cache google/embeddinggemma-2 k=4: batch 0
+cache google/embeddinggemma-2 k=4: batch 100
+cache google/embeddinggemma-2 k=4: batch 200
+cache google/embeddinggemma-2 k=4: batch 300
+cache google/embeddinggemma-2 k=4: batch 400
+cache google/embeddinggemma-2 k=4: batch 500
+{"epoch": 1, "nll": 0.4381, "bt": 0.7503, "sec": 49, "val_spearman": 0.5686, "val_ndcg": 0.8179, "val_mae": 0.0824, "val_nll": -1.7599}
+{"epoch": 2, "nll": 0.0894, "bt": 0.5329, "sec": 48, "val_spearman": 0.6034, "val_ndcg": 0.8066, "val_mae": 0.0813, "val_nll": -1.8462}
+{"epoch": 3, "nll": -0.0174, "bt": 0.4974, "sec": 48, "val_spearman": 0.6, "val_ndcg": 0.838, "val_mae": 0.0785, "val_nll": -1.8853}
+{"epoch": 4, "nll": -0.1146, "bt": 0.4645, "sec": 48, "val_spearman": 0.6127, "val_ndcg": 0.8607, "val_mae": 0.0796, "val_nll": -1.8472}
+{"epoch": 5, "nll": -0.2142, "bt": 0.4329, "sec": 48, "val_spearman": 0.6114, "val_ndcg": 0.8626, "val_mae": 0.0788, "val_nll": -1.8273}
+{"epoch": 6, "nll": -0.3304, "bt": 0.4056, "sec": 48, "val_spearman": 0.6054, "val_ndcg": 0.8533, "val_mae": 0.0794, "val_nll": -1.7584}
+{"chosen_epochs": 5}
+{"epoch": 1, "nll": 0.4532, "bt": 0.7392, "sec": 56}
+{"epoch": 2, "nll": 0.076, "bt": 0.5332, "sec": 54}
+{"epoch": 3, "nll": -0.012, "bt": 0.5014, "sec": 55}
+{"epoch": 4, "nll": -0.1171, "bt": 0.4675, "sec": 55}
+{"epoch": 5, "nll": -0.2207, "bt": 0.4381, "sec": 55}
+{"epoch": 1, "nll": 2.0716, "bt": 0.7942, "sec": 55}
+{"epoch": 2, "nll": 0.0838, "bt": 0.5335, "sec": 54}
+{"epoch": 3, "nll": -0.0109, "bt": 0.5012, "sec": 55}
+{"epoch": 4, "nll": -0.1243, "bt": 0.4644, "sec": 55}
+{"epoch": 5, "nll": -0.2416, "bt": 0.432, "sec": 55}
+{"epoch": 1, "nll": 0.4419, "bt": 0.7644, "sec": 55}
+{"epoch": 2, "nll": 0.087, "bt": 0.5372, "sec": 54}
+{"epoch": 3, "nll": -0.008, "bt": 0.5043, "sec": 55}
+{"epoch": 4, "nll": -0.1173, "bt": 0.4656, "sec": 54}
+{"epoch": 5, "nll": -0.2265, "bt": 0.4376, "sec": 55}
+{"done": true, "epochs": 5}

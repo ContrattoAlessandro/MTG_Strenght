@@ -89,6 +89,25 @@ The job's per-epoch checkpoints live in the session's scratch disk and are
 lost when it ends, so keep each job well under 12 h (a three-seed Phase 2 run
 is far below that on a T4).
 
+## First run (2026-10-27)
+
+`ft_embeddinggemma2_k4_gpu`, the same command as the CPU run `ft_embeddinggemma2_k4`
+(top-4, 3 seeds, 6 validation epochs, then 5 refit epochs per seed) on one Kaggle T4:
+
+- 48 s per epoch with validation and about 55 s per refit epoch, against
+  about 450 s per epoch on 4 CPU cores (about 9× faster). The whole job, including
+  clone, pip install and the hidden-state cache, took about 23 min and
+  0.4 GPU h of quota.
+- Test Spearman (mean over the 7 test sets, 3-seed average) is 0.623, which
+  matches the CPU run's 0.623 (per seed: 0.612, 0.616, 0.624 on the GPU and
+  0.614, 0.618, 0.623 on the CPU).
+- The machine comes with two T4s, and the job uses one.
+- A Kaggle account without phone verification silently gets a CPU-only
+  machine with no internet, even with `enable_gpu` set.
+- `google/embeddinggemma-2` downloaded without a token. In this run the
+  `HF_TOKEN` secret lookup still failed (HTTP 400), so check it again before
+  using a gated model.
+
 ## Colab
 
 Open `gpu/colab_train.ipynb` in Colab
