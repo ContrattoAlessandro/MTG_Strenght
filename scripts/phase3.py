@@ -116,7 +116,7 @@ class DeckModel(nn.Module):
 
     def env_embeddings(self) -> torch.Tensor:
         h = self.card(self.feats)
-        sums = torch.zeros(self.n_sets, h.shape[1]).index_add_(0, self.set_of_row, h)
+        sums = torch.zeros(self.n_sets, h.shape[1], device=h.device).index_add_(0, self.set_of_row, h)
         n = torch.bincount(self.set_of_row, minlength=self.n_sets).clamp(min=1).unsqueeze(1)
         return self.env(sums / n)
 
@@ -175,11 +175,13 @@ def train(args) -> None:
     is_val = rng.random(n) < 0.03
     tr_idx, va_idx = np.flatnonzero(~is_val), np.flatnonzero(is_val)
     set_of_row = cards["set"].map(SETS.index).to_numpy()
-    model = DeckModel(feats, set_of_row, d=args.d, id_drop=args.id_drop)
+    dev = torch.device(args.device)
+    model = DeckModel(feats, set_of_row, d=args.d, id_drop=args.id_drop).to(dev)
+    to_dev = lambda b: [t.to(dev) for t in batch_tensors(G, b)]
     opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=0.01)
     steps = args.epochs * (len(tr_idx) // args.batch_size)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, args.lr, total_steps=steps, pct_start=0.05)
-    y = torch.from_numpy(G["won"].astype(np.float32))
+    y = torch.from_numpy(G["won"].astype(np.float32)).to(dev)
     bce = nn.BCEWithLogitsLoss()
     log = open(os.path.join(res, "deck_train_log.jsonl"), "a")
     print(f"{len(tr_idx)} training games, {len(va_idx)} validation games", flush=True)
@@ -192,9 +194,9 @@ def train(args) -> None:
             for use_ids in (True, False):
                 ls, ps = [], []
                 for b in np.array_split(va_idx, max(1, len(va_idx) // 4096)):
-                    lg = model(*batch_tensors(G, b), use_ids=use_ids, env=env)
+                    lg = model(*to_dev(b), use_ids=use_ids, env=env)
                     ls.append(nn.functional.binary_cross_entropy_with_logits(lg, y[b], reduction="sum").item())
-                    ps.append(lg.numpy())
+                    ps.append(lg.cpu().numpy())
                 out["val_loss" + ("" if use_ids else "_noid")] = sum(ls) / len(va_idx)
             # Nuisance-only baseline: the same validation games, deck ignored.
         model.train()
@@ -204,7 +206,7 @@ def train(args) -> None:
     ckpt = os.path.join(args.model_dir, "deck_ckpt.pt")
     start_ep, start_i, step = 0, 0, 0
     if os.path.exists(ckpt):
-        c = torch.load(ckpt, weights_only=False)
+        c = torch.load(ckpt, weights_only=False, map_location=dev)
         model.load_state_dict(c["model"])
         opt.load_state_dict(c["opt"])
         sched.load_state_dict(c["sched"])
@@ -219,7 +221,7 @@ def train(args) -> None:
         for i, b in enumerate(batches):
             if ep == start_ep and i < start_i:
                 continue
-            lg = model(*batch_tensors(G, b))
+            lg = model(*to_dev(b))
             loss = bce(lg, y[b])
             opt.zero_grad()
             loss.backward()
@@ -242,7 +244,8 @@ def train(args) -> None:
                             "sched": sched.state_dict(), "ep": ep, "i": i + 1, "step": step,
                             "torch_rng": torch.get_rng_state()}, ckpt + ".tmp")
                 os.replace(ckpt + ".tmp", ckpt)
-        torch.save(model.state_dict(), os.path.join(args.model_dir, "deck_model.pt"))
+        torch.save({k: v.cpu() for k, v in model.state_dict().items()},
+                   os.path.join(args.model_dir, "deck_model.pt"))
     rec = {"final": True, **{k: round(v, 5) for k, v in validate().items()}}
     # Reference: a nuisance-only logistic model (no deck information).
     from sklearn.linear_model import LogisticRegression
@@ -255,7 +258,8 @@ def train(args) -> None:
     rec["val_loss_constant"] = round(float(-np.mean(yy * np.log(yy.mean()) + (1 - yy) * np.log(1 - yy.mean()))), 5)
     print(json.dumps(rec), flush=True)
     log.write(json.dumps(rec) + "\n")
-    torch.save(model.state_dict(), os.path.join(args.model_dir, "deck_model.pt"))
+    torch.save({k: v.cpu() for k, v in model.state_dict().items()},
+               os.path.join(args.model_dir, "deck_model.pt"))
 
 
 # --------------------------------------------------------------------------- counterfactual values
@@ -328,7 +332,7 @@ def values(args) -> None:
     res = os.path.join(args.out_dir, RES)
     cards, feats = card_table(args.out_dir, args.emb)
     model = DeckModel(feats, cards["set"].map(SETS.index).to_numpy(), d=args.d)
-    model.load_state_dict(torch.load(os.path.join(args.model_dir, "deck_model.pt")))
+    model.load_state_dict(torch.load(os.path.join(args.model_dir, "deck_model.pt"), map_location="cpu"))
     model.eval()
     env = model.env_embeddings()
     rng = np.random.default_rng(0)
@@ -383,6 +387,7 @@ def main() -> None:
     ap.add_argument("--batch-size", type=int, default=1024)
     ap.add_argument("--lr", type=float, default=2e-3)
     ap.add_argument("--threads", type=int, default=4)
+    ap.add_argument("--device", default="cpu", help="train: torch device, e.g. cuda (docs/GPU.md)")
     ap.add_argument("--n-decks", type=int, default=200)
     ap.add_argument("--n-synth", type=int, default=2000)
     ap.add_argument("--train-sets", nargs="*", default=None, help="debugging")

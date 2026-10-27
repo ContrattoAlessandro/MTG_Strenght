@@ -36,6 +36,9 @@ sandbox, so that work can continue on Alessandro's local machine.
    ran on 4 CPU cores; large encoders are trained by fine-tuning only the top
    k layers on cached lower-layer states (`mtgstrength/partial.py`). Ask before
    using a GPU locally.
+   Free cloud GPUs (Kaggle, Colab) are fine: `phase2.py train` and
+   `phase3.py train` take `--device cuda`, and `docs/GPU.md` has the Kaggle
+   job (`gpu/kaggle/`, driven with the `kaggle` CLI) and a Colab notebook.
 7. **Human baselines are the bar that matters**: Draftsim pre-release ratings
    (Wayback snapshots from before release) and first-week ATA from the 17lands
    draft dumps.

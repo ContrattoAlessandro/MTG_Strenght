@@ -200,7 +200,7 @@ def save_model(model, path: str, meta: dict) -> None:
     file; the reload check in load_model tolerates the rounding)."""
     import torch
     trainable = {n for n, p in model.named_parameters() if p.requires_grad}
-    state = {k: (v.half() if v.is_floating_point() and k.startswith("encoder.") else v)
+    state = {k: (v.half() if v.is_floating_point() and k.startswith("encoder.") else v).cpu()
              for k, v in model.state_dict().items()
              if k in trainable or not k.startswith("encoder.")}
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -297,13 +297,14 @@ def loss_fn(mu, var, y, s, bt_scale, pair_w, lambda_w=0.0, n_set=None, lambda_k=
     d = mu[:, None] - mu[None, :]
     target = 0.5 * (1 + torch.erf((y[:, None] - y[None, :])
                                   / torch.sqrt(2 * (s[:, None] ** 2 + s[None, :] ** 2))))
-    off = ~torch.eye(len(y), dtype=torch.bool)
+    off = ~torch.eye(len(y), dtype=torch.bool, device=y.device)
     w = None
     if lambda_w:
         with torch.no_grad():
             n = len(y)
-            rank = torch.empty(n)
-            rank[torch.argsort(mu, descending=True)] = torch.arange(n, dtype=torch.float32)
+            rank = torch.empty(n, device=mu.device)
+            rank[torch.argsort(mu, descending=True)] = torch.arange(n, dtype=torch.float32,
+                                                                    device=mu.device)
             rank = (rank + 0.5) * (n_set or n) / n + 0.5
             disc = 1.0 / torch.log2(1.0 + rank)
             if lambda_k:
@@ -325,6 +326,7 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
 
     torch.manual_seed(seed)
     rng = np.random.default_rng(seed)
+    dev = torch.device(getattr(args, "device", "cpu"))
     y_all = cards["theta_vs_repl"].to_numpy()
     s_all = cards["theta_hand_sd"].to_numpy()
     if getattr(args, "target", "theta") == "label":
@@ -342,15 +344,15 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
     aux_w = getattr(args, "aux_w", 0.0)
     if aux_w:
         dv = cards["deck_val"].to_numpy()
-        dz = torch.tensor((dv - np.nanmean(dv)) / np.nanstd(dv), dtype=torch.float32)
+        dz = torch.tensor((dv - np.nanmean(dv)) / np.nanstd(dv), dtype=torch.float32, device=dev)
         has_dv = ~np.isnan(dv)
         # Consistency on unlabelled cards: test-set cards join training with
         # only the deck-value target (their labels stay unused).
         aux_extra = has_dv & cards["is_test"].to_numpy() if args.consistency_on_test else \
             np.zeros(len(cards), bool)
     labelled = fit_mask.copy()
-    yz = torch.tensor((y_all - y_mu) / y_sd, dtype=torch.float32)
-    sz = torch.tensor(s_all / y_sd, dtype=torch.float32)
+    yz = torch.tensor((y_all - y_mu) / y_sd, dtype=torch.float32, device=dev)
+    sz = torch.tensor(s_all / y_sd, dtype=torch.float32, device=dev)
     Xt = torch.tensor(X)
 
     pools = None
@@ -358,7 +360,7 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
         pools = build_pools(cards, X, vars(args))
         args.n_pool = pools[0].shape[2]
     model = build_model(enc_name, X.shape[1], use_struct, top_k=args.top_k,
-                        **model_kwargs(vars(args)))
+                        **model_kwargs(vars(args))).to(dev)
     tok = None
     if enc_name:
         tok = AutoTokenizer.from_pretrained(enc_name)
@@ -367,7 +369,7 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
     if enc_name and args.top_k:
         from mtgstrength.partial import cache_hidden, pad_batch
         states = cache_hidden(enc_name, cards["text"].tolist(), args.top_k, args.max_len,
-                              args.cache_dir, log=log)
+                              args.cache_dir, log=log, device=dev)
         pad_id = tok.pad_token_id or 0
 
     def collate(b):
@@ -380,7 +382,7 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
             out.update(input_ids=p["input_ids"], attention_mask=p["attention_mask"])
         if pools is not None:
             out.update(env_batch(pools, b))
-        return out
+        return {k: v.to(dev) for k, v in out.items()}
 
     enc_params = ([p for p in model.encoder.parameters() if p.requires_grad]
                   if model.encoder is not None else [])
@@ -406,7 +408,7 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
         with torch.no_grad():
             for b in np.array_split(idx, max(1, len(idx) // 64)):
                 mu, var = model(**collate(b))
-                mus[b], vs[b] = mu.numpy(), var.numpy()
+                mus[b], vs[b] = mu.cpu().numpy(), var.cpu().numpy()
         model.train()
         return mus[mask] * y_sd + y_mu, np.sqrt(vs[mask]) * y_sd
 
@@ -414,7 +416,7 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
     ckpt = os.path.join(args.cache_dir, f"ckpt_{args.name}_{tag}_seed{seed}.pt")
     hist, start = [], 0
     if os.path.exists(ckpt):
-        c = torch.load(ckpt, weights_only=False)
+        c = torch.load(ckpt, weights_only=False, map_location=dev)
         model.load_state_dict(c["model"])
         opt.load_state_dict(c["opt"])
         sched.load_state_dict(c["sched"])
@@ -428,7 +430,7 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
         tot = [0.0, 0.0, 0]
         for b in set_batches(sets, fit_idx, args.batch_size, rng):
             mu, var = model(**collate(b))
-            lab = torch.from_numpy(labelled[b])
+            lab = torch.from_numpy(labelled[b]).to(dev)
             if lab.sum() >= 2:
                 loss, nll, bt = loss_fn(mu[lab], var[lab], yz[b][lab], sz[b][lab], model.bt_scale,
                                         args.pair_w, args.lambda_w, set_size[sets[b[0]]],
@@ -437,7 +439,7 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
             else:
                 loss, nll, bt = mu.sum() * 0, 0.0, 0.0
             if aux_w:
-                m = torch.from_numpy(has_dv[b])
+                m = torch.from_numpy(has_dv[b]).to(dev)
                 if m.any():
                     loss = loss + aux_w * ((model.aux_out[m] - dz[b][m]) ** 2).mean()
             opt.zero_grad()
@@ -774,6 +776,8 @@ def main() -> None:
     ap.add_argument("--head-lr", type=float, default=1e-3)
     ap.add_argument("--pair-w", type=float, default=1.0)
     ap.add_argument("--threads", type=int, default=4)
+    ap.add_argument("--device", default="cpu",
+                    help="train: torch device, e.g. cuda on a Colab/Kaggle GPU (docs/GPU.md)")
     ap.add_argument("--top-k", type=int, default=0,
                     help="fine-tune only the top k encoder layers, on cached lower-layer states")
     ap.add_argument("--cache-dir", default="/tmp/claude-0/cache")
