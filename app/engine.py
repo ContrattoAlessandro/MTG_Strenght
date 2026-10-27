@@ -169,84 +169,80 @@ def sigmoid(x):
 class FineTuned:
     """Fine-tuned EmbeddingGemma-2 card model (scripts/phase2.py --save-dir),
     one or more seeds. Lower encoder layers are run live (frozen, from the
-    Hugging Face checkpoint); the saved top layers, struct MLP and head on top."""
+    Hugging Face checkpoint); the saved top layers, struct MLP and head on top.
+    Runs on CPU or, with device="cuda", on a GPU."""
 
-    def __init__(self, paths: list[str], threads: int = 4):
+    def __init__(self, paths: list[str], threads: int = 4, device: str = "cpu"):
         import torch
         from phase2 import load_model
         from mtgstrength.partial import load_encoder
         torch.set_num_threads(threads)
+        self.device = torch.device(device)
         self.models = []
         for p in paths:
             model, meta = load_model(p)
             cfg = meta["config"]
             if cfg.get("env", "none") != "none":
                 raise ValueError(f"{p}: models with an environment encoder are not supported")
-            self.models.append((model, meta))
+            self.models.append((model.to(self.device), meta))
         cfg = self.models[0][1]["config"]
         self.encoder = None if cfg["encoder"] == "none" else cfg["encoder"]
         self.top_k, self.max_len = cfg["top_k"], cfg["max_len"]
         if self.encoder:
             self.tok, self.full, _ = load_encoder(self.encoder)
+            self.full.to(self.device)
             n = len(self.full.layers)
             self.grab_layer = self.full.layers[n - self.top_k]
 
-    def _lower_states(self, texts: list[str]):
+    def _lower_states(self, ids: list[list[int]]):
+        """Hidden states entering the top k layers for a batch of token id
+        lists, right-padded (as mtgstrength.partial.cache_hidden does)."""
         import torch
         from mtgstrength.partial import _first_arg, _Stop
-        ids = self.tok(texts, truncation=True, max_length=self.max_len)["input_ids"]
         grabbed = {}
 
         def grab(_m, args, kwargs):
             grabbed["h"] = _first_arg(args, kwargs)
             raise _Stop
 
+        p = self.tok.pad({"input_ids": ids}, return_tensors="pt", padding_side="right")
+        t, m = p["input_ids"].to(self.device), p["attention_mask"].to(self.device)
         hook = self.grab_layer.register_forward_pre_hook(grab, with_kwargs=True)
-        states = []
         try:
-            with torch.no_grad():
-                for i in ids:
-                    t = torch.tensor([i])
-                    try:
-                        self.full(input_ids=t, attention_mask=torch.ones_like(t))
-                    except _Stop:
-                        pass
-                    states.append(grabbed["h"][0].float().numpy())
+            self.full(input_ids=t, attention_mask=m)
+        except _Stop:
+            pass
         finally:
             hook.remove()
-        return ids, states
+        return t, grabbed["h"].float(), m
 
-    def predict(self, df: pd.DataFrame, f, cache_dir: str | None = None,
-                batch: int = 64) -> tuple[np.ndarray, np.ndarray]:
+    def predict(self, df: pd.DataFrame, f, batch: int = 1, log=None) -> tuple[np.ndarray, np.ndarray]:
         """f: function from a list of feature columns to the feature frame.
-        With ``cache_dir`` the lower-layer states are computed in batches and
-        cached on disk (mtgstrength.partial.cache_hidden, as in training);
-        otherwise they are computed one card at a time."""
+        Cards are run in batches of similar length (batch=1 reproduces the
+        training-time states exactly; larger batches differ by ~1e-4)."""
         import torch
         from phase2 import struct_apply
-        from mtgstrength.partial import cache_hidden, pad_batch
         texts = input_text(df).tolist()
-        if self.encoder and cache_dir:
-            ids = self.tok(texts, truncation=True, max_length=self.max_len)["input_ids"]
-            states = cache_hidden(self.encoder, texts, self.top_k, self.max_len, cache_dir)
-        elif self.encoder:
-            ids, states = self._lower_states(texts)
+        n = len(texts)
         xs = [torch.tensor(struct_apply(f(meta["struct"]["cols"]), meta["struct"]))
               if not meta["config"]["no_struct"] else None for _, meta in self.models]
-        mus, sds = [], []
+        ids = self.tok(texts, truncation=True, max_length=self.max_len)["input_ids"] if self.encoder else None
+        order = np.argsort([len(x) for x in ids]) if ids else np.arange(n)
+        mus = np.empty((len(self.models), n))
+        sds = np.empty((len(self.models), n))
         with torch.no_grad():
-            for (model, meta), x in zip(self.models, xs):
-                mu_all, sd_all = np.empty(len(texts)), np.empty(len(texts))
-                for j in np.array_split(np.arange(len(texts)), max(1, len(texts) // batch)):
-                    kw = {} if x is None else {"x": x[j]}
-                    if self.encoder:
-                        t, h, m = pad_batch(states, ids, list(j), self.tok.pad_token_id or 0)
-                        kw.update(input_ids=t, h=h, attention_mask=m)
+            for bi, j in enumerate(np.array_split(order, max(1, n // batch))):
+                enc = self._lower_states([ids[i] for i in j]) if self.encoder else None
+                for k, ((model, meta), x) in enumerate(zip(self.models, xs)):
+                    kw = {} if x is None else {"x": x[j].to(self.device)}
+                    if enc is not None:
+                        kw.update(input_ids=enc[0], h=enc[1], attention_mask=enc[2])
                     mu, var = model(**kw)
-                    mu_all[j], sd_all[j] = mu.numpy(), np.sqrt(var.numpy())
-                mus.append(mu_all * meta["y_sd"] + meta["y_mu"])
-                sds.append(sd_all * meta["y_sd"])
-        return np.mean(mus, 0), np.mean(sds, 0)
+                    mus[k, j] = mu.cpu().numpy() * meta["y_sd"] + meta["y_mu"]
+                    sds[k, j] = np.sqrt(var.cpu().numpy()) * meta["y_sd"]
+                if log and bi % 20 == 0:
+                    log(f"fine-tuned model: {min(n, (bi + 1) * batch)} / {n} cards")
+        return mus.mean(0), sds.mean(0)
 
 
 def find_ft_weights(model_dir: str) -> list[str]:

@@ -275,6 +275,11 @@ python app/server.py [--port 8000] [--ft-dir models/ft_card] [--no-ft] [--rebuil
   The search dropdown grades and set pages stay precomputed (GBT for cards
   without data; scoring all 33k Scryfall cards with Gemma would take ~3 h on
   4 CPUs). Training-set cards show the CV GBT estimate (FT is in-sample there).
+- **All-cards precompute (optional, not run yet)**: `python app/precompute_ft.py
+  [--device cuda]` scores every Scryfall card with the fine-tuned model
+  (~0.2 s/card on 4 CPUs, ~2 h; resumable) into `out/app/ft_scores.parquet`;
+  `app/build.py` then makes Gemma + GBT the precomputed score in search and
+  card pages. On hold until the research thread fixes the final card model.
 
 ## Work in progress (Oct 27 round: steps 0, 3, 2, 4 of the plan)
 
