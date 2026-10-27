@@ -24,17 +24,18 @@ REPO = "https://github.com/ContrattoAlessandro/mtg_strenght"
 BRANCH = "research-queue"
 WORK = "/kaggle/temp" if os.path.isdir("/kaggle/temp") else "/tmp"
 CACHE = os.path.join(WORK, "cache")   # hidden-state caches: big, not worth downloading
-# Second Kaggle session (runs alongside gpu/kaggle/job.py). Job b1: step E1
-# learning-rate screen for the candidate encoders, independent of the D2/D3
-# outcome: full FT, fp16 autocast, grad ckpt, LLRD 0.9, fold V3 only, seed 0.
-# It only picks each encoder's lr; no encoder comparison is made from it.
-QFULL = ("python scripts/phase2.py train --val-fold V3 --max-epochs 6 --seeds 0 --device cuda"
-         " --cache-dir {cache} --top-k -1 --amp fp16 --grad-ckpt --llrd 0.9")
+# Second Kaggle session (runs alongside gpu/kaggle/job.py).
+# Job b1 (done): lr screen for Qwen3-Embedding-0.6B (best 3e-5) and
+# Harrier-0.6B (best 1e-4), full FT fp16, fold V3, seed 0, ~320 s/epoch.
+# Job b2: the same screen for Qwen3-Embedding-4B with LoRA (r = 16 on all
+# linear layers, fp16 frozen weights, grad ckpt), lr 1e-4 and 3e-4, one per
+# lane, 4 max epochs. Picks the 4B lr only; no encoder comparison.
+QLORA = ("python scripts/phase2.py train --val-fold V3 --max-epochs 4 --seeds 0 --device cuda"
+         " --cache-dir {cache} --top-k -1 --peft lora --lora-r 16 --enc-fp16 --amp fp16 --grad-ckpt"
+         " --encoder Qwen/Qwen3-Embedding-4B")
 LANES = [
-    [f"{QFULL} --encoder Qwen/Qwen3-Embedding-0.6B --enc-lr {lr} --name e1_qwen06_lr{lr}"
-     for lr in ("1e-5", "3e-5", "1e-4")],
-    [f"{QFULL} --encoder microsoft/harrier-oss-v1-0.6b --enc-lr {lr} --name e1_harrier06_lr{lr}"
-     for lr in ("1e-5", "3e-5", "1e-4")],
+    [f"{QLORA} --enc-lr 1e-4 --name e1_qwen4b_lora_lr1e-4"],
+    [f"{QLORA} --enc-lr 3e-4 --name e1_qwen4b_lora_lr3e-4"],
 ]
 # Data from a Kaggle dataset (dataset_sources in kernel-metadata.json) is
 # mounted read-only under /kaggle/input/<slug>/, e.g. for Phase 3:
