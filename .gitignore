@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Large or regenerable data (see CLAUDE.md, "Data not in git")
+data/raw/scryfall_oracle_cards.jsonl.gz
+data/raw/*.csv.gz
+data/raw/*.tar*
+data/cache/
+out/phase1/emb/
+work/
+models/
+*.pt
+*.npz
+*.safetensors
+data/raw/draft/

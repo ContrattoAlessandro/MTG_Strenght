@@ -1,0 +1,25 @@
+{"config": {"cmd": "train", "embeddings": [], "out_dir": "/mnt/project-files/mtg_strength/out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "microsoft/harrier-oss-v1-0.6b", "name": "ft_harrier_0_6b_k2", "no_struct": false, "seeds": [0, 1], "max_epochs": 5, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "top_k": 2, "cache_dir": "/tmp/claude-0/cache", "limit_sets": null}}
+{"config": {"cmd": "train", "embeddings": [], "out_dir": "/mnt/project-files/mtg_strength/out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "microsoft/harrier-oss-v1-0.6b", "name": "ft_harrier_0_6b_k2", "no_struct": false, "seeds": [0, 1], "max_epochs": 5, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "top_k": 2, "cache_dir": "/tmp/claude-0/cache", "limit_sets": null}}
+cache microsoft/harrier-oss-v1-0.6b k=2: batch 0
+cache microsoft/harrier-oss-v1-0.6b k=2: batch 100
+cache microsoft/harrier-oss-v1-0.6b k=2: batch 200
+cache microsoft/harrier-oss-v1-0.6b k=2: batch 300
+cache microsoft/harrier-oss-v1-0.6b k=2: batch 400
+cache microsoft/harrier-oss-v1-0.6b k=2: batch 500
+{"epoch": 1, "nll": 0.3172, "bt": 0.6223, "sec": 456, "val_spearman": 0.5719, "val_ndcg": 0.8338, "val_mae": 0.0822, "val_nll": -1.8214}
+{"epoch": 2, "nll": 0.0659, "bt": 0.5276, "sec": 457, "val_spearman": 0.6089, "val_ndcg": 0.8, "val_mae": 0.0814, "val_nll": -1.834}
+{"epoch": 3, "nll": -0.0422, "bt": 0.4907, "sec": 490, "val_spearman": 0.6092, "val_ndcg": 0.836, "val_mae": 0.0794, "val_nll": -1.8849}
+{"epoch": 4, "nll": -0.1566, "bt": 0.4546, "sec": 464, "val_spearman": 0.6103, "val_ndcg": 0.8461, "val_mae": 0.0798, "val_nll": -1.8493}
+{"epoch": 5, "nll": -0.2918, "bt": 0.4112, "sec": 440, "val_spearman": 0.607, "val_ndcg": 0.8321, "val_mae": 0.082, "val_nll": -1.7494}
+{"chosen_epochs": 5}
+{"epoch": 1, "nll": 0.3041, "bt": 0.6211, "sec": 517}
+{"epoch": 2, "nll": 0.0613, "bt": 0.5267, "sec": 514}
+{"epoch": 3, "nll": -0.0385, "bt": 0.4962, "sec": 515}
+{"epoch": 4, "nll": -0.1538, "bt": 0.4571, "sec": 512}
+{"epoch": 5, "nll": -0.2753, "bt": 0.421, "sec": 516}
+{"epoch": 1, "nll": 0.2957, "bt": 0.6189, "sec": 508}
+{"epoch": 2, "nll": 0.06, "bt": 0.529, "sec": 499}
+{"epoch": 3, "nll": -0.0499, "bt": 0.4922, "sec": 492}
+{"epoch": 4, "nll": -0.1746, "bt": 0.449, "sec": 500}
+{"epoch": 5, "nll": -0.339, "bt": 0.4006, "sec": 501}
+{"done": true, "epochs": 5}

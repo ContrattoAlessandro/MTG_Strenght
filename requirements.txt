@@ -1,0 +1,14 @@
+# Python 3.11+ (developed on 3.13). CPU-only builds were used throughout.
+numpy
+pandas
+scipy
+pyarrow
+scikit-learn
+lightgbm
+statsmodels
+# Phase 2+ (text encoders). Install the CPU wheels of torch/torchvision if you have no GPU:
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+torch
+torchvision
+transformers
+sentence-transformers[image]

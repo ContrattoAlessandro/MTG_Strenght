@@ -1,0 +1,296 @@
+Name	Name_2	Casting_Cost_1	Casting_Cost_2	Card_Type	Rarity		List	Archetype	Fixing	Splashable
+Emrakul,_the_Exigent_Doom		10	none	Creature	M	3.7	base			
+Academic_Ascent		1W	none	Instant	C	2.4	base	[Jace Empowerment Enabler]		
+Blossom-Blessed_Angel	Seed_Suture	3W	Y	Creature	C	2.3	base	[Lifegain Growth Enabler]		
+Campus_Crier		1W	none	Creature	C	2.6	base	[Jace Empowerment Enabler][Surveil Aggro Payoff]		
+Enlightened_Confidant		1W	none	Creature	M	3.2	base	[Lifegain Growth Payoff]		
+Fateshaper_Aspirant		4W	none	Creature	C	2.4	base			
+Flickering_Hound		3W	none	Creature	R	3.6	base			
+Generous_Revival		2W	none	Spell	U	2.4	base	[Creature Attrition Payoff]		
+Germinate_Recruits		2W	none	Instant	R	4.7	base	[Lifegain Growth Payoff]		
+Graft_Surgeon		2W	none	Creature	C	2	base	[Counter Aggro Enabler]		
+Guiding_Hydra		XW	none	Creature	R	4.6	base	[Counter Aggro Enabler]		
+Hexhaven_Battalion		4WW	none	Spell	C	2.4	base	[Jace Empowerment Enabler]	WUBRG	
+Kindred_Judgment		5WW	none	Spell	R	2	base			
+Loyal_Tutor		W	none	Instant	R	2	base			
+Memory_Trap		2W	none	Spell	C	2.8	base			
+Predictive_Preparations		1W	none	Spell	C	2.1	base	[Surveil Aggro Payoff]		
+Prophesied_End		1W	none	Instant	U	2.8	base			
+Refute_Destiny		1W	none	Spell	U	2.5	base			
+Repurposed_Enforcer		1W	none	Creature	R	3.9	base	[Jace Empowerment Enabler]		
+Return_to_the_Light_Realms		7WW	none	Spell	M	3.8	base			
+Shatterwing_Pegasus		2W	none	Creature	C	2.4	base			
+Surgical_Precision		1W	none	Spell	C	2.7	base	[Lifegain Growth Enabler]		
+Unflinching_Hortimancer		1W	none	Creature	C	2.7	base	[Lifegain Growth Payoff]		
+Countersculpt		UU	none	Instant	U	2.4	base	[Jace Empowerment Enabler]		
+Cruel_Calculations		2U	none	Spell	R	2.6	base	[Graveyard Threshold Payoff]		
+Cryotheory_Adept		1U	none	Creature	C	2.3	base	[Spell Prowess Payoff]		
+Diviner_of_Victory	Unwind_History	U	1U	Creature	R	3.3	base	[Surveil Aggro Payoff]		
+Divining_Duelist		2U	none	Creature	C	2.4	base			
+Icy_Reception		1U	none	Instant	C	2.4	base			
+Infinite_Coursework		2U	none	Spell	C	2.8	base			
+Jace's_Machinations		2U	none	Instant	R	2.9	base	[Jace Empowerment Enabler]		
+Mindseeker_Oculus		2U	none	Creature	C	2.6	base			
+Perfected_Theory		U	none	Instant	U	2	base			
+Plan_for_All_Outcomes		3U	none	Spell	U	2.6	base	[Jace Empowerment Enabler]		
+Precise_Redaction		1U	none	Instant	U	2.4	base			
+Protege's_Awakening		3U	none	Spell	C	2.7	base	[Jace Empowerment Enabler]		
+Seasoned_Cryomancer		1UU	none	Creature	M	3.5	base	[Graveyard Threshold Payoff][Graveyard Threshold Enabler]		
+Semester_Foreseer	Peer_Review	3U	2A	Creature	C	2.5	base	[Surveil Aggro Enabler]		
+Sphinx_of_False_Conclusions		2UU	none	Creature	R	4.2	base			
+Sphinx's_Approach		1UU	none	Instant	C	2.4	base			
+Surveillance_Phantasm		1U	none	Creature	C	2	base	[Surveil Aggro Enabler][Surveil Aggro Payoff]		
+The_Theorist,_Jace_Beleren		2UU	none	Planeswalker	M	4.7	base			
+Theorist's_Proxy		1U	none	Creature	R	2.9	base	[Jace Empowerment Enabler]		
+Undulating_Witness		4U	none	Creature	C	2.4	base		WUBRG	
+Unsummon		U	none	Instant	C	2.5	base	[Spell Prowess Enabler]		
+Variable_Chaser	Arc_of_Fortune	2U	2U	Creature	R	3.4	base	[Spell Prowess Payoff]		
+Apex_Witchstalker		4BB	none	Creature	C	2.5	base	[Creature Attrition Payoff]	WUBRG	
+Bloodline_Recollector	Ancestral_Craving	1B	B	Creature	M	4.4	base			
+Break_Under_Pressure		2B	none	Instant	U	2.4	base			
+Cast_Away_Doubt		2B	none	Spell	C	2.4	base	[Face Burn Enabler]		
+Dark_Matter_Manipulator		B	none	Creature	R	3.4	base	[Graveyard Threshold Enabler][Graveyard Threshold Payoff]		
+Darklight_Phoenix		3B	none	Creature	M	3.5	base	[Graveyard Threshold Payoff][Creature Attrition Payoff]		
+Extended_Absence		3B	none	Instant	C	2.8	base	[Face Burn Enabler]		
+Extrapolate_the_Impossible		1B	none	Spell	R	0.7	base			
+Last_Gasp		1B	none	Instant	C	2.8	base			
+Lich's_Relic		B	none	Spell	R	3.4	base			
+Multiply_by_Zero		1B	none	Instant	U	2.8	base			
+Overwrite_the_Multiverse		4BB	none	Spell	M	4.6	base	[Jace Empowerment Enabler]		
+Rampart_Hunter		3B	none	Creature	C	2.6	base	[Deathtouch Trample Enabler]		
+Rank_Rat		1B	none	Creature	C	2.3	base			
+Rewrite_Regrets		3B	none	Spell	U	2.4	base	[Jace Empowerment Enabler]		
+Rise_of_the_Deathbringer		4B	none	Instant	R	3.6	base			
+Sanctum_Lurker		2B	none	Creature	R	4.2	base	[Jace Empowerment Enabler][Face Burn Enabler]		
+Screeching_Soulbreaker		2B	none	Creature	C	2.6	base	[Lifegain Growth Enabler][Face Burn Enabler]		
+Silence_the_Echo		1B	none	Spell	C	2.6	base	[Creature Attrition Enabler]		
+Solve_for_Disappointment		1B	none	Spell	C	2.3	base	[Jace Empowerment Enabler]		
+Terminal_Criticism		1B	none	Instant	U	2.4	base			
+Theoretical_Necromancer		2B	none	Creature	C	2	base	[Creature Attrition Payoff][Graveyard Threshold Payoff]		
+Void_Extrapolator	Omit_Variables	1B	D	Creature	C	2.5	base	[Graveyard Threshold Payoff][Graveyard Threshold Enabler]		
+Vraska's_Final_Mercy		BB	none	Spell	R	2.9	base			
+Ajani's_Anguish		XR	none	Spell	R	3.9	base	[Face Burn Enabler][Spell Prowess Enabler]		
+Awaken_the_Inferno		4R	none	Spell	C	2.5	base		WUBRG	
+Blazing_Crescendo		1R	none	Instant	C	2.5	base	[Spell Prowess Enabler]		
+Chandra's_Emberling		2R	none	Creature	C	2.5	base	[Spell Prowess Payoff]		
+Command_the_Stage		2R	none	Spell	U	2.4	base	[Spell Prowess Enabler][Face Burn Payoff]		
+Craterclaw_Colossus		4RRR	none	Creature	M	4.7	base	[Mana Ramp Payoff]		
+Curse-Marred_Demon		2RR	none	Creature	R	4.2	base			
+Draconic_Visitor		3RR	none	Creature	R	4.4	base	[Mana Ramp Payoff]		
+Eardrum_Rattler		1R	none	Creature	C	2.3	base			
+Essence_Burn		1R	none	Instant	U	2.5	base			
+Face_Yourself		5RR	none	Spell	R	3.4	base			
+Fulminous_Forte		2R	none	Instant	U	2.9	base	[Spell Prowess Enabler]		
+Hallway_Heckler	Vicious_Verse	2R	K	Creature	C	2.4	base	[Face Burn Enabler]		
+Heartstring_Puller		3R	none	Creature	C	2.4	base			
+Identity_Echo		2R	none	Spell	R	0.7	base			
+Master_of_Barbs		1R	none	Creature	R	3.2	base	[Face Burn Payoff]		
+No_Admittance		1R	none	Spell	C	2.9	base	[Jace Empowerment Enabler][Spell Prowess Enabler][Face Burn Enabler]		
+Pompous_Battlemage	Improvised_Act	R	R	Creature	R	2.7	base	[Spell Prowess Payoff]		
+Pyre_Rhymer	Molten_Tide	1RR	R	Creature	R	2.7	base	[Spell Prowess Payoff]	R	
+Skilled_Battlecarver		1R	none	Creature	C	2.5	base			
+Stingcaster_Mage		1R	none	Creature	M	2.9	base	[Spell Prowess Enabler]		
+Tether_Technician		4R	none	Creature	C	2.4	base	[Face Burn Enabler]		
+Violent_Echoes		2RR	none	Instant	U	2.8	base	[Jace Empowerment Enabler][Spell Prowess Enabler]		
+Wrath_of_the_Bloodmane		2R	none	Instant	C	2.8	base	[Spell Prowess Enabler]		
+Arcane_Amphisbaena		1G	none	Creature	C	2.9	base	[Jace Empowerment Enabler]		
+Bestial_Incursion		3G	none	Spell	C	2.4	base	[Deathtouch Trample Enabler]		
+Budding_Insurgent		2G	none	Creature	C	2.4	base			
+Carnivorous_Cultivator	Enroot	1G	G	Creature	R	2.8	base	[Deathtouch Trample Enabler]		
+Compel_Brutality		1G	none	Instant	C	2.8	base			
+Flourishing_Grapple		G	none	Instant	U	2.5	base			
+Gardenize		1GG	none	Spell	R	1.5	base		G	
+Greenhouse_Propagator		2G	none	Creature	C	3.4	base	[Lifegain Growth Enabler]	G	
+Heartwood_Crafter	Soul_Tether	G	2L	Creature	U	2.7	base	[Mana Ramp Enabler]		
+Hexhaven_Invigorator		GGGG	none	Creature	M	3.2	base	[Mana Ramp Enabler]		
+Hungering_Puppetbeast		3GG	none	Creature	R	3.5	base	[Mana Ramp Enabler][Deathtouch Trample Enabler]	RG	
+Hunter's_Axe		G	none	Spell	U	2	base	[Deathtouch Trample Enabler]		
+Inspired_Tethermage		2G	none	Creature	C	2.3	base	[Jace Empowerment Payoff]		
+Omnipresence		5GGG	none	Spell	M	0.7	base			
+Puppet_Crafting		1G	none	Spell	R	2	base	[Mana Ramp Payoff]		
+Restore_with_Empathy		2G	none	Instant	U	2.6	base	[Lifegain Growth Enabler]		
+Simulacrum_Shaper		1GG	none	Creature	R	3.2	base	[Mana Ramp Enabler]	WUBRG	
+Something_Worth_Saving		1G	none	Instant	C	2.5	base	[Graveyard Threshold Enabler]		
+Sureshot_Sower		1G	none	Creature	C	2.5	base			
+Tarmogoyf		1G	none	Creature	M	3.6	base	[Graveyard Threshold Payoff]		
+Tethermage's_Advantage		G	none	Instant	C	2.3	base			
+Verdant_Kraken		4GGG	none	Creature	R	4.8	base	[Mana Ramp Payoff][Mana Ramp Enabler]	G	
+Vinelasher_Adept		4GG	none	Creature	C	2.4	base		WUBRG	
+Wrecking_Gecko		4G	none	Creature	C	2.6	base	[Deathtouch Trample Enabler][Mana Ramp Payoff]		
+Aerid_Konstrari		1RGG	none	Creature	M	4.2	base	[Mana Ramp Enabler][Mana Ramp Payoff]	RG	
+Avatar_of_Burgeoning_Echoes		GU	none	Creature	M	4.6	base	[Jace Empowerment Enabler][Jace Empowerment Payoff]		
+Blessed_Ghoul		V	none	Creature	C	2.1	base	[Creature Attrition Enabler][Creature Attrition Payoff][Lifegain Growth Enabler]		
+Bloombrute		2GW	none	Creature	U	2.6	base	[Lifegain Growth Enabler][Lifegain Growth Payoff]		
+Charge_the_Sanctum		2S	none	Instant	C	2.5	base	[Spell Prowess Enabler][Counter Aggro Enabler]		
+Clash_of_Elements		1UR	none	Instant	U	2.9	base	[Spell Prowess Enabler]		
+Craftwork_Crusher		3RRGG	none	Creature	U	3.9	base	[Mana Ramp Payoff]		
+Denzilore_Fatehold		1WUU	none	Creature	M	4.4	base	[Surveil Aggro Payoff]		
+Desperate_Futurescribe		2WU	none	Creature	U	2.6	base	[Surveil Aggro Payoff]		
+Emergency_Phytomedic	Seed_Suture	Y	Y	Creature	C	2.8	base	[Lifegain Growth Enabler]		
+Entrust_the_Spark		3GU	none	Spell	R	2	base	[Jace Empowerment Payoff]		
+Fatehold_Charm		WU	none	Instant	U	2.9	base			
+Fatehold_Chronologist	Peer_Review	1A	2A	Creature	C	2.9	base	[Surveil Aggro Payoff]		
+Ferocity_of_the_Hunt		1I	none	Spell	C	2.1	base	[Deathtouch Trample Enabler]		
+Frostbite_Pyromental		URR	none	Creature	R	3.2	base			
+Grim_Repriser		BR	none	Creature	U	2.7	base	[Face Burn Payoff]		
+Ingris_Stingerquill		BRR	none	Creature	M	4.6	base	[Face Burn Enabler]		
+Konstrari_Charm		RG	none	Instant	U	2.5	base	[Mana Ramp Enabler]		
+Konstrari_Improviser	Soul_Tether	1L	2L	Creature	C	2.6	base	[Mana Ramp Enabler]	RG	
+Kwia_Vigorbloom		3GWW	none	Creature	M	4.2	base	[Lifegain Growth Payoff]	WUBRG	
+Mind_Meanderer		3GUU	none	Creature	U	2.9	base	[Jace Empowerment Payoff]		
+Null_Summoner		2UB	none	Creature	R	3.9	base	[Graveyard Threshold Payoff]		
+Paradox_Shaper	Omit_Variables	1D	D	Creature	U	2.7	base	[Graveyard Threshold Enabler]		
+Primal_Witchstalker		1BG	none	Creature	U	2.9	base			
+Proctor_of_Potential		WU	none	Creature	R	2.9	base	[Surveil Aggro Enabler][Surveil Aggro Payoff]		
+Prudent_Fateseer	Peer_Review	1AA	2A	Creature	U	2.9	base	[Surveil Aggro Enabler][Surveil Aggro Payoff]		
+Recursive_Recruitment		2UB	none	Spell	U	2.4	base	[Graveyard Threshold Payoff]		
+Solarium_Sentry		GW	none	Creature	R	3.5	base	[Lifegain Growth Enabler]		
+Solitary_Cell		RW	none	Spell	R	3.2	base			
+Stingerquill_Charm		BR	none	Instant	U	2.9	base	[Face Burn Enabler]		
+Stingerquill_Voxmancer	Vicious_Verse	K	K	Creature	U	2.7	base	[Face Burn Enabler]		
+Stinging_Vitriol		BR	none	Spell	R	2.6	base	[Face Burn Enabler]		
+Tam's_Resistance		1M	none	Spell	C	2.7	base	[Jace Empowerment Enabler]		
+Tenured_Tethermage		1RG	none	Creature	R	3.4	base	[Mana Ramp Enabler]	RG	
+Theorix_Charm		UB	none	Instant	U	2.8	base	[Graveyard Threshold Enabler]		
+Theorix_Metamage	Omit_Variables	2D	D	Creature	C	2.3	base	[Graveyard Threshold Payoff][Surveil Aggro Enabler]		
+Twinned_Vision		1Z	none	Instant	C	2.6	base	[Surveil Aggro Payoff][Graveyard Threshold Payoff][Spell Prowess Enabler]		
+Twisted_Fates		2WWB	none	Spell	U	3.5	base			
+Uldaros_Theorix		3UBB	none	Creature	M	4.6	base	[Graveyard Threshold Payoff]		
+Vigorbloom_Charm		GW	none	Instant	U	2.9	base	[Lifegain Growth Enabler]		
+Vigorbloom_Vanguard	Seed_Suture	1Y	Y	Creature	U	2.9	base	[Lifegain Growth Enabler]		
+Vindictive_Triumph		WBB	none	Instant	R	3.7	base			
+Warrior's_Blades		2RW	none	Spell	U	3.5	base	[Counter Aggro Payoff]		
+Whiplash_Wordsmith	Vicious_Verse	3K	K	Creature	C	2.7	base	[Face Burn Enabler][Face Burn Payoff]		
+Woodwork_Prodigy	Soul_Tether	2L	2L	Creature	U	2.5	base	[Mana Ramp Enabler]	RG	
+Afterthought_Sentry		2	none	Creature	C	2	base			
+Archive_Arbiter		6	none	Creature	U	2.6	base			
+Codie,_Ravenous_Codex		3	none	Creature	R	2	base			
+The_Echoverse_Fulcrum		2	none	Spell	M	3.8	base	[Graveyard Threshold Enabler]		
+Eye_of_Jace		1	none	Spell	U	1.7	base	[Surveil Aggro Enabler]		
+Keeper_of_the_Quiet_Hour		3	none	Creature	C	3.2	base	[Jace Empowerment Enabler]		
+Living_Library		2	none	Creature	C	1.5	base			
+Medic's_Kitesail		2	none	Spell	C	2.3	base	[Lifegain Growth Enabler]		
+Murmuring_Volume		3	none	Spell	C	2.4	base	[Mana Ramp Enabler]	WUBRG	
+Dedicated_Commons		0	WR	Land	C	3	base		WR	
+Deserted_Beach		0	WU	Land	R	3	base	[Surveil Aggro Enabler]	WU	
+Fatehold_Annex		0	WU	Land	C	3	base		WU	
+Formidable_Commons		0	BG	Land	C	3	base		BG	
+Hall_of_Echoes		0	0	Land	R	1	base			
+Haunted_Ridge		0	BR	Land	R	3	base	[Face Burn Enabler]	BR	
+Hexhaven_Dueling_Arena		0	0	Land	U	2	base			
+Innovative_Commons		0	UR	Land	C	3	base	[Spell Prowess Enabler]	UR	
+Konstrari_Annex		0	RG	Land	C	3	base	[Mana Ramp Enabler]	RG	
+Meticulous_Commons		0	WB	Land	C	3	base	[Creature Attrition Enabler]	WB	
+Overgrown_Farmland		0	WG	Land	R	3	base	[Lifegain Growth Enabler]	WG	
+Rockfall_Vale		0	RG	Land	R	3	base	[Mana Ramp Enabler]	RG	
+Roiling_Canopy		0	G	Land	R	3	base	[Mana Ramp Payoff]	G	
+Room_of_Refuge		0	WUBRG	Land	C	2.1	base		WUBRG	
+Shipwreck_Marsh		0	UB	Land	R	3	base	[Graveyard Threshold Enabler]	UB	
+Stingerquill_Annex		0	BR	Land	C	3	base	[Face Burn Enabler]	BR	
+Theorist's_Sanctum		0	U	Land	R	3	base	[Jace Empowerment Enabler]	U	
+Theorix_Annex		0	UB	Land	C	3	base	[Graveyard Threshold Enabler]	UB	
+Transformative_Commons		0	UG	Land	C	3	base	[Jace Empowerment Enabler]	UG	
+Vigorbloom_Annex		0	WG	Land	C	3	base		WG	
+Ajani_Resolute		1W	none	Planeswalker	M	3.6	base	[Lifegain Growth Enabler]		
+Danitha,_Sword_of_Hope		2W	none	Creature	U	2.5	base			
+Ghalta_the_Immovable		8W	none	Creature	U	2	base			
+Gideon's_Memorial		1W	none	Spell	R	2.5	base		WUBRG	
+Koth_of_the_Homestead		2W	none	Creature	U	2.7	base	[Lifegain Growth Enabler]		
+Liliana_the_Faultless		W	none	Creature	R	3.9	base	[Lifegain Growth Enabler]		
+Lyra,_Archangel_of_Dawn		2W	none	Creature	R	4.2	base	[Lifegain Growth Payoff]		
+Rescue_Girl,_First_Responder		2W	none	Creature	U	2.1	base			
+Saheeli,_Consul_of_Oversight		3WW	none	Creature	U	2.5	base	[Surveil Aggro Payoff]		
+Teyo,_Lightshield_Expert		1W	none	Creature	U	2.6	base	[Counter Aggro Enabler]		
+Thalia,_the_Survivor		3W	none	Creature	U	2.4	base	[Lifegain Growth Enabler]		
+Way_of_the_Healer		3W	none	Spell	U	2.7	base	[Jace Empowerment Enabler]		
+Way_of_the_Mentor		2W	none	Spell	U	2	base	[Jace Empowerment Enabler]		
+Yoshimaru,_Beloved_Companion		2W	none	Creature	U	2.6	base	[Counter Aggro Payoff]		
+Yuriko,_Blade_of_the_Mighty		3W	none	Creature	U	2.4	base			
+Arni,_Humble_Scribe		2U	none	Creature	U	2	base			
+Chandra,_Chill_of_Compliance		1UU	none	Planeswalker	M	3.9	base	[Surveil Aggro Payoff]	U	
+Fblthp,_Impossibly_Lost		1U	none	Creature	U	2.6	base			
+Geist_of_Saint_Thalia		1U	none	Creature	U	2.9	base	[Spell Prowess Enabler]		
+Hapatra,_the_Desert_Frost		3U	none	Creature	U	2.5	base			
+Jace,_Reality_Sculptor		3UU	none	Planeswalker	R	3.2	base	[Jace Empowerment Enabler]		
+Lyra,_Tolarian_Archangel		1UU	none	Creature	R	4.2	base			
+Proft,_Consulting_Detective		1U	none	Creature	U	2.8	base	[Surveil Aggro Payoff]		
+Ruric_Thar,_Biomagus		4UU	none	Creature	U	3.2	base	[Spell Prowess Payoff]		
+Samut,_Tyrant_of_Naktamun		1U	none	Creature	R	2.1	base			
+Tetsuko_Umezawa,_Fugitive		1U	none	Creature	U	2.5	base			
+Traxos,_Academy_Guardian		3U	none	Creature	U	2.1	base	[Spell Prowess Payoff]		
+Way_of_the_Cryomancer		2U	none	Spell	U	2	base	[Jace Empowerment Enabler]		
+Way_of_the_Mind_Sculptor		4U	none	Spell	U	2.6	base	[Jace Empowerment Enabler][Jace Empowerment Payoff]		
+Yargle,_Goliath_of_Otaria		4U	none	Creature	U	2	base			
+Yuriko,_Hope_from_the_Shadows		U	none	Creature	U	2.6	base	[Surveil Aggro Payoff][Graveyard Threshold Payoff]		
+Danitha,_Spear_of_Agony		2B	none	Creature	U	2.4	base	[Face Burn Payoff]		
+Gallia,_Tragic_Host		1B	none	Creature	U	2.6	base	[Graveyard Threshold Payoff][Creature Attrition Payoff]		
+Garruk,_Veiled_Butcher		3BB	none	Planeswalker	M	4.6	base	[Creature Attrition Enabler]		
+Gideon_the_Oathless		2B	none	Creature	R	2.7	base	[Face Burn Enabler]		
+Liliana_the_Repentant		1B	none	Creature	R	3.2	base	[Graveyard Threshold Enabler][Creature Attrition Enabler]		
+Loot,_the_Anomaly		2B	none	Creature	U	2	base	[Graveyard Threshold Payoff]		
+Mabel,_Bitter_Recluse		B	none	Creature	U	2.8	base	[Deathtouch Trample Enabler]		
+Massacre_Girl,_Most_Wanted		4B	none	Creature	U	2.6	base	[Face Burn Enabler][Face Burn Payoff]		
+Proft,_Sinister_Mastermind		2B	none	Creature	U	2.8	base	[Graveyard Threshold Payoff]		
+Teyo,_Diamondblade_Mage		3B	none	Creature	U	2.6	base	[Deathtouch Trample Enabler]		
+Tinybones,_Pocket_Nuisance		2B	none	Creature	U	2.5	base	[Face Burn Enabler]		
+Way_of_the_Deathbringer		2B	none	Spell	U	2.8	base	[Creature Attrition Payoff][Jace Empowerment Enabler]		
+Way_of_the_Necromancer		1B	none	Spell	U	2	base	[Jace Empowerment Enabler]		
+Winter,_Tormented_Loner		2B	none	Creature	U	2.7	base	[Creature Attrition Enabler]		
+Yargle,_Glutton_of_Urborg		4B	none	Creature	U	2.4	base			
+Ajani_Unrelenting		4RR	none	Planeswalker	M	4.5	base			
+Arni,_Renowned_Champion		3R	none	Creature	U	2.3	base			
+Chandra,_Torch_of_Defiance		2RR	none	Planeswalker	M	5	base	[Face Burn Enabler]	R	
+Gallia,_the_Merrymaker		1R	none	Creature	U	2.9	base	[Counter Aggro Enabler][Counter Aggro Payoff]		
+Jiang_Yanggu,_Alone		4R	none	Creature	U	2.3	base	[Counter Aggro Enabler]		
+Kiora_of_Fire_and_Ashes		4RR	none	Creature	U	3.5	base	[Mana Ramp Payoff]		
+Koth,_the_Geomancer		2R	none	Creature	U	2.6	base	[Face Burn Enabler][Mana Ramp Enabler]	R	
+Marwyn,_the_Clearcutter		R	none	Creature	U	2.3	base			
+Pia,_Determined_Rebuilder		2R	none	Creature	U	2.6	base	[Mana Ramp Payoff]		
+Samut,_Hazoret's_Champion		1R	none	Creature	R	2.8	base			
+Tetsuko_Umezawa,_Pursuer		3R	none	Creature	U	2.7	base	[Spell Prowess Payoff]		
+Way_of_the_Pyromancer		1R	none	Spell	U	2.6	base	[Jace Empowerment Enabler]	R	
+Way_of_the_Warlord		2R	none	Spell	U	2.9	base	[Jace Empowerment Enabler][Face Burn Enabler]		
+Winter,_Team_Player		4R	none	Creature	U	2.5	base	[Spell Prowess Payoff]		
+Edgar,_Moonlit_Sovereign		3GG	none	Creature	U	2.8	base			
+Fblthp,_Knows_the_Way		XGG	none	Creature	U	3.2	base	[Mana Ramp Enabler]	WUBRG	
+Garruk,_Curse_Breaker		3GG	none	Planeswalker	M	4.2	base			
+Ghalta_the_Unstoppable		8G	none	Creature	U	3.3	base	[Deathtouch Trample Enabler]		
+Jiang_Yanggu,_Never_Alone		3G	none	Creature	U	3.2	base			
+Loot,_the_Nexus		2G	none	Creature	U	2.6	base	[Mana Ramp Enabler]	WUBRG	
+Marwyn,_the_Preserver		1G	none	Creature	U	2.3	base			
+Pia,_Aether_Ascetic		2G	none	Creature	U	2.8	base			
+Ruric_Thar,_Magecrusher		5GG	none	Creature	U	2.6	base	[Deathtouch Trample Enabler]		
+Titanbones,_Towering_Heart		3G	none	Creature	U	2.5	base	[Lifegain Growth Payoff][Lifegain Growth Enabler]		
+Way_of_the_Paradox		2G	none	Spell	U	2.5	base	[Jace Empowerment Enabler][Jace Empowerment Payoff]		
+Way_of_the_Wildspeaker		4G	none	Spell	U	2.6	base	[Jace Empowerment Enabler]		
+Yoshimaru,_Scrappy_Stray		1G	none	Creature	U	2.7	base			
+Edgar,_Ancient_Bloodlord		WB	none	Creature	U	3.2	base	[Creature Attrition Enabler][Creature Attrition Payoff]		
+Hapatra,_the_Desert_Fang		2BBG	none	Creature	U	3.5	base			
+Karn,_Gilded_Guardian		10WUBRG	none	Creature	R	3.2	base	[Mana Ramp Payoff]		
+Kiora_of_Salt_and_Sand		1GU	none	Creature	U	2.3	base	[Jace Empowerment Payoff]		
+Mabel,_Valley_Hero		1RW	none	Creature	U	2.7	base	[Counter Aggro Enabler]		
+Saheeli,_Jewel_of_Avishkar		2UR	none	Creature	U	2.7	base	[Spell Prowess Payoff]		
+Tam,_the_Possibility		1GU	none	Creature	R	2	base			
+Vraska,_Soul_of_Stone		URW	none	Creature	R	3.4	base	[Spell Prowess Payoff]	WUBRG	
+Vraska,_the_Cutting_Glare		BBG	none	Creature	R	3.6	base		WUBRG	
+Karn,_Argent_Defender		2	none	Creature	R	1.5	base			
+Traxos,_Scourge_Eternal		4	none	Creature	U	2	base			
+Plains		0	W	Land	C	-1	land_basic		W	
+Island		0	U	Land	C	-1	land_basic		U	
+Swamp		0	B	Land	C	-1	land_basic		B	
+Mountain		0	R	Land	C	-1	land_basic		R	
+Forest		0	G	Land	C	-1	land_basic		G	
+Your_Fate_Ends_Here		2W	none	Instant	U	2.8	base			
+Artifist_Acumen		R	none	Spell	C	2	base	[Spell Prowess Enabler]		
+Tomik,_Orzhov_Lawmage		1W	none	Creature	U	2.7	base	[Counter Aggro Payoff]		
+Tomik,_Izzet_Sparkmage		1R	none	Creature	U	2.4	base	[Spell Prowess Payoff][Face Burn Payoff]		
+Austere_Command		4WW	none	Spell	M	4	special_guest
+Flesh_Duplicate		UU	none	Creature	M	3	special_guest
+Consign_to_Memory		U	none	Instant	M	0.7	special_guest
+Sublime_Epiphany		4UU	none	Instant	M	3.8	special_guest
+Consider		U	none	Instant	M	2.9	special_guest
+Necrodominance		BBB	none	Spell	M	2	special_guest
+Mind_Twist		XB	none	Spell	M	4.4	special_guest
+Splinter_Twin		2RR	none	Spell	M	3.2	special_guest
+Root_Maze		G	none	Spell	M	0.7	special_guest
+Eye_of_Ugin		0	0	Land	M	0.7	special_guest

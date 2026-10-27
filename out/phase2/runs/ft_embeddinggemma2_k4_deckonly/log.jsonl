@@ -1,0 +1,10 @@
+{"config": {"cmd": "train", "embeddings": [], "out_dir": "/mnt/project-files/mtg_strength/out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "ft_embeddinggemma2_k4_deckonly", "no_struct": false, "seeds": [0, 1], "max_epochs": 8, "epochs": 4, "skip_val": true, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "top_k": 4, "cache_dir": "/tmp/claude-0/cache", "deck_values": "/mnt/project-files/mtg_strength/out/phase3/deck_values.csv", "target": "deck", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null}}
+{"epoch": 1, "nll": 0.4377, "bt": 0.6544, "sec": 4377}
+{"epoch": 2, "nll": -0.0158, "bt": 0.4617, "sec": 513}
+{"epoch": 3, "nll": -0.1634, "bt": 0.4161, "sec": 519}
+{"epoch": 4, "nll": -0.3141, "bt": 0.3807, "sec": 508}
+{"epoch": 1, "nll": 1.8728, "bt": 0.719, "sec": 561}
+{"epoch": 2, "nll": -0.0152, "bt": 0.4636, "sec": 512}
+{"epoch": 3, "nll": -0.1497, "bt": 0.421, "sec": 505}
+{"epoch": 4, "nll": -0.2862, "bt": 0.3869, "sec": 521}
+{"done": true, "epochs": 4}

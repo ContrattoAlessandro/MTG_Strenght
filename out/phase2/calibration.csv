@@ -1,0 +1,7 @@
+model,z_sd,cover_50,cover_90,spearman_sd_vs_abs_err
+ft_embeddinggemma2_k4,1.118,0.458,0.882,0.396
+ft_embeddinggemma2_k4_aux,1.142,0.441,0.876,0.379
+ft_embeddinggemma2_k4_deckonly,3.889,0.173,0.39,0.401
+ft_embeddinggemma2_k4_text,1.097,0.467,0.892,0.388
+ft_harrier_0_6b_k2,1.385,0.383,0.791,0.356
+struct_mlp,1.052,0.5,0.889,0.365

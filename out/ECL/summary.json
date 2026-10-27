@@ -1,0 +1,225 @@
+{
+  "set": "ECL",
+  "event_type": "PremierDraft",
+  "n_games": 536566,
+  "n_cards": 293,
+  "archetypes": [
+    "WU",
+    "BR",
+    "WG",
+    "UR",
+    "BG"
+  ],
+  "gih": {
+    "prior_vars": {
+      "nuisance": 10.0,
+      "mu_hand": 10.0,
+      "delta_hand": 0.013533145438908229,
+      "mu_deck": 10.0,
+      "delta_deck": 0.00027435806972692073,
+      "eta_arch": 0.007742018233358105
+    },
+    "history": [
+      {
+        "em": 0,
+        "newton_iters": 7,
+        "loglik": -337102.7866146596,
+        "tau2_delta_hand": 0.01,
+        "tau2_delta_deck": 0.001,
+        "tau2_eta_arch": 0.01
+      },
+      {
+        "em": 1,
+        "newton_iters": 3,
+        "loglik": -337119.1147109234,
+        "tau2_delta_hand": 0.011900068182001015,
+        "tau2_delta_deck": 0.0006080241460356289,
+        "tau2_eta_arch": 0.008676386698529872
+      },
+      {
+        "em": 2,
+        "newton_iters": 3,
+        "loglik": -337132.12574996444,
+        "tau2_delta_hand": 0.012844042181853255,
+        "tau2_delta_deck": 0.0004501333531224835,
+        "tau2_eta_arch": 0.008150374175108195
+      },
+      {
+        "em": 3,
+        "newton_iters": 3,
+        "loglik": -337141.5613816858,
+        "tau2_delta_hand": 0.013258765137756898,
+        "tau2_delta_deck": 0.00037020785068714486,
+        "tau2_eta_arch": 0.007918556762955862
+      },
+      {
+        "em": 4,
+        "newton_iters": 3,
+        "loglik": -337148.31355732534,
+        "tau2_delta_hand": 0.013431949231327494,
+        "tau2_delta_deck": 0.0003237372762733492,
+        "tau2_eta_arch": 0.007812463028114021
+      },
+      {
+        "em": 5,
+        "newton_iters": 2,
+        "loglik": -337153.1944964342,
+        "tau2_delta_hand": 0.013503328357496782,
+        "tau2_delta_deck": 0.0002942303466579286,
+        "tau2_eta_arch": 0.007763775606529495
+      },
+      {
+        "em": 6,
+        "newton_iters": 2,
+        "loglik": -337156.7804754298,
+        "tau2_delta_hand": 0.013533145438908229,
+        "tau2_delta_deck": 0.00027435806972692073,
+        "tau2_eta_arch": 0.007742018233358105
+      }
+    ],
+    "replacement_theta": 0.07221605344057573,
+    "fit_seconds": 351,
+    "nuisance": {
+      "intercept": 0.9147,
+      "n_games=1": 0.1858,
+      "n_games=10": 0.0681,
+      "n_games=100": 0.1204,
+      "n_games=1000": 0.2276,
+      "n_games=5": 0.0465,
+      "n_games=50": 0.0986,
+      "n_games=500": 0.1678,
+      "skill_x_n_games=1": 1.8661,
+      "skill_x_n_games=10": 0.9582,
+      "skill_x_n_games=100": 0.9319,
+      "skill_x_n_games=1000": 0.5245,
+      "skill_x_n_games=5": 1.1143,
+      "skill_x_n_games=50": 0.9187,
+      "skill_x_n_games=500": 0.8193,
+      "rank=diamond": -0.354,
+      "rank=gold": -0.2106,
+      "rank=mythic": -0.3497,
+      "rank=none": -0.1722,
+      "rank=platinum": -0.2735,
+      "rank=silver": -0.1234,
+      "arch=BR": 0.0713,
+      "arch=BRG": -0.4185,
+      "arch=RG": -0.2179,
+      "arch=UB": -0.0852,
+      "arch=UBG": -0.2439,
+      "arch=UBR": -0.368,
+      "arch=UG": -0.1683,
+      "arch=UR": -0.1233,
+      "arch=URG": -0.3339,
+      "arch=WB": -0.0728,
+      "arch=WBG": -0.2704,
+      "arch=WBR": -0.2568,
+      "arch=WG": 0.14,
+      "arch=WR": -0.1093,
+      "arch=WRG": -0.2823,
+      "arch=WU": 0.1256,
+      "arch=WUG": -0.2797,
+      "arch=WUR": -0.2915,
+      "arch=other": -0.2094,
+      "n_splash=1": -0.0873,
+      "n_splash=2": -0.1156,
+      "opp=BG": -1.8117,
+      "opp=BR": -1.7035,
+      "opp=BRG": -1.6384,
+      "opp=G": -0.259,
+      "opp=R": -0.2955,
+      "opp=RG": -1.3063,
+      "opp=U": -0.2369,
+      "opp=UB": -1.4987,
+      "opp=UBG": -1.8765,
+      "opp=UBR": -1.8097,
+      "opp=UBRG": -1.9352,
+      "opp=UG": -1.12,
+      "opp=UR": -1.6677,
+      "opp=URG": -1.7777,
+      "opp=W": -0.448,
+      "opp=WB": -1.4804,
+      "opp=WBG": -1.8253,
+      "opp=WBR": -1.6794,
+      "opp=WBRG": -1.8651,
+      "opp=WG": -1.7854,
+      "opp=WR": -1.4885,
+      "opp=WRG": -1.6724,
+      "opp=WU": -1.8253,
+      "opp=WUB": -1.6514,
+      "opp=WUBG": -1.9204,
+      "opp=WUBR": -2.0466,
+      "opp=WUBRG": -2.1876,
+      "opp=WUG": -1.6483,
+      "opp=WUR": -1.8567,
+      "opp=WURG": -2.0314,
+      "opp=other": 1.8184,
+      "on_play": 0.2098,
+      "mull=1": -0.6381,
+      "mull=2": -1.4642,
+      "opp_mull=1": 0.6616,
+      "opp_mull=2": 1.5596
+    }
+  },
+  "oh": {
+    "prior_vars": {
+      "nuisance": 10.0,
+      "mu_hand": 10.0,
+      "delta_hand": 0.016712369230197983,
+      "mu_deck": 10.0,
+      "delta_deck": 0.0013976494981922697
+    },
+    "history": [
+      {
+        "em": 0,
+        "newton_iters": 7,
+        "loglik": -344701.728317747,
+        "tau2_delta_hand": 0.01,
+        "tau2_delta_deck": 0.001
+      },
+      {
+        "em": 1,
+        "newton_iters": 3,
+        "loglik": -344680.145813402,
+        "tau2_delta_hand": 0.014035840064855212,
+        "tau2_delta_deck": 0.0011957981308363856
+      },
+      {
+        "em": 2,
+        "newton_iters": 3,
+        "loglik": -344673.04012059735,
+        "tau2_delta_hand": 0.015769041577970922,
+        "tau2_delta_deck": 0.0013015280432957259
+      },
+      {
+        "em": 3,
+        "newton_iters": 2,
+        "loglik": -344670.34339356166,
+        "tau2_delta_hand": 0.016401014120567305,
+        "tau2_delta_deck": 0.0013543287680044041
+      },
+      {
+        "em": 4,
+        "newton_iters": 2,
+        "loglik": -344669.25136229687,
+        "tau2_delta_hand": 0.01661763949300942,
+        "tau2_delta_deck": 0.0013797923944382149
+      },
+      {
+        "em": 5,
+        "newton_iters": 2,
+        "loglik": -344668.7918078508,
+        "tau2_delta_hand": 0.016689384848853638,
+        "tau2_delta_deck": 0.001391907684029876
+      },
+      {
+        "em": 6,
+        "newton_iters": 2,
+        "loglik": -344668.59294966445,
+        "tau2_delta_hand": 0.016712369230197983,
+        "tau2_delta_deck": 0.0013976494981922697
+      }
+    ],
+    "fit_seconds": 205
+  },
+  "scryfall_unmatched": []
+}

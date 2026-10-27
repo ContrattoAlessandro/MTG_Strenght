@@ -1,0 +1,194 @@
+Name	Name_2	Casting_Cost_1	Casting_Cost_2	Card_Type	Rarity	Rating	List	Archetype	Fixing	Splashable
+Belladonna_Took		1W	none	Creature	R	3.7		[Humans Payoff]		
+Bilbo's_Gambit		1W	none	Instant	R	1			WUBRG	
+Eagle_of_the_Great_Shelf		4W	none	Creature	U	2.5		[Humans Payoff]		
+The_Eagles_Are_Coming!		1W	none	Instant	R	4				
+Iron_Hills_Blacksmith		1W	none	Creature	U	3.5		[Storied Enabler]		
+The_Mountain-king's_Return		2W	none	Spell	U	3.2		[Humans Enabler]		
+The_Queen_of_Dale		1W	none	Creature	M	2.6		[Humans Enabler]		
+Roads_Go_Ever,_Ever_On		1W	none	Spell	R	3.6		[Storied Enabler]		
+Stone_by_Sunlight		1W	none	Instant	U	3.8				
+An_Unexpected_Party	At_the_Door	2WW	2XW	Spell	R	4.5				
+Bilbo,_Luckwearer	Burglar's_Plot	1U	4U	Creature	U	3.7				
+Bilbo,_Thief_in_the_Night		1U	none	Creature	M	3.6				
+Elrond,_Moon-Reader		2U	none	Creature	M	3.4		[Landfall Enabler]		
+Elven_Raft-Steerer		2U	none	Creature	U	3.2		[Landfall Payoff]		
+Great_Gilded_Boat		2U	none	Spell	R	3.9				
+The_Lord_of_the_Eagles		7UU	none	Creature	R	4.3				
+Master's_Councillors		1U	none	Creature	U	3.1				
+Ravenhill_Flock		3U	none	Creature	U	3.2				
+Riddles_in_the_Dark		2U	none	Instant	R	3.3				
+Sound_the_Trumpets		1UU	none	Instant	U	2.2				
+Thranduil's_Decree		4UU	none	Instant	U	3.2				
+Azog,_Moria's_Ruin		2B	none	Creature	R	3.4		[Amass Goblins Enabler]		
+Down,_Down_to_Goblin-town		2B	none	Spell	U	3				
+Gathering_of_Darkness		3B	none	Spell	U	3		[Amass Goblins Enabler]		
+Gnashing_of_Teeth		1BB	none	Spell	U	3.3				
+Gollum,_Riddle_Master		1B	none	Creature	M	3.6				
+Gollum_the_Abandoned		1B	none	Creature	U	2.9				
+The_Master_of_Lake-town		1BB	none	Creature	R	3.4				
+Nighthowl_Pursuer		B	none	Creature	U	3.5		[Ferocious Payoff]		
+The_Sackville-Bagginses		1B	none	Creature	R	3.9		[Amass Goblins Payoff]		
+Supper_for_Spiders		1B	none	Instant	R	0.7				
+Bothersome_Noisemaker		1R	none	Creature	U	3.7		[Amass Goblins Enabler]		
+Burn,_Burn,_Tree_and_Fern		3R	none	Spell	U	3.3		[Storied Enabler]	R	
+Desert_Were-Worm		4RR	none	Creature	R	2.7				
+Desolation_of_Smaug		2RR	none	Spell	R	2.6			WUBRG	
+Dwarven_Mauler		R	none	Creature	U	3.3				
+Gandalf,_Goblins'_Bane	Flameshape	2R	1R	Creature	M	3.9				
+Gandalf,_Spark_Starter		4RR	none	Creature	U	3.5				
+Last_Light_of_Durin's_Day		1R	none	Spell	R	1				
+The_Misty_Mountains_Cold		2R	none	Spell	R	3.1		[Storied Enabler]	WUBRG	
+Misty_Mountains_Raider		4R	none	Creature	U	2.6		[Amass Goblins Enabler]		
+Smaug_the_Magnificent		2RR	none	Creature	M	4.7		[Storied Enabler]		
+Thorin,_Mountain-king		3R	none	Creature	M	4.2				
+Beorn_the_Fierce		3GG	none	Creature	M	4.7		[Ferocious Enabler]		
+Beorn's_Hospitality		1G	none	Spell	U	2.8		[Landfall Payoff]		
+Down_in_the_Valley		2G	none	Spell	R	3.7			WUBRG	
+Galion,_Elvenking's_Butler		2GG	none	Creature	U	2.6				
+Part_in_Friendship		4G	none	Spell	R	1				
+Through_the_Forest_Gate		6GG	none	Spell	R	0.7				
+Wood_Elves		2G	none	Creature	C	3.5		[Landfall Enabler]		
+Bard,_King_of_Dale		4WU	none	Creature	M	2.4		[Humans Payoff]		
+Bard_the_Bowman		1WU	none	Creature	U	3.1		[Humans Payoff]		
+Bard's_Company		2WU	none	Creature	R	4.1		[Humans Enabler]		
+Bifur,_Melodic_Rider		4SS	none	Creature	U	3.1		[Storied Enabler]		
+Bolg_of_the_North		3BR	none	Creature	U	3.6		[Amass Goblins Enabler][Amass Goblins Payoff]		
+The_Chief_Warg		2BG	none	Creature	U	3.7		[Ferocious Payoff]		
+Chief_Warg's_Company		1BG	none	Creature	R	4.3		[Ferocious Enabler]		
+The_Great_Goblin		1KK	none	Creature	R	3.9		[Amass Goblins Payoff]		
+Silvan_Reveler		2GU	none	Creature	U	3.7		[Landfall Enabler][Landfall Payoff]		
+Thorin_Oakenshield		RW	none	Creature	U	3.1		[Storied Enabler][Storied Payoff]		
+Thranduil,_the_Elvenking		2BGU	none	Creature	R	2.4				
+Tom,_Bert,_and_William		3BG	none	Creature	R	4.5		[Ferocious Enabler]		
+The_Arkenstone	Seek_the_Heart	5	2W	Spell	M	4.5				
+My_Precious	Allure_of_Power	3	1B	Instant	R	3.1		[Storied Enabler]		
+Orcrist,_Goblin-cleaver		3	none	Spell	M	2.9		[Storied Enabler]		
+Sting,_Bilbo's_Sword		2	none	Spell	R	2.1		[Storied Enabler]		
+The_Lonely_Mountain		0	R	Land	R	3.3			R	
+Plains		0	W	Land	C	-1			W	
+Island		0	U	Land	C	-1			U	
+Swamp		0	B	Land	C	-1			B	
+Mountain		0	R	Land	C	-1			R	
+Forest		0	G	Land	C	-1			G	
+Roll-Roll-Roll-Roll		2U	none	Spell	R	2.7				
+Wizard's_Staff		1U	none	Spell	R	1		[Storied Enabler]		
+Head_of_the_Hunt		2BB	none	Creature	R	4.4		[Ferocious Enabler]		
+Inside_Information		XBB	none	Spell	M	2.6				
+Cantankerous_Keepers		5G	none	Creature	R	3.4				
+Mirkwood_Pathmaker		2G	none	Creature	U	3.2		[Landfall Payoff]		
+Lake-town_Mariners	Gone_Fishing	4UU	3U	Creature	U	2.9		[Landfall Enabler]		
+Desolation_Prowler		1B	none	Creature	U	3.3		[Ferocious Enabler]		
+Great_Ugly-Looking_Goblin	Clap!_Snap!	5B	1B	Creature	U	3		[Ferocious Payoff][Amass Goblins Enabler]		
+Woodland_Weavemaster		1G	none	Creature	U	3.8			WUBRG	
+Gleaming_Splendor		1W	none	Spell	M	1				
+Ori,_Keeper_of_Songs		2W	none	Creature	C	2.3		[Storied Enabler][Storied Payoff]		
+Bilbo_Baggins,_Burglar	Take_a_Glance	2U	U	Creature	C	3.5		[Humans Enabler]		
+Fateful_Discovery		3UU	none	Spell	M	1				
+Most_Decrepit_Old_Bird	Speak_Secrets	U	1U	Creature	R	3.1				
+Gollum,_Silent_Slinker	Meager_Meal	3B	B	Creature	C	2.1		[Ferocious Enabler]		
+Dáin_Ironfoot		2R	none	Creature	R	3.7		[Storied Enabler][Storied Payoff]		
+Dori,_Bearer_of_Friends		2R	none	Creature	C	3		[Storied Enabler]	WUBRG	
+Getaway_Barrel		3R	none	Spell	R	0.7				
+Glóin_the_Mighty	Easy_Pickings	3R	2R	Creature	U	2.3		[Storied Enabler]	R	
+Beorn,_Reluctant_Host	Till_and_Tend	4G	1G	Creature	C	2.8		[Landfall Enabler]		
+Dancing_from_Dark_to_Dawn		3GG	none	Spell	M	4.1		[Landfall Payoff][Ferocious Enabler]		
+Gigantic_Big_Bear		5GG	none	Creature	R	3.4		[Ferocious Enabler]		
+Little_Bear		2G	none	Creature	C	2.5				
+Nasty_Little_Rabbit		G	none	Creature	U	3.7		[Ferocious Payoff]		
+Old_Fat_Spider		4GG	none	Creature	U	2.9		[Ferocious Enabler]		
+Ordinary_Bear		3G	none	Creature	C	2.3		[Ferocious Enabler]		
+Wilderland_Scrounger		4G	none	Creature	U	3.4		[Ferocious Payoff]		
+Dáin's_Company		RW	none	Creature	R	3.7		[Storied Enabler]		
+Duskwatch_Hunter		2I	none	Creature	C	2.6		[Ferocious Enabler]		
+Eagle's_Rescue		2AA	none	Spell	U	3.4		[Humans Payoff]		
+Fearsome_Goblin_Pair		2K	none	Creature	U	3.3		[Amass Goblins Enabler]		
+Goblin_Plate_Mail		1K	none	Spell	C	3		[Amass Goblins Enabler][Amass Goblins Payoff]		
+Large_Bear		3II	none	Creature	U	3.8		[Ferocious Enabler]		
+Mirkwood_Nurturer		2M	none	Creature	C	3.1		[Landfall Enabler]		
+Nori,_Teller_of_Tales		1S	none	Creature	C	2.6		[Storied Enabler]		
+Patient_Instructor		2A	none	Creature	C	2.4		[Humans Enabler]		
+Smaug,_Wicked_Worm		3BR	none	Creature	R	4.1				
+Dwarven_Mattock		2	none	Spell	U	2.8		[Storied Enabler][Storied Payoff]		
+Thrór's_Map		2	none	Spell	U	3.1		[Humans Enabler][Landfall Enabler][Storied Enabler]	WUBRG	
+Elven_Passage		0	0	Land	R	3.7			WUBRG	
+Elvenking's_Halls		0	UG	Land	C	2.9			UG	
+Goblin-town		0	BR	Land	C	2.9			BR	
+Hobbit_Hole		0	0	Land	C	3.4			WUBRG	
+Iron_Hills		0	WR	Land	C	2.9			WR	
+Lake-town		0	WU	Land	C	2.9			WU	
+Mirkwood		0	BG	Land	C	2.9			BG	
+Fíli_the_Pathfinder		3W	none	Creature	R	4		[Storied Enabler]		
+Settle_the_Wreckage		2WW	none	Instant	R	4.5				
+Confusticate_and_Bebother		2U	none	Instant	C	2.1		[Humans Enabler]		
+Gandalf,_Wandering_Wizard		4U	none	Creature	C	2.5				
+Plunder_the_Trollshaws		1U	none	Instant	C	3		[Humans Enabler]		
+Uncover_the_Moon-Letters		3U	none	Spell	R	2.2		[Humans Enabler]		
+Crude_Bent_Blade		2B	none	Spell	C	2.3				
+Front_Porch_Sentries		1B	none	Creature	C	2.8				
+Rage_into_the_Valley		2B	none	Spell	C	3.3		[Amass Goblins Enabler]		
+Balin,_Loremaster		3RR	none	Creature	R	2.1		[Storied Payoff]		
+Bejeweled_Warg		1G	none	Creature	R	3.5		[Ferocious Enabler]	WUBRG	
+Radagast_of_Rhosgobel		2GG	none	Creature	R	3.7				
+Troll_Negotiations		2GG	none	Spell	U	3.5		[Ferocious Enabler]		
+Dwalin,_Weaponmaster		1S	none	Creature	R	3.3		[Storied Enabler][Storied Payoff]		
+Thranduil,_Sindarin_Liege	Silvan_Rally	2MM	1MM	Creature	U	3.8		[Landfall Payoff][Landfall Enabler]		
+Thranduil's_Company		2GU	none	Creature	R	3.7		[Landfall Enabler][Landfall Payoff]		
+The_Black_Arrow		3	none	Spell	U	3.2				
+Glamdring,_Foe-hammer	Gleam_of_Death	2	3U	Spell	R	1				
+Key_to_the_Side-Door		1	none	Spell	U	1		[Storied Payoff]		
+Well-Worn_Spatula		1	none	Spell	C	2.5		[Storied Enabler]		
+Rhovanion_Rampager		2B	none	Creature	R	4.1		[Ferocious Enabler]		
+Kíli_the_Resourceful		1W	none	Creature	R	4		[Storied Enabler]		
+Along_the_Crooked_Way		2B	none	Spell	R	3.4		[Amass Goblins Enabler][Amass Goblins Payoff]		
+Stone-Giant_of_High_Pass		5RR	none	Creature	R	4.3		[Storied Enabler]		
+The_Notary_Hobbits		3GG	none	Creature	R	3.4				
+Bombur,_Gentle_Dreamer		2R	none	Creature	U	2.2		[Storied Enabler][Storied Payoff]		
+Óin_the_Brave		1R	none	Creature	C	2.5		[Storied Enabler]		
+Pinecone_Strike		1R	none	Instant	C	3.6				
+Quarrel		1G	none	Instant	C	3.3				
+Long-Bodied_Grey_Dog		3	none	Creature	C	2.6			WUBRG	
+Old_Thrush		2	none	Creature	C	1.9		[Landfall Enabler]	WUBRG	
+Troop_of_Ponies		2	none	Creature	U	3.3		[Landfall Enabler]	WUBRG	
+Bofur,_Reliable_Guardian	Concerted_Care	W	1W	Creature	U	3		[Storied Enabler]		
+Celebrate_the_Mountain-king		3W	none	Spell	U	3.8		[Humans Enabler]		
+Dáin,_Lord_of_the_Iron_Hills		1W	none	Creature	U	2.1		[Storied Enabler][Storied Payoff]		
+Dwarven_Provisioner		1W	none	Creature	C	2.5		[Humans Payoff]		
+Dwarven_Shortsword		3W	none	Spell	C	2.9		[Storied Enabler]		
+Esgaroth_Garrison		4W	none	Creature	C	1.9		[Humans Enabler][Humans Payoff]		
+Lake-town_Lookout		W	none	Creature	C	2.5		[Humans Enabler]		
+Lake-town_Toymaker		3W	none	Creature	U	2.4		[Humans Payoff]		
+Magnificent_End		4W	none	Instant	C	2.8				
+Moment_of_Glory		W	none	Spell	C	1.9		[Humans Payoff]		
+Thorin's_Last_Stand		2WW	none	Instant	C	2.2		[Humans Payoff]		
+Velvetwing_Butterflies	Gaze_in_Wonder	2W	1W	Creature	C	2.7				
+Vow_to_Erebor		1W	none	Instant	C	1.9		[Storied Enabler]		
+Elvenking's_Harper		1U	none	Creature	C	2.2				
+Enchanted_River's_Grasp		2U	none	Spell	C	3.3				
+Lakeshore_Apothecary		1U	none	Creature	C	1.9		[Humans Payoff]		
+Long_Lake_Nuisance		3U	none	Creature	C	2.3		[Humans Enabler]		
+Mirkwood_Meditator		2U	none	Creature	C	1.9		[Landfall Payoff]		
+Old_Fat_Spider_Can't_See_Me		2U	none	Spell	U	2.7				
+Uneasy_Partings		3U	none	Instant	C	3.3				
+Bilbo's_Deadly_Slice		1BB	none	Instant	C	3.3				
+Dreaded_Bat-Cloud		4B	none	Creature	U	2.8		[Amass Goblins Payoff]		
+Great_Fierce_Bee		2B	none	Creature	C	1.9		[Amass Goblins Payoff]		
+Ravening_Warg		1B	none	Creature	C	2.8		[Ferocious Payoff]		
+Reverent_Howl		2B	none	Instant	C	2.5		[Ferocious Enabler]		
+Stir_Up_Trouble		B	none	Spell	C	2.8		[Amass Goblins Payoff]		
+Stony-Voiced_Goblins		1B	none	Creature	C	2.8				
+Goblin-town_Flunkies		1R	none	Creature	C	3		[Amass Goblins Enabler]		
+Gundabad_Opportunist		3R	none	Creature	C	2.5				
+Iron_Hills_Stalwart		4R	none	Creature	C	1.9		[Storied Payoff]		
+Ragged_Short_Spear		1R	none	Spell	C	2.4		[Storied Enabler]		
+Smaug,_the_Great_Calamity	Spew_Flame	5RR	4R	Creature	C	2.9				
+Smaug's_Fury		1R	none	Instant	C	1.9				
+Snowslope_Hunter		2R	none	Creature	U	3.8		[Amass Goblins Payoff]		
+Tidings_of_War		R	none	Spell	C	2.6		[Amass Goblins Enabler]		
+Attercop		1G	none	Creature	C	2.8		[Landfall Payoff]		
+Boughside_Wanderers		4GG	none	Creature	C	3.1		[Landfall Payoff][Landfall Enabler]		
+Guardian_of_the_Halls		1G	none	Creature	C	2.2		[Ferocious Enabler]		
+Warg_Tactics		1G	none	Instant	C	1.9				
+Wargling		1G	none	Creature	C	2.5		[Ferocious Payoff]		
+Bolg's_Company		BR	none	Creature	R	3.2		[Amass Goblins Payoff]	BR	
+Giant's_Boulder		1	none	Spell	C	2.1			WUBRG	

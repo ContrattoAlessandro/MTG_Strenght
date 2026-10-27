@@ -1,0 +1,335 @@
+Name	Name_2	Casting_Cost_1	Casting_Cost_2	Card_Type	Rarity	Rating	List	Archetype	Fixing	Splashable	Watermark\r
+Agent_13,_Sharon_Carter		2W	none	Creature	U	3.2		[Attack Alone Payoff]			\r
+Agent_Maria_Hill		W	none	Creature	U	3.2		[Teamwork Payoff]			\r
+Agent_of_Atlas		1W	none	Creature	C	2.5		[Non-creature Spells Payoff][Heroes Enabler]			\r
+Agent_Phil_Coulson		1W	none	Creature	R	3.8		[Teamwork Enabler][Heroes Payoff]			\r
+Agents_of_S.H.I.E.L.D.		2W	none	Creature	C	1.9		[Attack Alone Payoff]			\r
+Avengers_Assemble!		4W	none	Spell	M	4.4		[Draw-Two Enabler][Heroes Payoff]			\r
+Borough_Backup		4W	none	Spell	C	2.6		[Heroes Enabler]	WUBRG		\r
+Brave_Brawler		1W	none	Creature	C	2.5		[Heroes Enabler]			\r
+Captain_America,_Super-Soldier		1WW	none	Creature	M	3.5		[Heroes Payoff]			\r
+Captain_America,_Wings_of_Freedom		2W	none	Creature	R	3.5		[Heroes Payoff]			\r
+Captain_Marvel,_Earth's_Protector		3WW	none	Creature	M	4.4		[Attack Alone Enabler][Heroes Enabler][Non-creature Spells Payoff]			\r
+Captain_Mar-Vell,_Space-Born		4W	none	Creature	U	3		[Teamwork Enabler][Heroes Enabler][Attack Alone Enabler]			\r
+Colleen_Wing,_Street_Samurai		1W	none	Creature	U	3		[Counters Enabler][Non-creature Spells Payoff][Heroes Enabler]			\r
+Crowd_of_True_Believers		W	none	Creature	C	2.5		[Attack Alone Payoff]			\r
+Helicarrier_Strike		W	none	Instant	C	1.9		[Teamwork Payoff]			\r
+Hero_in_Training		2W	none	Creature	C	1.9		[Heroes Enabler][Heroes Payoff]			\r
+Invisible_Woman,_Sue_Storm		4W	none	Creature	U	3.5		[Heroes Enabler]			\r
+Jennifer_Walters	The_Sensational_She-Hulk	1W	3GWW	Creature	M	3.5		[Heroes Enabler]			\r
+Kree_Commandos		2W	none	Creature	C	1.9		[Non-creature Spells Payoff]			\r
+Luke_Cage,_Power_Man		3W	none	Creature	U	3		[Attack Alone Payoff]			\r
+The_Mind_Stone		1W	none	Spell	M	2			W		\r
+Mockingbird,_Ace_Agent		3W	none	Creature	U	3.2		[Non-creature Spells Payoff][Counters Enabler]			\r
+Monica_Rambeau	Photon,_Living_Light	2W	2RWW	Creature	M	4.4		[Non-creature Spells Payoff]			\r
+Murdock's_Crusade		1W	none	Spell	C	2.5					\r
+Nick_Fury,_Agent_of_S.H.I.E.L.D.		W	none	Creature	R	2.9					\r
+Night_Nurse,_Healer_of_Heroes		1W	none	Creature	U	3.2		[Heroes Enabler]			\r
+Okoye,_Dora_Milaje_Leader		3W	none	Creature	U	3.5		[Teamwork Enabler]			\r
+Origin_of_the_Avengers		1W	none	Spell	R	3.5		[Heroes Payoff]			\r
+Panther_Pounce		W	none	Instant	C	1.9		[Teamwork Enabler]			\r
+Patriot,_Shield_Wielder		1W	none	Creature	U	3.2		[Attack Alone Enabler]			\r
+Political_Triumph		W	none	Spell	U	2.5		[Teamwork Payoff]			\r
+Quake,_Agent_of_S.H.I.E.L.D.		2W	none	Creature	U	2.5		[Non-creature Spells Payoff]			\r
+Raft_Security_Officer		1W	none	Creature	C	1.9					\r
+Red_Guardian,_Super-Soldier		2W	none	Creature	U	2.2					\r
+The_Sentry,_Golden_Guardian		3W	none	Creature	R	1					\r
+S.H.I.E.L.D._Spy_Kit		W	none	Spell	C	1		[Attack Alone Payoff]			\r
+Super_Villain_Lockup		1W	none	Spell	U	3					\r
+Super-Soldier_Serum		1W	none	Spell	R	3.5		[Non-creature Spells Enabler]			\r
+Take_Up_the_Shield		1W	none	Instant	C	2.5					\r
+Wakandan_Drone_Flock		3W	none	Creature	C	2.5					\r
+Web_Up		2W	none	Spell	C	3					\r
+White_Widow,_Free_Agent		3W	none	Creature	U	2.7		[Heroes Enabler][Counters Enabler]			\r
+Aerial_Doombot		U	none	Creature	C	2.6		[Artifacts Enabler]			\r
+A.I.M._Scientists		3U	none	Creature	C	2.5		[Draw-Two Enabler]	WUBRG		\r
+Atlantean_Cavalry		2U	none	Creature	C	2.5		[Draw-Two Payoff]			\r
+Atlantis_Attacks		5UU	none	Spell	C	3.2		[Teamwork Payoff]			\r
+Attuma,_Atlantean_Warlord		2UU	none	Creature	U	3.5		[Draw-Two]			\r
+Bold_Biochemist		1U	none	Creature	C	2.5		[Draw-Two Enabler]			\r
+Bruce_Banner	The_Incredible_Hulk	U	2RRGG	Creature	M	3.5		[Counters Enabler][Power-up Stompy Enabler]			\r
+Depower		2U	none	Instant	C	2.2		[Draw-Two Enabler]			\r
+Echo,_Perceptive_Prodigy		2U	none	Creature	U	2.2					\r
+Falcon,_Winged_Wonder		4U	none	Creature	U	2.5		[Teamwork Enabler]			\r
+Falcon's_Wing_Harness		1U	none	Spell	U	2.5		[Artifacts Enabler]			\r
+Frozen_in_Ice		2U	none	Spell	C	3.2					\r
+Futurist_Forge		1U	none	Spell	C	2.5		[Draw-Two Enabler][Artifacts Enabler]			\r
+Giant-Sized_Flying_Ant		3U	none	Creature	C	2.5		[Teamwork Enabler]			\r
+Hydraulic_Helper		1U	none	Creature	C	1		[Artifacts Enabler]	U		\r
+I_Am_Iron_Man		2U	none	Instant	C	2.2		[Draw-Two Enabler][Artifacts Payoff]			\r
+Iron_Lad,_Diverging_Destiny		2U	none	Creature	U	3		[Artifacts Enabler][Artifacts Payoff]			\r
+Ironheart,_Clever_Champion		4U	none	Creature	R	3.5		[Artifacts Payoff]			\r
+Justice,_Vance_Astrovik		2U	none	Creature	U	3		[Counters Enabler]			\r
+Kang_the_Conqueror		2UU	none	Creature	M	4.2		[Draw-Two Enabler]			\r
+Kid_Loki		U	none	Creature	U	2.7		[Draw-Two Payoff]			\r
+Leader,_Super-Genius		2UU	none	Creature	R	4.1		[Draw-Two Enabler]			\r
+Loki,_God_of_Mischief		1U	none	Creature	R	3.5		[Draw-Two Enabler]			\r
+Mister_Fantastic,_Reed_Richards		3U	none	Creature	U	3		[Draw-Two Enabler]			\r
+Ms._Marvel,_Kamala_Khan		2U	none	Creature	R	3.5		[Draw-Two Enabler]			\r
+Multiversal_Incursion		5UU	none	Spell	M	3.5					\r
+Namor_the_Sub-Mariner		1UU	none	Creature	M	3.5		[Draw-Two Enabler]			\r
+Pym_Particles		U	none	Spell	U	2.2		[Teamwork Enabler][Draw-Two Enabler]			\r
+Rewrite_History		2U	none	Spell	U	1		[Teamwork Payoff][Draw-Two Enabler]			\r
+Secret_Invasion		1UU	none	Spell	R	3.5					\r
+S.H.I.E.L.D._Deployment_Drone		2U	none	Creature	C	3.2		[Teamwork Enabler]			\r
+S.H.I.E.L.D._Flying_Car		2U	none	Spell	R	3.5		[Artifacts Enabler][Teamwork Enabler]			\r
+Shuri,_Wakandan_Inventor		1U	none	Creature	U	3.2		[Artifacts Enabler]			\r
+Stature,_Size_Shifter		U	none	Creature	U	2.2					\r
+Super_Intelligence		U	none	Spell	U	1		[Draw-Two Enabler]			\r
+Super_Suit		1U	none	Spell	C	1		[Artifacts Enabler]			\r
+Thirst_for_Knowledge		2U	none	Instant	U	2.8		[Artifacts Payoff]			\r
+Tony_Stark	The_Invincible_Iron_Man	1U	4UR	Creature	M	3.5		[Artifacts Payoff]			\r
+Trickster's_Stratagem		3U	none	Spell	C	3.2		[Draw-Two Enabler]			\r
+We_Say_Thee_Nay!		1U	none	Instant	C	2.2		[Teamwork Payoff]			\r
+Wiccan,_Rising_Magician		4U	none	Creature	U	2.5					\r
+The_Wondrous_Wasp		1U	none	Creature	R	3.5					\r
+Agents_of_HYDRA		1B	none	Creature	C	2.5		[Villains Enabler]			\r
+Arnim_Zola,_Bio-Fanatic		2B	none	Creature	U	2.9		[Villains Enabler][Graveyard Payoff]			\r
+Baron_Helmut_Zemo		BBB	none	Creature	R	3.5		[Villains Enabler]			\r
+Baron_Strucker,_HYDRA_Overlord		2B	none	Creature	U	3		[Draw-Two Enabler][Villains Payoff]			\r
+Black_Widow,_Super_Spy		1B	none	Creature	M	3.8					\r
+Construct_a_Cosmic_Cube		2B	none	Spell	R	3.5		[Draw-Two Payoff]			\r
+Crossbones,_Malicious_Mercenary		3B	none	Creature	U	3.2		[Villains Payoff]			\r
+Cruel_Alliance		2B	none	Spell	C	2.9					\r
+Dark_Deed		1B	none	Instant	U	3.5					\r
+Decoy_Ploy		1B	none	Instant	C	2.2		[Villains Payoff]			\r
+Doctor_Doom		4BB	none	Creature	M	4.4		[Villains Enabler][Draw-Two Enabler]			\r
+Doom_Reigns_Supreme		1B	none	Spell	R	3.5		[Villains Payoff]			\r
+Elektra,_Daughter_of_the_Hand		2BB	none	Creature	R	3.8		[Villains Enabler]			\r
+Grim_Reaper,_Lethal_Legionnaire		3B	none	Creature	U	2.5		[Graveyard Payoff][Villains Enabler]			\r
+Hour_of_Defeat		3B	none	Instant	C	2.9		[Graveyard Enabler]			\r
+HYDRA_Infiltration		3B	none	Spell	C	2.7		[Attack Alone Payoff]			\r
+HYDRA_Troopers		2B	none	Creature	C	2.9		[Villains Enabler][Graveyard Enabler]			\r
+Kingpin's_Enforcers		2B	none	Creature	C	2.6		[Graveyard Enabler]			\r
+Klaw,_Sonic_Subjugator		2B	none	Creature	U	3		[Graveyard Payoff][Villains Enabler]			\r
+Madame_Masque		4B	none	Creature	U	3.5		[Draw-Two Enabler][Villains Enabler]			\r
+The_Masters_of_Evil		5B	none	Creature	U	3		[Villains Payoff]			\r
+M.O.D.O.K.		3BB	none	Creature	M	4.4		[Villains Enabler][Draw-Two Enabler]			\r
+Moonstone,_Harsh_Mistress		3B	none	Creature	U	3.2		[Draw-Two Payoff]			\r
+Ninja_of_the_Hand		2B	none	Creature	C	2.6		[Villains Enabler]			\r
+Project_Deathlok_Soldier		B	none	Creature	C	2.2		[Graveyard Enabler]			\r
+Red_Room_Recruit		1B	none	Creature	C	3.2		[Draw-Two Enabler]			\r
+Robot_Domination		3B	none	Spell	U	2.7		[Graveyard Payoff]			\r
+Ronin,_Shadow_Stalker		2B	none	Creature	U	2.7		[Attack Alone Enabler][Attack Alone Payoff]	WUBRG		\r
+Roxxon_Brutes		4B	none	Creature	C	2.6		[Draw-Two Payoff][Villains Enabler]	WUBRG		\r
+Stolen_Stark_Tech		1B	none	Spell	C	2.2		[Attack Alone Enabler]			\r
+Super-Skrull		1BBB	none	Creature	R	4.4		[Villains Enabler][Draw-Two Enabler]			\r
+Swordsman,_Sharp_Scoundrel		1B	none	Creature	U	2.7		[Draw-Two Enabler][Villains Payoff]			\r
+Thunderbolts_Conspiracy		3B	none	Spell	R	3.5		[Villains Payoff]			\r
+Too_Evil_to_Stay_Dead		2B	none	Spell	U	2.2		[Graveyard Payoff]			\r
+Unliving_Legionnaire		3B	none	Creature	C	2.2		[Graveyard Payoff]			\r
+Visions_of_Villainy		2B	none	Instant	C	3.2		[Draw-Two Enabler][Villains Payoff]			\r
+Whiplash,_Vengeful_Engineer		B	none	Creature	U	2.7		[Attack Alone Payoff]			\r
+Widow's_Bite		1B	none	Instant	C	2.6					\r
+Yellowjacket,_Heartless_Marauder		1B	none	Creature	U	2.9		[Villains Payoff]			\r
+Avengers_Disassembled		1RR	none	Spell	R	3.5					\r
+Blazing_Crescendo		1R	none	Instant	C	3.2		[Non-creature Spells Enabler]			\r
+Crimson_Operative		3R	none	Creature	C	2.3		[Non-creature Spells Payoff][Non-creature Spells Enabler]			\r
+Death_to_Our_Enemies		2R	none	Spell	U	2.7		[Artifacts Payoff][Non-creature Spells Payoff]			\r
+Evil's_Thrall		2R	none	Spell	U	2.6		[Villains Payoff]			\r
+Fin_Fang_Foom		2RR	none	Creature	R	3					\r
+Hawkeye,_Master_Marksman		1R	none	Creature	R	3.2					\r
+Hawkeye,_Young_Avenger		3R	none	Creature	U	2.6		[Non-creature Spells Payoff]			\r
+Hawkeye's_Bow		R	none	Spell	C	2.3		[Non-creature Spells Enabler]			\r
+Hex_Magic		2R	none	Spell	U	1		[Non-creature Spells Enabler]			\r
+Hire_a_Crew		2R	none	Instant	C	2.6		[Villains Enabler]			\r
+HULK_SMASH!		1R	none	Instant	C	2.9					\r
+Human_Torch,_Johnny_Storm		2R	none	Creature	U	3.2		[Power-up Stompy Enabler]			\r
+HYDRA_Assault_Robot		1R	none	Creature	C	2.6		[Villains Enabler]  			\r
+Iron_Fist,_Living_Weapon		2R	none	Creature	U	3.2		[Non-creature Spells Payoff]			\r
+Jessica_Jones,_Private_Eye		2R	none	Creature	U	2.3		[Non-creature Spells Enabler]			\r
+K'un-Lun_Warrior		1R	none	Creature	C	3.2		[Artifacts Payoff]			\r
+Kree_Sentinel		4R	none	Creature	C	2.6		[Artifacts Enabler][Villains Enabler]	WUBRG		\r
+Lightning_Strike		1R	none	Instant	C	3		[Non-creature Spells Enabler]			\r
+Loki_Laufeyson		1R	none	Creature	U	3.2		[Non-creature Spells Payoff][Power-up Stompy Enabler]			\r
+Machinesmith_Automaton		2R	none	Creature	C	2.2		[Villains Enabler][Artifacts Payoff]			\r
+Misty_Knight,_Hero_for_Hire		1R	none	Creature	U	2.7					\r
+Mjölnir,_Hammer_of_Thor		3R	none	Spell	M	4.1		[Non-creature Spells Enabler][Artifacts Enabler]			\r
+Photon_Blast_Barrage		XRR	none	Spell	U	2.2					\r
+Quicksilver,_Brash_Blur		R	none	Creature	R	3.8		[Power-up Stompy Enabler][Non-creature Spells Payoff]			\r
+Red_Hulk		4RR	none	Creature	U	2.9					\r
+Repulsor_Blast		3R	none	Spell	C	2.6					\r
+The_Scarlet_Witch		2R	none	Creature	R	3.8		[Non-creature Spells Enabler]			\r
+Speed,_Young_Avenger		1R	none	Creature	U	2.7		[Non-creature Spells Payoff]			\r
+Stark_Industries_Executive		R	none	Creature	C	2.2		[Artifacts Enabler]	WUBRG		\r
+Super_Speed		R	none	Spell	C	2.2		[Non-creature Spells Enabler]			\r
+Team_Tactics		1R	none	Instant	U	3.8		[Non-creature Spells Enabler][Power-up Stompy Payoff]			\r
+Thor,_God_of_Thunder		3RR	none	Creature	M	4.1		[Non-creature Spells Payoff][Non-creature Spells Enabler]			\r
+Truck_Toss		2RR	none	Instant	U	3.2					\r
+Vision_of_Love		1R	none	Instant	C	2.6		[Artifacts Payoff][Non-creature Spells Enabler]			\r
+Volcanic_Villain		2R	none	Creature	C	2.2		[Villains Enabler][Power-up Stompy Payoff]			\r
+Wonder_Man,_Hollywood_Hero		3RR	none	Creature	U	3.2		[Power-up Stompy Payoff]			\r
+Ant-Man's_Army		2G	none	Creature	C	2.6			WUBRG		\r
+Call_Damage_Control		1G	none	Spell	C	2.2		[Graveyard Enabler]			\r
+Claim_the_Kingdom		1G	none	Spell	U	2.6		[Counters Enabler]			\r
+Doc_Samson,_Super_Psychiatrist		4G	none	Creature	U	2.7		[Counters Payoff]	WUBRG		\r
+Earth's_Mightiest_Heroes		4GG	none	Spell	M	3.8					\r
+Epic_Fight		2G	none	Spell	R	3.8					\r
+Giant_Growth		G	none	Instant	C	2.2					\r
+Go_Nuts!		G	none	Spell	C	3		[Counters Enabler]			\r
+Guerrilla_Gorilla		1G	none	Creature	C	2.2		[Heroes Enabler][Graveyard Enabler]			\r
+Hellcat,_Undying_Vigilante		GG	none	Creature	U	3.2		[Heroes Enabler][Counters Enabler]			\r
+Hercules,_Prince_of_Power		2G	none	Creature	U	2.7		[Counters Enabler][Heroes Enabler][Power-up Stompy Enabler]			\r
+Heroic_Feast		2G	none	Spell	R	3.8		[Counters Enabler]			\r
+Hulkling,_Burgeoning_Bruiser		2G	none	Creature	U	2.2		[Counters Enabler][Heroes Enabler]			\r
+Ka-Zar_of_the_Savage_Land		4G	none	Creature	U	3.2		[Counters Enabler][Heroes Enabler]			\r
+Knight_of_Wundagore		1G	none	Creature	C	2.6		[Counters Payoff][Power-up Stompy Payoff]			\r
+Mister_Hyde,_Monster_Within		2G	none	Creature	U	3.2		[Counters Enabler][Counters Payoff][Power-up Stompy Payoff]			\r
+Mole_Man,_Moloid_Master		2G	none	Creature	R	3.2		[Graveyard Enabler][Graveyard Payoff]			\r
+Pet_Avengers		3G	none	Creature	C	2.6		[Power-up Stompy Enabler]			\r
+Powerful_Broker		2G	none	Creature	C	2.6		[Counters Payoff]			\r
+Punishing_Punch		2G	none	Instant	U	2.9		[Graveyard Payoff]			\r
+Rapid_Rescue		G	none	Instant	C	2.7		[Graveyard Enabler]			\r
+Reptil,_Dinomorpher		G	none	Creature	U	2.7		[Heroes Enabler]			\r
+Restorative_Technique		2G	none	Spell	C	2.6		[Counters Enabler]			\r
+Rick_Jones,_Destined_Sidekick		G	none	Creature	U	3.2		[Graveyard Enabler][Heroes Payoff]			\r
+Savage_Land_Dinosaur		4GG	none	Creature	C	2.6		[Graveyard Enabler]	WUBRG		\r
+Serpent_Specialist		G	none	Creature	C	2.2		[Power-up Stompy Enabler]			\r
+Shang-Chi,_Master_of_Kung_Fu		1G	none	Creature	M	2			WUBRG		\r
+She-Hulk,_Jade_Defender		3G	none	Creature	U	2.7		[Power-up Stompy Enabler][Counters Enabler]			\r
+Super_Strength		4G	none	Spell	C	1					\r
+The_Thing,_Ben_Grimm		5G	none	Creature	U	2.7		[Counters Payoff]			\r
+Tigra,_Feline_Fury		1G	none	Creature	U	2.7		[Counters Enabler]			\r
+Training_Regimen		3G	none	Spell	U	3.2		[Counters Enabler][Counters Payoff][Power-up Stompy Payoff]			\r
+The_Unbeatable_Squirrel_Girl		1GGG	none	Creature	R	3.8		[Heroes Enabler]			\r
+Undercover_Skrull		1G	none	Creature	C	3.2		[Graveyard Payoff]	WUBRG		\r
+Wakandan_Royal_Guard		4G	none	Creature	C	2.7		[Counters Enabler][Heroes Payoff]			\r
+White_Tiger,_Ava_Ayala		1G	none	Creature	U	3.2		[Power-up Stompy Enabler]			\r
+World_War_Hulk		3GG	none	Spell	R	3.5		[Power-up Stompy Payoff][Counters Enabler]			\r
+Abomination,_Terrifying_Titan		3L	none	Creature	U	3.2		[Power-up Stompy Enabler]			\r
+Absorbing_Man		1GU	none	Creature	R	3.8					\r
+Alien_Invasion		1RRG	none	Spell	R	4.4		[Power-up Stompy Enabler]			\r
+Ant-Man,_Colony_Commander		1GU	none	Creature	U	4.1		[Counters Enabler][Counters Payoff]			\r
+Ares,_God_of_War		1BR	none	Creature	R	3.8		[Villains Enabler]			\r
+Armor_Wars		2UR	none	Spell	R	2.9		[Artifacts Payoff]			\r
+The_Astonishing_Ant-Man		GU	none	Creature	R	4.1		[Counters Enabler][Draw-Two Payoff][Counters Payoff]			\r
+Avengers:_Under_Siege		2BR	none	Spell	R	4.1		[Villains Enabler][Villains Payoff]			\r
+Beast,_Erudite_Aerialist		3M	none	Creature	U	2.7		[Counters Payoff][Draw-Two Enabler]			\r
+Black_Panther,_Vanguard		2GW	none	Creature	U	3.2		[Heroes Payoff]			\r
+Black_Widow,_Double_Agent		1WB	none	Creature	U	2.9		[Attack Alone Payoff]			\r
+Bullseye,_Death_Dealer		2K	none	Creature	U	3.2		[Villains Enabler][Artifacts Payoff]			\r
+Captain_America,_Living_Legend		1WU	none	Creature	U	3.2		[Teamwork Enabler]			\r
+Cloak_and_Dagger,_Entwined		1WB	none	Creature	R	3.8		[Attack Alone Enabler]			\r
+The_Coming_of_Galactus		2BBG	none	Spell	M	4.4					\r
+Daredevil,_Man_Without_Fear		2RW	none	Creature	R	3.8		[Heroes Enabler][Heroes Payoff]			\r
+Ghost,_Spectral_Saboteur		2D	none	Creature	U	1		[Villains Enabler]			\r
+Hulk,_Gamma_Goliath		3RG	none	Creature	U	3.2		[Power-up Stompy Enabler]			\r
+Iron_Man,_Master_of_Machines		2UR	none	Creature	U	4.1		[Artifacts Payoff]			\r
+Kang,_Temporal_Tyrant		2UB	none	Creature	U	3.8		[Draw-Two Enabler][Draw-Two Payoff]			\r
+Killmonger,_Scourge_of_Wakanda		2BG	none	Creature	U	3.2		[Graveyard Enabler][Graveyard Payoff]			\r
+King_T'Challa	Black_Panther,_Hope_Enduring	1WU	4WU	Creature	M	3.5		[Draw-Two Enabler][Draw-Two Payoff]			\r
+The_Kingpin_of_Crime		1WB	none	Creature	R	3.8		[Attack Alone Enabler]			\r
+Madame_Hydra		2BR	none	Creature	U	2.9		[Villains Enabler][Villains Payoff]			\r
+The_Mighty_Thor,_Jane_Foster		1WU	none	Creature	R	3.5					\r
+Moon_Girl_and_Devil_Dinosaur		1GU	none	Creature	R	4.4		[Draw-Two Payoff][Artifacts Payoff]			\r
+The_Ruinous_Wrecking_Crew		XBR	none	Creature	R	2.9		[Villains Enabler]			\r
+Scientist_Supreme_of_A.I.M.		UB	none	Creature	R	1		[Artifacts Payoff][Villains Enabler]			\r
+The_Serpent_Society		1BG	none	Creature	R	3.8					\r
+Speedball,_New_Warrior		2Z	none	Creature	U	2.6		[Non-creature Spells Payoff]			\r
+Spider-Man,_To_the_Rescue		2Y	none	Creature	U	3.2		[Heroes Enabler]			\r
+Spider-Woman,_Secret_Agent		3A	none	Creature	U	2.7		[Heroes Enabler]			\r
+Storm,_Windrider		1GWW	none	Creature	R	3.5		[Heroes Enabler]			\r
+The_Super_Hero_Civil_War		3RW	none	Spell	R	3.5					\r
+Taskmaster,_Mercenary_Mimic		2UB	none	Creature	R	2					\r
+Thanos,_the_Mad_Titan		RWB	none	Creature	M	4.4		[Villains Enabler]		X	\r
+Thor_Odinson		3RW	none	Creature	U	3.2		[Non-creature Spells Payoff]			\r
+Titania,_Rugged_Rumbler		2I	none	Creature	U	2.9		[Graveyard Enabler][Villains Enabler]			\r
+U.S.Agent,_John_Walker		3V	none	Creature	U	3.2		[Attack Alone Enabler]			\r
+Vision_Quest		XUR	none	Spell	R	1.6		[Artifacts Payoff]			\r
+War_Machine,_Legacy_of_Iron		2S	none	Creature	U	2.9		[Non-creature Spells Payoff]			\r
+Winter_Soldier,_Icy_Assassin		WB	none	Creature	R	3.8		[Attack Alone Payoff] 			\r
+Wolverine,_Fierce_Fighter		2RG	none	Creature	R	4.1		[Power-up Stompy Enabler]			\r
+Worlds_Within_Worlds		5GU	none	Spell	R	0.7					\r
+A.I.M._Synthoids		2	none	Creature	C	2.2		[Artifacts Enabler]			\r
+Arc_Reactor		5	none	Spell	R	0.7		[Artifacts Payoff][Artifacts Enabler]			\r
+Captain_America's_Shield		2	none	Spell	R	3.2		[Artifacts Enabler][Attack Alone Enabler][Teamwork Enabler]			\r
+Cosmic_Cube		5	none	Spell	M	3.8		[Power-up Stompy Payoff][Artifacts Enabler]			\r
+Dependable_Quinjet		3	none	Spell	C	2.3		[Artifacts Enabler]	WUBRG		\r
+H.E.R.B.I.E._Scout_Unit		4	none	Creature	C	2.9		[Artifacts Enabler][Draw-Two Enabler]			\r
+Iron_Man_Armor		3	none	Spell	M	4.4		[Artifacts Enabler]			\r
+S.H.I.E.L.D._Helicarrier		4	none	Spell	U	3.2		[Teamwork Enabler]			\r
+Super-Adaptoid		2	none	Creature	R	3.8		[Artifacts Enabler][Teamwork Enabler]			\r
+The_Ten_Rings		8	none	Spell	M	3.8		[Draw-Two Enabler]			\r
+Ultron,_Artificial_Malevolence		3	none	Creature	M	3.8		[Artifacts Payoff][Artifacts Enabler][Villains Enabler]			\r
+Ultron_Drone		3	none	Creature	C	2.6		[Power-up Stompy Enabler][Artifacts Enabler]			\r
+Vibranium_Energy_Daggers		1	none	Spell	C	2		[Non-creature Spells Enabler]			\r
+The_Vision		4	none	Creature	R	3.5					\r
+Viv_Vision,_Teen_Synthezoid		3	none	Creature	U	2.9		[Artifacts Enabler][Power-up Stompy Enabler]			\r
+A.I.M._Labs		0	UB	Land	C	2.9			UB		\r
+Asgardian_Citadel		0	WR	Land	C	2.9			WR		\r
+Avengers_Hangar		0	WU	Land	C	2.9			WU		\r
+Avengers_Tower		0	WUBRG	Land	U	2.3		[Heroes Enabler][Heroes Payoff]	WUBRG		\r
+Baxter_Building		0	WUBRG	Land	U	2.3		[Power-up Stompy Payoff]	WUBRG		\r
+Birnin_Zana_Plaza		0	WG	Land	C	2.9			WG		\r
+Castle_Doom		0	WUBRG	Land	R	3.8		[Artifacts Payoff]	WUBRG		\r
+Dark_Fortress		0	BR	Land	R	2.9			BR		\r
+Fisk_Tower		0	WB	Land	C	2.9			WB		\r
+Gathering_Place		0	WG	Land	R	2.9			WG		\r
+Gleaming_Bastion		0	WU	Land	R	2.9			WU		\r
+Hell's_Kitchen		0	BR	Land	C	2.9			BR		\r
+Hidden_Lair		0	UB	Land	R	2.9			UB		\r
+Los_Diablos_Missile_Base		0	RG	Land	C	2.9			RG		\r
+Pym_Technologies		0	UG	Land	C	2.9			UG		\r
+Stark_Industries		0	UR	Land	C	2.9			UR		\r
+Subterranean_Cavern		0	BG	Land	C	2.9			BG		\r
+Surveillance_Room		0	WUBRG	Land	C	1.6			WUBRG		\r
+Training_Compound		0	RG	Land	R	2.9			RG		\r
+Villainous_Hideout		0	WUBRG	Land	U	1.6		[Villains Enabler][Villains Payoff]	WUBRG		\r
+Plains		0	W	Land	C	-1			W		\r
+Island		0	U	Land	C	-1			U		\r
+Swamp		0	B	Land	C	-1			B		\r
+Mountain		0	R	Land	C	-1			R		\r
+Forest		0	G	Land	C	-1			G		\r
+Concerted_Effort		2WW	none	Spell	M	0.7					\r
+Ephemerate		W	none	Instant	M	2					\r
+Final_Showdown		W	none	Instant	M	0.7					\r
+Light_of_Promise		2W	none	Spell	M	2					\r
+Return_to_the_Ranks		XWW	none	Spell	M	0.7					\r
+Steelshaper's_Gift		W	none	Spell	M	2.6					\r
+Teferi's_Protection		2W	none	Instant	M	0.7					\r
+Counterspell		UU	none	Instant	M	2.4					\r
+Dig_Through_Time		6UU	none	Instant	M	2.8					\r
+Harbinger_of_the_Seas		1UU	none	Creature	M	0.7					\r
+Lord_of_Atlantis		UU	none	Creature	M	3					\r
+Mechanized_Production		2UU	none	Spell	M	0.7					\r
+Reconnaissance_Mission		2UU	none	Spell	M	3					\r
+Show_and_Tell		2U	none	Spell	M	0.7					\r
+Simulacrum_Synthesizer		2U	none	Spell	M	3.4					\r
+Dauthi_Voidwalker		BB	none	Creature	M	3					\r
+Deadly_Dispute		1B	none	Instant	M	2.8			WUBRG		\r
+Extinction_Event		3B	none	Spell	M	3.4					\r
+Final_Act		4BB	none	Spell	M	4					\r
+Massacre_Girl		3BB	none	Creature	M	3.6					\r
+No_Mercy		2BB	none	Spell	M	2					\r
+Chaos_Warp		2R	none	Instant	M	2					\r
+Fiery_Emancipation		3RRR	none	Spell	M	0.7					\r
+Monstrous_Rage		R	none	Instant	M	3					\r
+Seize_the_Day		3R	none	Spell	M	2.5					\r
+Bedlam		2RR	none	Spell	M	0.7					\r
+Beast_Within		2G	none	Instant	M	2.3					\r
+Defense_of_the_Heart		3G	none	Spell	M	0.7					\r
+Force_of_Vigor		2GG	none	Instant	M	2					\r
+Heroic_Intervention		1G	none	Instant	M	0.7					\r
+Primal_Vigor		4G	none	Spell	M	2					\r
+Steely_Resolve		1G	none	Spell	M	0.7					\r
+Unnatural_Growth		1GGGG	none	Spell	M	3.4					\r
+Anthem_of_Champions		GW	none	Spell	M	3.2					\r
+Black_Panther,_Wakandan_King		GW	none	Creature	M	2.8					\r
+Captain_America,_First_Avenger		RWU	none	Creature	M	3					\r
+Escape_to_the_Wilds		3RG	none	Spell	M	3					\r
+Fight_to_the_Death		RW	none	Instant	M	0.7					\r
+Iron_Man,_Titan_of_Innovation		3UR	none	Creature	M	3					\r
+Privileged_Position		2YYY	none	Spell	M	0.7					\r
+Ravenous_Tyrannosaurus		4RG	none	Creature	M	2.9					\r
+Storm,_Force_of_Nature		1GUR	none	Creature	M	3.2					\r
+Sundering_Growth		YY	none	Instant	M	2.2					\r
+Warleader's_Call		1RW	none	Spell	M	3.4					\r
+Wolverine,_Best_There_Is		1RG	none	Creature	M	2.8					\r
+Horn_of_Greed		3	none	Spell	M	0.7					\r
+Path_to_Exile		W	none	Instant	M	2					\r
+Righteous_Fury		4WW	none	Spell	M	3					\r
+Narset's_Reversal		UU	none	Instant	M	0.7					\r
+Archangel of Thune		3ww		Creature	M	4					\r
+Aurelia, the Warleader		2rrww		Creature	M	4.7					\r
+Cyberdrive Awakener		5u		Creature	M	4.7					\r
+Sword of Fire and Ice		3		Spell	M	4					

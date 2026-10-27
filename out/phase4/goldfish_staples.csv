@@ -1,0 +1,1001 @@
+format,category,date,name,pct_decks
+standard,all,2026-10-26,Duress,44.0
+standard,all,2026-10-26,Strategic Betrayal,43.0
+standard,all,2026-10-26,Flashfreeze,35.0
+standard,all,2026-10-26,Requiting Hex,35.0
+standard,all,2026-10-26,Disdainful Stroke,31.0
+standard,all,2026-10-26,Spell Snare,30.0
+standard,all,2026-10-26,Erode,29.0
+standard,all,2026-10-26,Bitter Triumph,28.0
+standard,all,2026-10-26,Torpor Orb,25.0
+standard,all,2026-10-26,Seam Rip,24.0
+standard,all,2026-10-26,Burst Lightning,22.0
+standard,all,2026-10-26,Negate,21.0
+standard,all,2026-10-26,Day of Black Sun,21.0
+standard,all,2026-10-26,Rest in Peace,21.0
+standard,all,2026-10-26,Shoot the Sheriff,20.0
+standard,all,2026-10-26,"The Theorist, Jace Beleren",19.0
+standard,all,2026-10-26,"Wan Shi Tong, Librarian",17.0
+standard,all,2026-10-26,Get Lost,17.0
+standard,all,2026-10-26,Spell Pierce,17.0
+standard,all,2026-10-26,Soul-Guide Lantern,17.0
+standard,all,2026-10-26,Ghost Vacuum,16.0
+standard,all,2026-10-26,Day of Judgment,15.0
+standard,all,2026-10-26,Voice of Victory,15.0
+standard,all,2026-10-26,Deadly Cover-Up,15.0
+standard,all,2026-10-26,Emeritus of Ideation,14.0
+standard,all,2026-10-26,Theorix Charm,14.0
+standard,all,2026-10-26,Stock Up,13.0
+standard,all,2026-10-26,Llanowar Elves,13.0
+standard,all,2026-10-26,Consult the Star Charts,13.0
+standard,all,2026-10-26,Winternight Stories,13.0
+standard,all,2026-10-26,Seasoned Cryomancer,13.0
+standard,all,2026-10-26,Opt,12.0
+standard,all,2026-10-26,Sleight of Hand,12.0
+standard,all,2026-10-26,"Surrak, Elusive Hunter",12.0
+standard,all,2026-10-26,Pinnacle Starcage,12.0
+standard,all,2026-10-26,Icetill Explorer,11.0
+standard,all,2026-10-26,Earthbender Ascension,11.0
+standard,all,2026-10-26,Mossborn Hydra,11.0
+standard,all,2026-10-26,Mightform Harmonizer,11.0
+standard,all,2026-10-26,Colorstorm Stallion,11.0
+standard,all,2026-10-26,Tishana's Tidebinder,11.0
+standard,all,2026-10-26,No More Lies,11.0
+standard,all,2026-10-26,Sazh's Chocobo,11.0
+standard,all,2026-10-26,Eddymurk Crab,11.0
+standard,all,2026-10-26,Sapling Nursery,11.0
+standard,all,2026-10-26,Deceit,11.0
+standard,all,2026-10-26,Superior Spider-Man,10.0
+standard,all,2026-10-26,Broadside Barrage,10.0
+standard,all,2026-10-26,Floodpits Drowner,10.0
+standard,all,2026-10-26,Annul,10.0
+standard,creatures,2026-10-26,"Wan Shi Tong, Librarian",17.0
+standard,creatures,2026-10-26,Voice of Victory,15.0
+standard,creatures,2026-10-26,Emeritus of Ideation,14.0
+standard,creatures,2026-10-26,Llanowar Elves,13.0
+standard,creatures,2026-10-26,Seasoned Cryomancer,13.0
+standard,creatures,2026-10-26,"Surrak, Elusive Hunter",12.0
+standard,creatures,2026-10-26,Icetill Explorer,11.0
+standard,creatures,2026-10-26,Mossborn Hydra,11.0
+standard,creatures,2026-10-26,Mightform Harmonizer,11.0
+standard,creatures,2026-10-26,Colorstorm Stallion,11.0
+standard,creatures,2026-10-26,Tishana's Tidebinder,11.0
+standard,creatures,2026-10-26,Sazh's Chocobo,11.0
+standard,creatures,2026-10-26,Eddymurk Crab,11.0
+standard,creatures,2026-10-26,Deceit,11.0
+standard,creatures,2026-10-26,Superior Spider-Man,10.0
+standard,creatures,2026-10-26,Floodpits Drowner,10.0
+standard,creatures,2026-10-26,Enduring Curiosity,10.0
+standard,creatures,2026-10-26,Spyglass Siren,10.0
+standard,creatures,2026-10-26,Sunspine Lynx,10.0
+standard,creatures,2026-10-26,The Wondrous Wasp,10.0
+standard,creatures,2026-10-26,Dream Beavers,10.0
+standard,creatures,2026-10-26,Clarion Conqueror,10.0
+standard,creatures,2026-10-26,Overlord of the Balemurk,9.0
+standard,creatures,2026-10-26,"Haliya, Guided by Light",9.0
+standard,creatures,2026-10-26,Uldaros Theorix,9.0
+standard,creatures,2026-10-26,Hearth Elemental,9.0
+standard,creatures,2026-10-26,Keen-Eyed Curator,9.0
+standard,creatures,2026-10-26,Smaug the Magnificent,8.0
+standard,creatures,2026-10-26,M.O.D.O.K.,8.0
+standard,creatures,2026-10-26,Sunderflock,8.0
+standard,creatures,2026-10-26,Liliana the Faultless,8.0
+standard,creatures,2026-10-26,Curious Farm Animals,8.0
+standard,creatures,2026-10-26,Hinterland Sanctifier,8.0
+standard,creatures,2026-10-26,Amalia Benavides Aguirre,8.0
+standard,creatures,2026-10-26,"Moseo, Vein's New Dean",8.0
+standard,creatures,2026-10-26,Starscape Cleric,7.0
+standard,creatures,2026-10-26,Enlightened Confidant,7.0
+standard,creatures,2026-10-26,Qarsi Revenant,7.0
+standard,creatures,2026-10-26,"Momo, Friendly Flier",7.0
+standard,creatures,2026-10-26,The Sackville-Bagginses,7.0
+standard,creatures,2026-10-26,Umbral Collar Zealot,7.0
+standard,creatures,2026-10-26,Greedy Freebooter,7.0
+standard,creatures,2026-10-26,"Captain Marvel, Earth's Protector",7.0
+standard,creatures,2026-10-26,Biotech Specialist,7.0
+standard,creatures,2026-10-26,"Vren, the Relentless",7.0
+standard,creatures,2026-10-26,Gene Pollinator,7.0
+standard,creatures,2026-10-26,"Leatherhead, Swamp Stalker",6.0
+standard,creatures,2026-10-26,Doomsday Excruciator,6.0
+standard,creatures,2026-10-26,"Yuriko, Hope from the Shadows",6.0
+standard,creatures,2026-10-26,Slickshot Show-Off,6.0
+standard,spells,2026-10-26,Duress,44.0
+standard,spells,2026-10-26,Strategic Betrayal,43.0
+standard,spells,2026-10-26,Flashfreeze,35.0
+standard,spells,2026-10-26,Requiting Hex,35.0
+standard,spells,2026-10-26,Disdainful Stroke,31.0
+standard,spells,2026-10-26,Spell Snare,30.0
+standard,spells,2026-10-26,Erode,29.0
+standard,spells,2026-10-26,Bitter Triumph,28.0
+standard,spells,2026-10-26,Torpor Orb,25.0
+standard,spells,2026-10-26,Seam Rip,24.0
+standard,spells,2026-10-26,Burst Lightning,22.0
+standard,spells,2026-10-26,Negate,21.0
+standard,spells,2026-10-26,Day of Black Sun,21.0
+standard,spells,2026-10-26,Rest in Peace,21.0
+standard,spells,2026-10-26,Shoot the Sheriff,20.0
+standard,spells,2026-10-26,"The Theorist, Jace Beleren",19.0
+standard,spells,2026-10-26,Get Lost,17.0
+standard,spells,2026-10-26,Spell Pierce,17.0
+standard,spells,2026-10-26,Soul-Guide Lantern,17.0
+standard,spells,2026-10-26,Ghost Vacuum,16.0
+standard,spells,2026-10-26,Day of Judgment,15.0
+standard,spells,2026-10-26,Deadly Cover-Up,15.0
+standard,spells,2026-10-26,Theorix Charm,14.0
+standard,spells,2026-10-26,Stock Up,13.0
+standard,spells,2026-10-26,Consult the Star Charts,13.0
+standard,spells,2026-10-26,Winternight Stories,13.0
+standard,spells,2026-10-26,Opt,12.0
+standard,spells,2026-10-26,Sleight of Hand,12.0
+standard,spells,2026-10-26,Pinnacle Starcage,12.0
+standard,spells,2026-10-26,Earthbender Ascension,11.0
+standard,spells,2026-10-26,No More Lies,11.0
+standard,spells,2026-10-26,Sapling Nursery,11.0
+standard,spells,2026-10-26,Broadside Barrage,10.0
+standard,spells,2026-10-26,Annul,10.0
+standard,spells,2026-10-26,We Say Thee Nay!,10.0
+standard,spells,2026-10-26,"Kaito, Bane of Nightmares",10.0
+standard,spells,2026-10-26,Fire Magic,10.0
+standard,spells,2026-10-26,Impractical Joke,10.0
+standard,spells,2026-10-26,Esper Origins,9.0
+standard,spells,2026-10-26,Prismari Charm,9.0
+standard,spells,2026-10-26,Sear,9.0
+standard,spells,2026-10-26,Three Steps Ahead,9.0
+standard,spells,2026-10-26,Get Out,8.0
+standard,spells,2026-10-26,Traumatic Critique,8.0
+standard,spells,2026-10-26,Meltstrider's Resolve,8.0
+standard,spells,2026-10-26,Case of the Uneaten Feast,8.0
+standard,spells,2026-10-26,Lunar Convocation,8.0
+standard,spells,2026-10-26,Obsessive Pursuit,7.0
+standard,spells,2026-10-26,Lively Dirge,7.0
+standard,spells,2026-10-26,Professor Dellian Fel,6.0
+standard,lands,2026-10-26,Island,47.0
+standard,lands,2026-10-26,Swamp,43.0
+standard,lands,2026-10-26,Plains,35.0
+standard,lands,2026-10-26,Multiversal Passage,32.0
+standard,lands,2026-10-26,Starting Town,29.0
+standard,lands,2026-10-26,Mountain,25.0
+standard,lands,2026-10-26,Gloomlake Verge,23.0
+standard,lands,2026-10-26,Watery Grave,23.0
+standard,lands,2026-10-26,Steam Vents,23.0
+standard,lands,2026-10-26,Forest,23.0
+standard,lands,2026-10-26,Cavern of Souls,20.0
+standard,lands,2026-10-26,Restless Reef,20.0
+standard,lands,2026-10-26,Hallowed Fountain,18.0
+standard,lands,2026-10-26,Riverpyre Verge,18.0
+standard,lands,2026-10-26,Shipwreck Marsh,18.0
+standard,lands,2026-10-26,Spirebluff Canal,15.0
+standard,lands,2026-10-26,Blood Crypt,15.0
+standard,lands,2026-10-26,Floodfarm Verge,15.0
+standard,lands,2026-10-26,Sacred Foundry,14.0
+standard,lands,2026-10-26,Blazemire Verge,13.0
+standard,lands,2026-10-26,Ba Sing Se,13.0
+standard,lands,2026-10-26,Godless Shrine,12.0
+standard,lands,2026-10-26,Fabled Passage,12.0
+standard,lands,2026-10-26,Stormcarved Coast,11.0
+standard,lands,2026-10-26,Soulstone Sanctuary,11.0
+standard,lands,2026-10-26,Petrified Hamlet,11.0
+standard,lands,2026-10-26,Escape Tunnel,11.0
+standard,lands,2026-10-26,Demolition Field,11.0
+standard,lands,2026-10-26,Deserted Beach,10.0
+standard,lands,2026-10-26,Overgrown Tomb,10.0
+standard,lands,2026-10-26,Sunbillow Verge,10.0
+standard,lands,2026-10-26,Undercity Sewers,10.0
+standard,lands,2026-10-26,Shattered Sanctum,9.0
+standard,lands,2026-10-26,Hidden Lair,9.0
+standard,lands,2026-10-26,Concealed Courtyard,9.0
+standard,lands,2026-10-26,Bleachbone Verge,9.0
+standard,lands,2026-10-26,Fountainport,8.0
+standard,lands,2026-10-26,Stomping Ground,8.0
+standard,lands,2026-10-26,Blooming Marsh,7.0
+standard,lands,2026-10-26,Great Hall of the Biblioplex,7.0
+standard,lands,2026-10-26,Elven Passage,7.0
+standard,lands,2026-10-26,Inspiring Vantage,7.0
+standard,lands,2026-10-26,Theorist's Sanctum,7.0
+standard,lands,2026-10-26,Meticulous Archive,7.0
+standard,lands,2026-10-26,Restless Anchorage,6.0
+standard,lands,2026-10-26,Mistrise Village,6.0
+standard,lands,2026-10-26,Sundown Pass,5.0
+standard,lands,2026-10-26,Gleaming Bastion,5.0
+standard,lands,2026-10-26,Wastewood Verge,5.0
+standard,lands,2026-10-26,Cori Mountain Monastery,5.0
+pioneer,all,2026-10-26,Thoughtseize,36.0
+pioneer,all,2026-10-26,Fatal Push,36.0
+pioneer,all,2026-10-26,Firebending Lesson,28.0
+pioneer,all,2026-10-26,Iroh's Demonstration,27.0
+pioneer,all,2026-10-26,Boomerang Basics,25.0
+pioneer,all,2026-10-26,Duress,25.0
+pioneer,all,2026-10-26,Academic Dispute,24.0
+pioneer,all,2026-10-26,Stormchaser's Talent,24.0
+pioneer,all,2026-10-26,Change the Equation,23.0
+pioneer,all,2026-10-26,Spell Pierce,22.0
+pioneer,all,2026-10-26,Octopus Form,22.0
+pioneer,all,2026-10-26,Unlicensed Hearse,21.0
+pioneer,all,2026-10-26,Soul-Guide Lantern,20.0
+pioneer,all,2026-10-26,Emberheart Challenger,20.0
+pioneer,all,2026-10-26,Monastery Swiftspear,20.0
+pioneer,all,2026-10-26,It'll Quench Ya!,19.0
+pioneer,all,2026-10-26,Reckless Rage,19.0
+pioneer,all,2026-10-26,Abrupt Decay,19.0
+pioneer,all,2026-10-26,Burst Lightning,18.0
+pioneer,all,2026-10-26,Sleight of Hand,18.0
+pioneer,all,2026-10-26,Redcap Melee,18.0
+pioneer,all,2026-10-26,Bitter Triumph,18.0
+pioneer,all,2026-10-26,Badgermole Cub,18.0
+pioneer,all,2026-10-26,Torch the Tower,17.0
+pioneer,all,2026-10-26,Unholy Annex // Ritual Chamber,17.0
+pioneer,all,2026-10-26,"Ashiok, Dream Render",16.0
+pioneer,all,2026-10-26,"Sheoldred, the Apocalypse",16.0
+pioneer,all,2026-10-26,Soul-Scar Mage,15.0
+pioneer,all,2026-10-26,Quantum Riddler,15.0
+pioneer,all,2026-10-26,Go Blank,15.0
+pioneer,all,2026-10-26,Fiery Impulse,14.0
+pioneer,all,2026-10-26,Llanowar Elves,13.0
+pioneer,all,2026-10-26,Invoke Despair,13.0
+pioneer,all,2026-10-26,Culling Ritual,13.0
+pioneer,all,2026-10-26,Elvish Mystic,13.0
+pioneer,all,2026-10-26,Pompous Battlemage,13.0
+pioneer,all,2026-10-26,Professor Dellian Fel,13.0
+pioneer,all,2026-10-26,Nowhere to Run,12.0
+pioneer,all,2026-10-26,Graveyard Trespasser,12.0
+pioneer,all,2026-10-26,Price of Freedom,12.0
+pioneer,all,2026-10-26,Monstrous Rage,11.0
+pioneer,all,2026-10-26,Screaming Nemesis,11.0
+pioneer,all,2026-10-26,Proft's Eidetic Memory,11.0
+pioneer,all,2026-10-26,The Sackville-Bagginses,11.0
+pioneer,all,2026-10-26,Scorching Shot,11.0
+pioneer,all,2026-10-26,Deadly Dispute,11.0
+pioneer,all,2026-10-26,Flow State,11.0
+pioneer,all,2026-10-26,Abrade,10.0
+pioneer,all,2026-10-26,Seasoned Cryomancer,10.0
+pioneer,all,2026-10-26,Agatha's Soul Cauldron,10.0
+pioneer,creatures,2026-10-26,Monastery Swiftspear,20.0
+pioneer,creatures,2026-10-26,Emberheart Challenger,20.0
+pioneer,creatures,2026-10-26,Badgermole Cub,18.0
+pioneer,creatures,2026-10-26,"Sheoldred, the Apocalypse",16.0
+pioneer,creatures,2026-10-26,Soul-Scar Mage,15.0
+pioneer,creatures,2026-10-26,Quantum Riddler,15.0
+pioneer,creatures,2026-10-26,Elvish Mystic,13.0
+pioneer,creatures,2026-10-26,Pompous Battlemage,13.0
+pioneer,creatures,2026-10-26,Llanowar Elves,13.0
+pioneer,creatures,2026-10-26,Graveyard Trespasser,12.0
+pioneer,creatures,2026-10-26,Screaming Nemesis,11.0
+pioneer,creatures,2026-10-26,The Sackville-Bagginses,11.0
+pioneer,creatures,2026-10-26,Seasoned Cryomancer,10.0
+pioneer,creatures,2026-10-26,Fear of Missing Out,10.0
+pioneer,creatures,2026-10-26,Vivi Ornitier,9.0
+pioneer,creatures,2026-10-26,"Jadzi, Steward of Fate",8.0
+pioneer,creatures,2026-10-26,Biotech Specialist,8.0
+pioneer,creatures,2026-10-26,Brazen Borrower,7.0
+pioneer,creatures,2026-10-26,Voldaren Thrillseeker,7.0
+pioneer,creatures,2026-10-26,Greedy Freebooter,7.0
+pioneer,creatures,2026-10-26,Hearth Elemental,7.0
+pioneer,creatures,2026-10-26,Cauldron Familiar,7.0
+pioneer,creatures,2026-10-26,"Beza, the Bounding Spring",7.0
+pioneer,creatures,2026-10-26,Ulvenwald Oddity,7.0
+pioneer,creatures,2026-10-26,Outcaster Trailblazer,7.0
+pioneer,creatures,2026-10-26,Cavalier of Thorns,6.0
+pioneer,creatures,2026-10-26,Old-Growth Troll,6.0
+pioneer,creatures,2026-10-26,"Emrakul, the Promised End",6.0
+pioneer,creatures,2026-10-26,Magebane Lizard,6.0
+pioneer,creatures,2026-10-26,"Elesh Norn, Mother of Machines",6.0
+pioneer,creatures,2026-10-26,Vibrance,6.0
+pioneer,creatures,2026-10-26,Setessan Petitioner,6.0
+pioneer,creatures,2026-10-26,Scrapshooter,6.0
+pioneer,creatures,2026-10-26,Stormwing Entity,6.0
+pioneer,creatures,2026-10-26,Voldaren Epicure,6.0
+pioneer,creatures,2026-10-26,Cityscape Leveler,5.0
+pioneer,creatures,2026-10-26,Mayhem Devil,5.0
+pioneer,creatures,2026-10-26,Arasta of the Endless Web,5.0
+pioneer,creatures,2026-10-26,Sunderflock,5.0
+pioneer,creatures,2026-10-26,"Yorion, Sky Nomad",5.0
+pioneer,creatures,2026-10-26,Eddymurk Crab,5.0
+pioneer,creatures,2026-10-26,Skyclave Apparition,5.0
+pioneer,creatures,2026-10-26,Eyetwitch,4.0
+pioneer,creatures,2026-10-26,Moon-Circuit Hacker,4.0
+pioneer,creatures,2026-10-26,"Surrak, Elusive Hunter",4.0
+pioneer,creatures,2026-10-26,Enduring Curiosity,4.0
+pioneer,creatures,2026-10-26,Floodpits Drowner,4.0
+pioneer,creatures,2026-10-26,Hexhaven Invigorator,4.0
+pioneer,creatures,2026-10-26,Mockingbird,4.0
+pioneer,creatures,2026-10-26,Clarion Conqueror,4.0
+pioneer,spells,2026-10-26,Fatal Push,36.0
+pioneer,spells,2026-10-26,Thoughtseize,36.0
+pioneer,spells,2026-10-26,Firebending Lesson,28.0
+pioneer,spells,2026-10-26,Iroh's Demonstration,27.0
+pioneer,spells,2026-10-26,Boomerang Basics,25.0
+pioneer,spells,2026-10-26,Duress,25.0
+pioneer,spells,2026-10-26,Academic Dispute,24.0
+pioneer,spells,2026-10-26,Stormchaser's Talent,24.0
+pioneer,spells,2026-10-26,Change the Equation,23.0
+pioneer,spells,2026-10-26,Spell Pierce,22.0
+pioneer,spells,2026-10-26,Octopus Form,22.0
+pioneer,spells,2026-10-26,Unlicensed Hearse,21.0
+pioneer,spells,2026-10-26,Soul-Guide Lantern,20.0
+pioneer,spells,2026-10-26,Reckless Rage,19.0
+pioneer,spells,2026-10-26,It'll Quench Ya!,19.0
+pioneer,spells,2026-10-26,Abrupt Decay,19.0
+pioneer,spells,2026-10-26,Burst Lightning,18.0
+pioneer,spells,2026-10-26,Sleight of Hand,18.0
+pioneer,spells,2026-10-26,Redcap Melee,18.0
+pioneer,spells,2026-10-26,Bitter Triumph,18.0
+pioneer,spells,2026-10-26,Torch the Tower,17.0
+pioneer,spells,2026-10-26,Unholy Annex // Ritual Chamber,17.0
+pioneer,spells,2026-10-26,"Ashiok, Dream Render",16.0
+pioneer,spells,2026-10-26,Go Blank,15.0
+pioneer,spells,2026-10-26,Fiery Impulse,14.0
+pioneer,spells,2026-10-26,Professor Dellian Fel,13.0
+pioneer,spells,2026-10-26,Invoke Despair,13.0
+pioneer,spells,2026-10-26,Culling Ritual,13.0
+pioneer,spells,2026-10-26,Nowhere to Run,12.0
+pioneer,spells,2026-10-26,Price of Freedom,12.0
+pioneer,spells,2026-10-26,Monstrous Rage,11.0
+pioneer,spells,2026-10-26,Proft's Eidetic Memory,11.0
+pioneer,spells,2026-10-26,Deadly Dispute,11.0
+pioneer,spells,2026-10-26,Scorching Shot,11.0
+pioneer,spells,2026-10-26,Flow State,11.0
+pioneer,spells,2026-10-26,Abrade,10.0
+pioneer,spells,2026-10-26,Abandon Attachments,10.0
+pioneer,spells,2026-10-26,Agatha's Soul Cauldron,10.0
+pioneer,spells,2026-10-26,Mystical Dispute,10.0
+pioneer,spells,2026-10-26,Fable of the Mirror-Breaker,10.0
+pioneer,spells,2026-10-26,Disdainful Stroke,9.0
+pioneer,spells,2026-10-26,"Ral, Crackling Wit",9.0
+pioneer,spells,2026-10-26,This Town Ain't Big Enough,9.0
+pioneer,spells,2026-10-26,Leyline of the Void,9.0
+pioneer,spells,2026-10-26,Combustion Technique,9.0
+pioneer,spells,2026-10-26,Accumulate Wisdom,8.0
+pioneer,spells,2026-10-26,Languish,8.0
+pioneer,spells,2026-10-26,Consider,8.0
+pioneer,spells,2026-10-26,Rest in Peace,8.0
+pioneer,spells,2026-10-26,Pyroclasm,7.0
+pioneer,lands,2026-10-26,Mountain,43.0
+pioneer,lands,2026-10-26,Island,41.0
+pioneer,lands,2026-10-26,Swamp,37.0
+pioneer,lands,2026-10-26,Steam Vents,34.0
+pioneer,lands,2026-10-26,Spirebluff Canal,33.0
+pioneer,lands,2026-10-26,Riverglide Pathway,29.0
+pioneer,lands,2026-10-26,Riverpyre Verge,28.0
+pioneer,lands,2026-10-26,Forest,28.0
+pioneer,lands,2026-10-26,"Boseiju, Who Endures",28.0
+pioneer,lands,2026-10-26,"Takenuma, Abandoned Mire",25.0
+pioneer,lands,2026-10-26,Blooming Marsh,23.0
+pioneer,lands,2026-10-26,Mutavault,23.0
+pioneer,lands,2026-10-26,"Otawara, Soaring City",23.0
+pioneer,lands,2026-10-26,Overgrown Tomb,22.0
+pioneer,lands,2026-10-26,Shivan Reef,18.0
+pioneer,lands,2026-10-26,"Urborg, Tomb of Yawgmoth",17.0
+pioneer,lands,2026-10-26,Plains,13.0
+pioneer,lands,2026-10-26,"Sokenzan, Crucible of Defiance",12.0
+pioneer,lands,2026-10-26,Llanowar Wastes,12.0
+pioneer,lands,2026-10-26,Restless Cottage,12.0
+pioneer,lands,2026-10-26,Blackcleave Cliffs,12.0
+pioneer,lands,2026-10-26,Den of the Bugbear,12.0
+pioneer,lands,2026-10-26,Castle Locthwain,11.0
+pioneer,lands,2026-10-26,Stomping Ground,10.0
+pioneer,lands,2026-10-26,Blood Crypt,10.0
+pioneer,lands,2026-10-26,Watery Grave,10.0
+pioneer,lands,2026-10-26,"Nykthos, Shrine to Nyx",9.0
+pioneer,lands,2026-10-26,"Eiganjo, Seat of the Empire",8.0
+pioneer,lands,2026-10-26,Gloomlake Verge,8.0
+pioneer,lands,2026-10-26,Starting Town,7.0
+pioneer,lands,2026-10-26,Lair of the Hydra,7.0
+pioneer,lands,2026-10-26,Blazemire Verge,7.0
+pioneer,lands,2026-10-26,Darkslick Shores,7.0
+pioneer,lands,2026-10-26,Stormcarved Coast,7.0
+pioneer,lands,2026-10-26,Temple Garden,6.0
+pioneer,lands,2026-10-26,Copperline Gorge,6.0
+pioneer,lands,2026-10-26,Ramunap Ruins,6.0
+pioneer,lands,2026-10-26,Multiversal Passage,6.0
+pioneer,lands,2026-10-26,Sunken Citadel,6.0
+pioneer,lands,2026-10-26,Petrified Hamlet,5.0
+pioneer,lands,2026-10-26,Fountainport,4.0
+pioneer,lands,2026-10-26,Brushland,4.0
+pioneer,lands,2026-10-26,Sacred Foundry,4.0
+pioneer,lands,2026-10-26,Razorverge Thicket,4.0
+pioneer,lands,2026-10-26,Hallowed Fountain,4.0
+pioneer,lands,2026-10-26,Great Hall of the Biblioplex,4.0
+pioneer,lands,2026-10-26,Abandoned Air Temple,3.0
+pioneer,lands,2026-10-26,Breeding Pool,3.0
+pioneer,lands,2026-10-26,Field of Ruin,3.0
+pioneer,lands,2026-10-26,Hall of Storm Giants,3.0
+modern,all,2026-10-26,Consign to Memory,49.0
+modern,all,2026-10-26,Mystical Dispute,37.0
+modern,all,2026-10-26,Vexing Bauble,33.0
+modern,all,2026-10-26,Grafdigger's Cage,32.0
+modern,all,2026-10-26,Spell Snare,27.0
+modern,all,2026-10-26,Lightning Bolt,27.0
+modern,all,2026-10-26,Wrath of the Skies,26.0
+modern,all,2026-10-26,Obsidian Charmaw,26.0
+modern,all,2026-10-26,Thoughtseize,25.0
+modern,all,2026-10-26,Dismember,25.0
+modern,all,2026-10-26,High Noon,24.0
+modern,all,2026-10-26,Surgical Extraction,24.0
+modern,all,2026-10-26,Trinisphere,23.0
+modern,all,2026-10-26,Fatal Push,22.0
+modern,all,2026-10-26,Mishra's Bauble,22.0
+modern,all,2026-10-26,Kozilek's Command,22.0
+modern,all,2026-10-26,Solitude,21.0
+modern,all,2026-10-26,"Teferi, Time Raveler",21.0
+modern,all,2026-10-26,Malevolent Rumble,20.0
+modern,all,2026-10-26,Force of Negation,20.0
+modern,all,2026-10-26,Quantum Riddler,20.0
+modern,all,2026-10-26,Pithing Needle,20.0
+modern,all,2026-10-26,Devourer of Destiny,19.0
+modern,all,2026-10-26,Sowing Mycospawn,19.0
+modern,all,2026-10-26,Prismatic Ending,19.0
+modern,all,2026-10-26,Nature's Claim,19.0
+modern,all,2026-10-26,Haywire Mite,19.0
+modern,all,2026-10-26,"Emrakul, the Promised End",18.0
+modern,all,2026-10-26,Tormod's Crypt,18.0
+modern,all,2026-10-26,Sire of Seven Deaths,18.0
+modern,all,2026-10-26,Soul-Guide Lantern,17.0
+modern,all,2026-10-26,Wear // Tear,16.0
+modern,all,2026-10-26,Springleaf Drum,16.0
+modern,all,2026-10-26,Ancient Stirrings,16.0
+modern,all,2026-10-26,Sink into Stupor,16.0
+modern,all,2026-10-26,Basking Broodscale,16.0
+modern,all,2026-10-26,Blade of the Bloodchief,16.0
+modern,all,2026-10-26,Preordain,15.0
+modern,all,2026-10-26,Unholy Heat,15.0
+modern,all,2026-10-26,Blood Moon,15.0
+modern,all,2026-10-26,Meltdown,15.0
+modern,all,2026-10-26,"Ragavan, Nimble Pilferer",14.0
+modern,all,2026-10-26,Thought-Knot Seer,14.0
+modern,all,2026-10-26,Talisman of Resilience,12.0
+modern,all,2026-10-26,Spell Pierce,12.0
+modern,all,2026-10-26,Clarion Conqueror,12.0
+modern,all,2026-10-26,"Ashiok, Dream Render",12.0
+modern,all,2026-10-26,Endurance,11.0
+modern,all,2026-10-26,Nihil Spellbomb,11.0
+modern,all,2026-10-26,March of Otherworldly Light,11.0
+modern,creatures,2026-10-26,Obsidian Charmaw,26.0
+modern,creatures,2026-10-26,Solitude,21.0
+modern,creatures,2026-10-26,Quantum Riddler,20.0
+modern,creatures,2026-10-26,Devourer of Destiny,19.0
+modern,creatures,2026-10-26,Sowing Mycospawn,19.0
+modern,creatures,2026-10-26,Haywire Mite,19.0
+modern,creatures,2026-10-26,"Emrakul, the Promised End",18.0
+modern,creatures,2026-10-26,Sire of Seven Deaths,18.0
+modern,creatures,2026-10-26,Basking Broodscale,16.0
+modern,creatures,2026-10-26,"Ragavan, Nimble Pilferer",14.0
+modern,creatures,2026-10-26,Thought-Knot Seer,14.0
+modern,creatures,2026-10-26,Clarion Conqueror,12.0
+modern,creatures,2026-10-26,Endurance,11.0
+modern,creatures,2026-10-26,Thief of Existence,11.0
+modern,creatures,2026-10-26,Dragon's Rage Channeler,10.0
+modern,creatures,2026-10-26,Psychic Frog,10.0
+modern,creatures,2026-10-26,Monastery Swiftspear,10.0
+modern,creatures,2026-10-26,Slickshot Show-Off,8.0
+modern,creatures,2026-10-26,"Phelia, Exuberant Shepherd",7.0
+modern,creatures,2026-10-26,Street Wraith,7.0
+modern,creatures,2026-10-26,Guide of Souls,7.0
+modern,creatures,2026-10-26,Subtlety,7.0
+modern,creatures,2026-10-26,Ocelot Pride,7.0
+modern,creatures,2026-10-26,"Ajani, Nacatl Pariah",6.0
+modern,creatures,2026-10-26,"Kaheera, the Orphanguard",6.0
+modern,creatures,2026-10-26,Voice of Victory,6.0
+modern,creatures,2026-10-26,Containment Priest,6.0
+modern,creatures,2026-10-26,"Emry, Lurker of the Loch",6.0
+modern,creatures,2026-10-26,Emperor of Bones,6.0
+modern,creatures,2026-10-26,Glaring Fleshraker,6.0
+modern,creatures,2026-10-26,Murktide Regent,6.0
+modern,creatures,2026-10-26,Witch Enchanter,6.0
+modern,creatures,2026-10-26,Delighted Halfling,6.0
+modern,creatures,2026-10-26,Kappa Cannoneer,6.0
+modern,creatures,2026-10-26,Nethergoyf,5.0
+modern,creatures,2026-10-26,Pinnacle Emissary,5.0
+modern,creatures,2026-10-26,Scion of Draco,5.0
+modern,creatures,2026-10-26,Territorial Kavu,5.0
+modern,creatures,2026-10-26,Detective's Phoenix,5.0
+modern,creatures,2026-10-26,Dark Matter Manipulator,5.0
+modern,creatures,2026-10-26,Moonshadow,5.0
+modern,creatures,2026-10-26,Walking Ballista,5.0
+modern,creatures,2026-10-26,"Atraxa, Grand Unifier",5.0
+modern,creatures,2026-10-26,Orcish Bowmasters,5.0
+modern,creatures,2026-10-26,Seasoned Pyromancer,5.0
+modern,creatures,2026-10-26,Boggart Trawler,5.0
+modern,creatures,2026-10-26,Overlord of the Balemurk,5.0
+modern,creatures,2026-10-26,Griselbrand,5.0
+modern,creatures,2026-10-26,Badgermole Cub,5.0
+modern,creatures,2026-10-26,Formidable Speaker,5.0
+modern,spells,2026-10-26,Consign to Memory,49.0
+modern,spells,2026-10-26,Mystical Dispute,37.0
+modern,spells,2026-10-26,Vexing Bauble,33.0
+modern,spells,2026-10-26,Grafdigger's Cage,32.0
+modern,spells,2026-10-26,Spell Snare,27.0
+modern,spells,2026-10-26,Lightning Bolt,27.0
+modern,spells,2026-10-26,Wrath of the Skies,26.0
+modern,spells,2026-10-26,Thoughtseize,25.0
+modern,spells,2026-10-26,Dismember,25.0
+modern,spells,2026-10-26,High Noon,24.0
+modern,spells,2026-10-26,Surgical Extraction,24.0
+modern,spells,2026-10-26,Trinisphere,23.0
+modern,spells,2026-10-26,Fatal Push,22.0
+modern,spells,2026-10-26,Mishra's Bauble,22.0
+modern,spells,2026-10-26,Kozilek's Command,22.0
+modern,spells,2026-10-26,"Teferi, Time Raveler",21.0
+modern,spells,2026-10-26,Malevolent Rumble,20.0
+modern,spells,2026-10-26,Force of Negation,20.0
+modern,spells,2026-10-26,Pithing Needle,20.0
+modern,spells,2026-10-26,Prismatic Ending,19.0
+modern,spells,2026-10-26,Nature's Claim,19.0
+modern,spells,2026-10-26,Tormod's Crypt,18.0
+modern,spells,2026-10-26,Soul-Guide Lantern,17.0
+modern,spells,2026-10-26,Wear // Tear,16.0
+modern,spells,2026-10-26,Springleaf Drum,16.0
+modern,spells,2026-10-26,Ancient Stirrings,16.0
+modern,spells,2026-10-26,Sink into Stupor,16.0
+modern,spells,2026-10-26,Blade of the Bloodchief,16.0
+modern,spells,2026-10-26,Preordain,15.0
+modern,spells,2026-10-26,Unholy Heat,15.0
+modern,spells,2026-10-26,Blood Moon,15.0
+modern,spells,2026-10-26,Meltdown,15.0
+modern,spells,2026-10-26,Talisman of Resilience,12.0
+modern,spells,2026-10-26,Spell Pierce,12.0
+modern,spells,2026-10-26,"Ashiok, Dream Render",12.0
+modern,spells,2026-10-26,Nihil Spellbomb,11.0
+modern,spells,2026-10-26,March of Otherworldly Light,11.0
+modern,spells,2026-10-26,Ephemerate,11.0
+modern,spells,2026-10-26,Engineered Explosives,11.0
+modern,spells,2026-10-26,Galvanic Discharge,11.0
+modern,spells,2026-10-26,Disruptor Flute,10.0
+modern,spells,2026-10-26,Cori-Steel Cutter,10.0
+modern,spells,2026-10-26,Rest in Peace,10.0
+modern,spells,2026-10-26,Orim's Chant,10.0
+modern,spells,2026-10-26,Lava Dart,10.0
+modern,spells,2026-10-26,Warping Wail,10.0
+modern,spells,2026-10-26,Expressive Iteration,10.0
+modern,spells,2026-10-26,Force of Vigor,10.0
+modern,spells,2026-10-26,Damping Sphere,9.0
+modern,spells,2026-10-26,Chalice of the Void,9.0
+modern,lands,2026-10-26,Mountain,35.0
+modern,lands,2026-10-26,Arid Mesa,34.0
+modern,lands,2026-10-26,Flooded Strand,32.0
+modern,lands,2026-10-26,Forest,32.0
+modern,lands,2026-10-26,Island,31.0
+modern,lands,2026-10-26,Steam Vents,31.0
+modern,lands,2026-10-26,Plains,30.0
+modern,lands,2026-10-26,"Boseiju, Who Endures",30.0
+modern,lands,2026-10-26,Thundering Falls,26.0
+modern,lands,2026-10-26,Urza's Saga,26.0
+modern,lands,2026-10-26,Scalding Tarn,26.0
+modern,lands,2026-10-26,Polluted Delta,24.0
+modern,lands,2026-10-26,Wooded Foothills,24.0
+modern,lands,2026-10-26,Swamp,22.0
+modern,lands,2026-10-26,Bloodstained Mire,22.0
+modern,lands,2026-10-26,Hallowed Fountain,22.0
+modern,lands,2026-10-26,Eldrazi Temple,21.0
+modern,lands,2026-10-26,Marsh Flats,21.0
+modern,lands,2026-10-26,Ugin's Labyrinth,21.0
+modern,lands,2026-10-26,Gemstone Caverns,21.0
+modern,lands,2026-10-26,Meticulous Archive,19.0
+modern,lands,2026-10-26,Sacred Foundry,19.0
+modern,lands,2026-10-26,Cavern of Souls,17.0
+modern,lands,2026-10-26,Shifting Woodland,15.0
+modern,lands,2026-10-26,Fiery Islet,14.0
+modern,lands,2026-10-26,Watery Grave,14.0
+modern,lands,2026-10-26,Blood Crypt,13.0
+modern,lands,2026-10-26,Undercity Sewers,13.0
+modern,lands,2026-10-26,Misty Rainforest,13.0
+modern,lands,2026-10-26,Elegant Parlor,13.0
+modern,lands,2026-10-26,"Otawara, Soaring City",12.0
+modern,lands,2026-10-26,Godless Shrine,12.0
+modern,lands,2026-10-26,Verdant Catacombs,11.0
+modern,lands,2026-10-26,Windswept Heath,11.0
+modern,lands,2026-10-26,Temple Garden,11.0
+modern,lands,2026-10-26,"Yavimaya, Cradle of Growth",10.0
+modern,lands,2026-10-26,Breeding Pool,10.0
+modern,lands,2026-10-26,Arena of Glory,10.0
+modern,lands,2026-10-26,Shadowy Backstreet,9.0
+modern,lands,2026-10-26,Raucous Theater,9.0
+modern,lands,2026-10-26,Dryad Arbor,8.0
+modern,lands,2026-10-26,Overgrown Tomb,8.0
+modern,lands,2026-10-26,Bojuka Bog,7.0
+modern,lands,2026-10-26,Stomping Ground,7.0
+modern,lands,2026-10-26,Spirebluff Canal,6.0
+modern,lands,2026-10-26,Geier Reach Sanitarium,6.0
+modern,lands,2026-10-26,Underground Mortuary,6.0
+modern,lands,2026-10-26,Monumental Henge,6.0
+modern,lands,2026-10-26,Hedge Maze,6.0
+modern,lands,2026-10-26,Dalkovan Encampment,6.0
+legacy,all,2026-10-26,Force of Will,53.0
+legacy,all,2026-10-26,Consign to Memory,50.0
+legacy,all,2026-10-26,Brainstorm,49.0
+legacy,all,2026-10-26,Ponder,47.0
+legacy,all,2026-10-26,Force of Negation,45.0
+legacy,all,2026-10-26,Lotus Petal,35.0
+legacy,all,2026-10-26,Disruptor Flute,34.0
+legacy,all,2026-10-26,Thoughtseize,33.0
+legacy,all,2026-10-26,Daze,30.0
+legacy,all,2026-10-26,Swords to Plowshares,28.0
+legacy,all,2026-10-26,Pyroblast,24.0
+legacy,all,2026-10-26,Surgical Extraction,23.0
+legacy,all,2026-10-26,Hydroblast,22.0
+legacy,all,2026-10-26,Orcish Bowmasters,22.0
+legacy,all,2026-10-26,Fatal Push,21.0
+legacy,all,2026-10-26,Murktide Regent,19.0
+legacy,all,2026-10-26,Containment Priest,19.0
+legacy,all,2026-10-26,"Tamiyo, Inquisitive Student",19.0
+legacy,all,2026-10-26,Wrath of the Skies,17.0
+legacy,all,2026-10-26,Mishra's Bauble,17.0
+legacy,all,2026-10-26,Barrowgoyf,17.0
+legacy,all,2026-10-26,Flow State,17.0
+legacy,all,2026-10-26,Erode,17.0
+legacy,all,2026-10-26,Leyline of the Void,16.0
+legacy,all,2026-10-26,Hexing Squelcher,16.0
+legacy,all,2026-10-26,Null Rod,15.0
+legacy,all,2026-10-26,Massacre,15.0
+legacy,all,2026-10-26,Brazen Borrower,14.0
+legacy,all,2026-10-26,Dismember,14.0
+legacy,all,2026-10-26,Pithing Needle,14.0
+legacy,all,2026-10-26,"Phelia, Exuberant Shepherd",14.0
+legacy,all,2026-10-26,Moonshadow,13.0
+legacy,all,2026-10-26,"Kaito, Bane of Nightmares",13.0
+legacy,all,2026-10-26,Kozilek's Command,13.0
+legacy,all,2026-10-26,Stock Up,13.0
+legacy,all,2026-10-26,The One Ring,12.0
+legacy,all,2026-10-26,"Atraxa, Grand Unifier",12.0
+legacy,all,2026-10-26,Dark Ritual,12.0
+legacy,all,2026-10-26,Tormod's Crypt,12.0
+legacy,all,2026-10-26,Faerie Macabre,11.0
+legacy,all,2026-10-26,Mox Opal,11.0
+legacy,all,2026-10-26,Snuff Out,11.0
+legacy,all,2026-10-26,Damping Sphere,11.0
+legacy,all,2026-10-26,Abrade,11.0
+legacy,all,2026-10-26,Grafdigger's Cage,11.0
+legacy,all,2026-10-26,Prismatic Ending,11.0
+legacy,all,2026-10-26,Lion's Eye Diamond,11.0
+legacy,all,2026-10-26,Show and Tell,11.0
+legacy,all,2026-10-26,Dauthi Voidwalker,11.0
+legacy,all,2026-10-26,Quantum Riddler,11.0
+legacy,creatures,2026-10-26,Orcish Bowmasters,22.0
+legacy,creatures,2026-10-26,Murktide Regent,19.0
+legacy,creatures,2026-10-26,Containment Priest,19.0
+legacy,creatures,2026-10-26,"Tamiyo, Inquisitive Student",19.0
+legacy,creatures,2026-10-26,Barrowgoyf,17.0
+legacy,creatures,2026-10-26,Hexing Squelcher,16.0
+legacy,creatures,2026-10-26,Brazen Borrower,14.0
+legacy,creatures,2026-10-26,"Phelia, Exuberant Shepherd",14.0
+legacy,creatures,2026-10-26,Moonshadow,13.0
+legacy,creatures,2026-10-26,"Atraxa, Grand Unifier",12.0
+legacy,creatures,2026-10-26,Faerie Macabre,11.0
+legacy,creatures,2026-10-26,Quantum Riddler,11.0
+legacy,creatures,2026-10-26,Dauthi Voidwalker,11.0
+legacy,creatures,2026-10-26,Voice of Victory,10.0
+legacy,creatures,2026-10-26,"Lavinia, Azorius Renegade",9.0
+legacy,creatures,2026-10-26,Endurance,9.0
+legacy,creatures,2026-10-26,Guide of Souls,8.0
+legacy,creatures,2026-10-26,Nethergoyf,8.0
+legacy,creatures,2026-10-26,Ocelot Pride,8.0
+legacy,creatures,2026-10-26,"Bilbo, Thief in the Night",8.0
+legacy,creatures,2026-10-26,"Ajani, Nacatl Pariah",8.0
+legacy,creatures,2026-10-26,Amped Raptor,8.0
+legacy,creatures,2026-10-26,Glaring Fleshraker,7.0
+legacy,creatures,2026-10-26,"Hogaak, Arisen Necropolis",7.0
+legacy,creatures,2026-10-26,White Orchid Phantom,7.0
+legacy,creatures,2026-10-26,"Emrakul, the Aeons Torn",7.0
+legacy,creatures,2026-10-26,Stitcher's Supplier,7.0
+legacy,creatures,2026-10-26,Dragon's Rage Channeler,7.0
+legacy,creatures,2026-10-26,Dark Matter Manipulator,6.0
+legacy,creatures,2026-10-26,Thassa's Oracle,6.0
+legacy,creatures,2026-10-26,Street Wraith,6.0
+legacy,creatures,2026-10-26,Sand Scout,6.0
+legacy,creatures,2026-10-26,Magus of the Moon,5.0
+legacy,creatures,2026-10-26,Solitude,5.0
+legacy,creatures,2026-10-26,Icetill Explorer,5.0
+legacy,creatures,2026-10-26,Triumph of Saint Katherine,5.0
+legacy,creatures,2026-10-26,Haywire Mite,5.0
+legacy,creatures,2026-10-26,Collector Ouphe,5.0
+legacy,creatures,2026-10-26,Witch Enchanter,5.0
+legacy,creatures,2026-10-26,Simian Spirit Guide,5.0
+legacy,creatures,2026-10-26,Delver of Secrets,5.0
+legacy,creatures,2026-10-26,"Thalia, Guardian of Thraben",4.0
+legacy,creatures,2026-10-26,"Yorion, Sky Nomad",4.0
+legacy,creatures,2026-10-26,Stoneforge Mystic,4.0
+legacy,creatures,2026-10-26,Skyclave Apparition,4.0
+legacy,creatures,2026-10-26,Recruiter of the Guard,4.0
+legacy,creatures,2026-10-26,Fury,4.0
+legacy,creatures,2026-10-26,Thought-Knot Seer,4.0
+legacy,creatures,2026-10-26,Flickerwisp,4.0
+legacy,creatures,2026-10-26,Griselbrand,4.0
+legacy,spells,2026-10-26,Force of Will,53.0
+legacy,spells,2026-10-26,Consign to Memory,50.0
+legacy,spells,2026-10-26,Brainstorm,49.0
+legacy,spells,2026-10-26,Ponder,47.0
+legacy,spells,2026-10-26,Force of Negation,45.0
+legacy,spells,2026-10-26,Lotus Petal,35.0
+legacy,spells,2026-10-26,Disruptor Flute,34.0
+legacy,spells,2026-10-26,Thoughtseize,33.0
+legacy,spells,2026-10-26,Daze,30.0
+legacy,spells,2026-10-26,Swords to Plowshares,28.0
+legacy,spells,2026-10-26,Pyroblast,24.0
+legacy,spells,2026-10-26,Surgical Extraction,23.0
+legacy,spells,2026-10-26,Hydroblast,22.0
+legacy,spells,2026-10-26,Fatal Push,21.0
+legacy,spells,2026-10-26,Wrath of the Skies,17.0
+legacy,spells,2026-10-26,Mishra's Bauble,17.0
+legacy,spells,2026-10-26,Erode,17.0
+legacy,spells,2026-10-26,Flow State,17.0
+legacy,spells,2026-10-26,Leyline of the Void,16.0
+legacy,spells,2026-10-26,Null Rod,15.0
+legacy,spells,2026-10-26,Massacre,15.0
+legacy,spells,2026-10-26,Dismember,14.0
+legacy,spells,2026-10-26,Pithing Needle,14.0
+legacy,spells,2026-10-26,"Kaito, Bane of Nightmares",13.0
+legacy,spells,2026-10-26,Kozilek's Command,13.0
+legacy,spells,2026-10-26,Stock Up,13.0
+legacy,spells,2026-10-26,The One Ring,12.0
+legacy,spells,2026-10-26,Dark Ritual,12.0
+legacy,spells,2026-10-26,Tormod's Crypt,12.0
+legacy,spells,2026-10-26,Mox Opal,11.0
+legacy,spells,2026-10-26,Snuff Out,11.0
+legacy,spells,2026-10-26,Damping Sphere,11.0
+legacy,spells,2026-10-26,Abrade,11.0
+legacy,spells,2026-10-26,Grafdigger's Cage,11.0
+legacy,spells,2026-10-26,Prismatic Ending,11.0
+legacy,spells,2026-10-26,Show and Tell,11.0
+legacy,spells,2026-10-26,Lion's Eye Diamond,11.0
+legacy,spells,2026-10-26,Price of Progress,11.0
+legacy,spells,2026-10-26,Flusterstorm,10.0
+legacy,spells,2026-10-26,Mindbreak Trap,10.0
+legacy,spells,2026-10-26,Carpet of Flowers,10.0
+legacy,spells,2026-10-26,Force of Vigor,9.0
+legacy,spells,2026-10-26,"Karn, the Great Creator",9.0
+legacy,spells,2026-10-26,Skateboard,9.0
+legacy,spells,2026-10-26,Nihil Spellbomb,9.0
+legacy,spells,2026-10-26,Ensnaring Bridge,9.0
+legacy,spells,2026-10-26,Mycosynth Lattice,9.0
+legacy,spells,2026-10-26,"Ugin, Eye of the Storms",8.0
+legacy,spells,2026-10-26,Lightning Bolt,8.0
+legacy,spells,2026-10-26,Omniscience,8.0
+legacy,lands,2026-10-26,Wasteland,54.0
+legacy,lands,2026-10-26,Island,45.0
+legacy,lands,2026-10-26,Flooded Strand,45.0
+legacy,lands,2026-10-26,Polluted Delta,42.0
+legacy,lands,2026-10-26,Misty Rainforest,39.0
+legacy,lands,2026-10-26,Karakas,32.0
+legacy,lands,2026-10-26,Scalding Tarn,31.0
+legacy,lands,2026-10-26,Ancient Tomb,29.0
+legacy,lands,2026-10-26,Swamp,29.0
+legacy,lands,2026-10-26,Underground Sea,28.0
+legacy,lands,2026-10-26,Plains,27.0
+legacy,lands,2026-10-26,Undercity Sewers,23.0
+legacy,lands,2026-10-26,Verdant Catacombs,21.0
+legacy,lands,2026-10-26,Marsh Flats,21.0
+legacy,lands,2026-10-26,Volcanic Island,21.0
+legacy,lands,2026-10-26,"Boseiju, Who Endures",20.0
+legacy,lands,2026-10-26,Mountain,19.0
+legacy,lands,2026-10-26,Tundra,18.0
+legacy,lands,2026-10-26,Urza's Saga,17.0
+legacy,lands,2026-10-26,Bloodstained Mire,17.0
+legacy,lands,2026-10-26,Forest,17.0
+legacy,lands,2026-10-26,City of Traitors,16.0
+legacy,lands,2026-10-26,Arid Mesa,13.0
+legacy,lands,2026-10-26,Meticulous Archive,12.0
+legacy,lands,2026-10-26,Cavern of Souls,12.0
+legacy,lands,2026-10-26,Windswept Heath,11.0
+legacy,lands,2026-10-26,Thundering Falls,11.0
+legacy,lands,2026-10-26,Tropical Island,11.0
+legacy,lands,2026-10-26,Dryad Arbor,9.0
+legacy,lands,2026-10-26,Plateau,9.0
+legacy,lands,2026-10-26,Urza's Tower,9.0
+legacy,lands,2026-10-26,Bojuka Bog,9.0
+legacy,lands,2026-10-26,Planar Nexus,9.0
+legacy,lands,2026-10-26,Elegant Parlor,8.0
+legacy,lands,2026-10-26,Savannah,8.0
+legacy,lands,2026-10-26,Prismatic Vista,7.0
+legacy,lands,2026-10-26,Lazotep Quarry,7.0
+legacy,lands,2026-10-26,Bayou,7.0
+legacy,lands,2026-10-26,Badlands,6.0
+legacy,lands,2026-10-26,Ghost Quarter,6.0
+legacy,lands,2026-10-26,Hedge Maze,6.0
+legacy,lands,2026-10-26,Scrubland,6.0
+legacy,lands,2026-10-26,Petrified Hamlet,6.0
+legacy,lands,2026-10-26,The Tabernacle at Pendrell Vale,6.0
+legacy,lands,2026-10-26,"Yavimaya, Cradle of Growth",6.0
+legacy,lands,2026-10-26,Thespian's Stage,5.0
+legacy,lands,2026-10-26,Dark Depths,5.0
+legacy,lands,2026-10-26,Talon Gates of Madara,5.0
+legacy,lands,2026-10-26,Shadowy Backstreet,5.0
+legacy,lands,2026-10-26,Raucous Theater,5.0
+pauper,all,2026-10-26,Hydroblast,37.0
+pauper,all,2026-10-26,Blue Elemental Blast,32.0
+pauper,all,2026-10-26,Pyroblast,30.0
+pauper,all,2026-10-26,Relic of Progenitus,28.0
+pauper,all,2026-10-26,Lorien Revealed,27.0
+pauper,all,2026-10-26,Nihil Spellbomb,26.0
+pauper,all,2026-10-26,Counterspell,25.0
+pauper,all,2026-10-26,Cast Down,23.0
+pauper,all,2026-10-26,Dispel,23.0
+pauper,all,2026-10-26,Annul,23.0
+pauper,all,2026-10-26,Lightning Bolt,22.0
+pauper,all,2026-10-26,Red Elemental Blast,22.0
+pauper,all,2026-10-26,Extract a Confession,19.0
+pauper,all,2026-10-26,Murmuring Mystic,19.0
+pauper,all,2026-10-26,Baleful Strix,18.0
+pauper,all,2026-10-26,Sneaky Snacker,18.0
+pauper,all,2026-10-26,Arms of Hadar,17.0
+pauper,all,2026-10-26,Faerie Macabre,17.0
+pauper,all,2026-10-26,Brainstorm,17.0
+pauper,all,2026-10-26,Refurbished Familiar,17.0
+pauper,all,2026-10-26,Snuff Out,16.0
+pauper,all,2026-10-26,Campfire,16.0
+pauper,all,2026-10-26,Vandalblast,16.0
+pauper,all,2026-10-26,Voldaren Epicure,15.0
+pauper,all,2026-10-26,Weather the Storm,15.0
+pauper,all,2026-10-26,Thraben Charm,14.0
+pauper,all,2026-10-26,Cast into the Fire,14.0
+pauper,all,2026-10-26,Blood Fountain,14.0
+pauper,all,2026-10-26,Generous Ent,14.0
+pauper,all,2026-10-26,Faithless Looting,14.0
+pauper,all,2026-10-26,Dust to Dust,13.0
+pauper,all,2026-10-26,Fiery Temper,13.0
+pauper,all,2026-10-26,Fireblast,13.0
+pauper,all,2026-10-26,Grab the Prize,13.0
+pauper,all,2026-10-26,Breath Weapon,13.0
+pauper,all,2026-10-26,Flaring Pain,13.0
+pauper,all,2026-10-26,Nyxborn Hydra,13.0
+pauper,all,2026-10-26,Highway Robbery,13.0
+pauper,all,2026-10-26,Envelop,13.0
+pauper,all,2026-10-26,Smash to Smithereens,13.0
+pauper,all,2026-10-26,Thorn of the Black Rose,12.0
+pauper,all,2026-10-26,Lava Dart,12.0
+pauper,all,2026-10-26,Guttersnipe,12.0
+pauper,all,2026-10-26,Suffocating Fumes,12.0
+pauper,all,2026-10-26,Galvanic Blast,12.0
+pauper,all,2026-10-26,Duress,12.0
+pauper,all,2026-10-26,Thoughtcast,12.0
+pauper,all,2026-10-26,Plunder the Trollshaws,11.0
+pauper,all,2026-10-26,Sagu Wildling,11.0
+pauper,all,2026-10-26,Giant's Boulder,11.0
+pauper,creatures,2026-10-26,Murmuring Mystic,19.0
+pauper,creatures,2026-10-26,Baleful Strix,18.0
+pauper,creatures,2026-10-26,Sneaky Snacker,18.0
+pauper,creatures,2026-10-26,Faerie Macabre,17.0
+pauper,creatures,2026-10-26,Refurbished Familiar,17.0
+pauper,creatures,2026-10-26,Voldaren Epicure,15.0
+pauper,creatures,2026-10-26,Generous Ent,14.0
+pauper,creatures,2026-10-26,Nyxborn Hydra,13.0
+pauper,creatures,2026-10-26,Thorn of the Black Rose,12.0
+pauper,creatures,2026-10-26,Guttersnipe,12.0
+pauper,creatures,2026-10-26,Sagu Wildling,11.0
+pauper,creatures,2026-10-26,Avenging Hunter,11.0
+pauper,creatures,2026-10-26,Kessig Flamebreather,10.0
+pauper,creatures,2026-10-26,Masked Vandal,10.0
+pauper,creatures,2026-10-26,Utrom Monitor,10.0
+pauper,creatures,2026-10-26,Quirion Ranger,9.0
+pauper,creatures,2026-10-26,Myr Enforcer,9.0
+pauper,creatures,2026-10-26,Writhing Chrysalis,9.0
+pauper,creatures,2026-10-26,Tolarian Terror,8.0
+pauper,creatures,2026-10-26,Ninja of the Deep Hours,8.0
+pauper,creatures,2026-10-26,Spellstutter Sprite,8.0
+pauper,creatures,2026-10-26,Krark-Clan Shaman,8.0
+pauper,creatures,2026-10-26,Faerie Seer,8.0
+pauper,creatures,2026-10-26,Augur of Bolas,8.0
+pauper,creatures,2026-10-26,Kor Skyfisher,8.0
+pauper,creatures,2026-10-26,Moon-Circuit Hacker,7.0
+pauper,creatures,2026-10-26,Cryptic Serpent,7.0
+pauper,creatures,2026-10-26,Standard Bearer,7.0
+pauper,creatures,2026-10-26,Thraben Inspector,7.0
+pauper,creatures,2026-10-26,Glint Hawk,7.0
+pauper,creatures,2026-10-26,Scattershot Archer,7.0
+pauper,creatures,2026-10-26,Mukotai Ambusher,7.0
+pauper,creatures,2026-10-26,Troll of Khazad-dum,6.0
+pauper,creatures,2026-10-26,Mulldrifter,6.0
+pauper,creatures,2026-10-26,Novice Inspector,6.0
+pauper,creatures,2026-10-26,Priest of Titania,5.0
+pauper,creatures,2026-10-26,Timberwatch Elf,5.0
+pauper,creatures,2026-10-26,Delver of Secrets,5.0
+pauper,creatures,2026-10-26,"Leonardo, Big Brother",5.0
+pauper,creatures,2026-10-26,Bramble Wurm,5.0
+pauper,creatures,2026-10-26,Troublemaker Ouphe,5.0
+pauper,creatures,2026-10-26,Llanowar Elves,5.0
+pauper,creatures,2026-10-26,Vitu-Ghazi Inspector,5.0
+pauper,creatures,2026-10-26,Mesmeric Fiend,5.0
+pauper,creatures,2026-10-26,Archaeomancer,5.0
+pauper,creatures,2026-10-26,Okiba-Gang Shinobi,5.0
+pauper,creatures,2026-10-26,Clockwork Percussionist,5.0
+pauper,creatures,2026-10-26,Fyndhorn Elves,5.0
+pauper,creatures,2026-10-26,Lotleth Giant,5.0
+pauper,creatures,2026-10-26,Elvish Mystic,4.0
+pauper,spells,2026-10-26,Hydroblast,37.0
+pauper,spells,2026-10-26,Blue Elemental Blast,32.0
+pauper,spells,2026-10-26,Pyroblast,30.0
+pauper,spells,2026-10-26,Relic of Progenitus,28.0
+pauper,spells,2026-10-26,Lorien Revealed,27.0
+pauper,spells,2026-10-26,Nihil Spellbomb,26.0
+pauper,spells,2026-10-26,Counterspell,25.0
+pauper,spells,2026-10-26,Cast Down,23.0
+pauper,spells,2026-10-26,Annul,23.0
+pauper,spells,2026-10-26,Dispel,23.0
+pauper,spells,2026-10-26,Lightning Bolt,22.0
+pauper,spells,2026-10-26,Red Elemental Blast,22.0
+pauper,spells,2026-10-26,Extract a Confession,19.0
+pauper,spells,2026-10-26,Arms of Hadar,17.0
+pauper,spells,2026-10-26,Brainstorm,17.0
+pauper,spells,2026-10-26,Snuff Out,16.0
+pauper,spells,2026-10-26,Campfire,16.0
+pauper,spells,2026-10-26,Vandalblast,16.0
+pauper,spells,2026-10-26,Weather the Storm,15.0
+pauper,spells,2026-10-26,Thraben Charm,14.0
+pauper,spells,2026-10-26,Cast into the Fire,14.0
+pauper,spells,2026-10-26,Blood Fountain,14.0
+pauper,spells,2026-10-26,Faithless Looting,14.0
+pauper,spells,2026-10-26,Fiery Temper,13.0
+pauper,spells,2026-10-26,Dust to Dust,13.0
+pauper,spells,2026-10-26,Fireblast,13.0
+pauper,spells,2026-10-26,Grab the Prize,13.0
+pauper,spells,2026-10-26,Breath Weapon,13.0
+pauper,spells,2026-10-26,Flaring Pain,13.0
+pauper,spells,2026-10-26,Highway Robbery,13.0
+pauper,spells,2026-10-26,Envelop,13.0
+pauper,spells,2026-10-26,Smash to Smithereens,13.0
+pauper,spells,2026-10-26,Lava Dart,12.0
+pauper,spells,2026-10-26,Suffocating Fumes,12.0
+pauper,spells,2026-10-26,Galvanic Blast,12.0
+pauper,spells,2026-10-26,Duress,12.0
+pauper,spells,2026-10-26,Thoughtcast,12.0
+pauper,spells,2026-10-26,Plunder the Trollshaws,11.0
+pauper,spells,2026-10-26,Giant's Boulder,11.0
+pauper,spells,2026-10-26,End the Festivities,10.0
+pauper,spells,2026-10-26,Ichor Wellspring,10.0
+pauper,spells,2026-10-26,Winding Way,10.0
+pauper,spells,2026-10-26,Dispatch,10.0
+pauper,spells,2026-10-26,Preordain,10.0
+pauper,spells,2026-10-26,Lead the Stampede,10.0
+pauper,spells,2026-10-26,Ponder,10.0
+pauper,spells,2026-10-26,Cut Down,10.0
+pauper,spells,2026-10-26,Makeshift Munitions,9.0
+pauper,spells,2026-10-26,Lembas,9.0
+pauper,spells,2026-10-26,Reckoner's Bargain,9.0
+pauper,lands,2026-10-26,Mountain,35.0
+pauper,lands,2026-10-26,Swamp,30.0
+pauper,lands,2026-10-26,Island,29.0
+pauper,lands,2026-10-26,Forest,26.0
+pauper,lands,2026-10-26,Bojuka Bog,23.0
+pauper,lands,2026-10-26,Vault of Whispers,18.0
+pauper,lands,2026-10-26,Plains,16.0
+pauper,lands,2026-10-26,Seat of the Synod,14.0
+pauper,lands,2026-10-26,Mistvault Bridge,13.0
+pauper,lands,2026-10-26,Great Furnace,12.0
+pauper,lands,2026-10-26,Contaminated Aquifer,12.0
+pauper,lands,2026-10-26,Ancient Den,10.0
+pauper,lands,2026-10-26,Drossforge Bridge,10.0
+pauper,lands,2026-10-26,Dimir Aqueduct,8.0
+pauper,lands,2026-10-26,Seething Landscape,7.0
+pauper,lands,2026-10-26,Silverbluff Bridge,6.0
+pauper,lands,2026-10-26,Razortide Bridge,6.0
+pauper,lands,2026-10-26,Urza's Mine,6.0
+pauper,lands,2026-10-26,Urza's Power Plant,6.0
+pauper,lands,2026-10-26,Urza's Tower,6.0
+pauper,lands,2026-10-26,Goldmire Bridge,5.0
+pauper,lands,2026-10-26,Conduit Pylons,5.0
+pauper,lands,2026-10-26,Gingerbread Cabin,5.0
+pauper,lands,2026-10-26,Khalni Garden,4.0
+pauper,lands,2026-10-26,Snow-Covered Island,4.0
+pauper,lands,2026-10-26,Ice Tunnel,4.0
+pauper,lands,2026-10-26,Volatile Fjord,4.0
+pauper,lands,2026-10-26,Ash Barrens,3.0
+pauper,lands,2026-10-26,Glacial Floodplain,3.0
+pauper,lands,2026-10-26,Snow-Covered Mountain,3.0
+pauper,lands,2026-10-26,Hickory Woodlot,3.0
+pauper,lands,2026-10-26,Rustvale Bridge,3.0
+pauper,lands,2026-10-26,Sandstone Needle,3.0
+pauper,lands,2026-10-26,Haunted Mire,3.0
+pauper,lands,2026-10-26,Geothermal Crevice,3.0
+pauper,lands,2026-10-26,Gruul Turf,3.0
+pauper,lands,2026-10-26,Slagwoods Bridge,3.0
+pauper,lands,2026-10-26,Twisted Landscape,2.0
+pauper,lands,2026-10-26,Witch's Cottage,2.0
+pauper,lands,2026-10-26,Boros Garrison,2.0
+pauper,lands,2026-10-26,Haunted Fengraf,2.0
+pauper,lands,2026-10-26,Snow-Covered Plains,2.0
+pauper,lands,2026-10-26,Perilous Landscape,2.0
+pauper,lands,2026-10-26,Contaminated Landscape,2.0
+pauper,lands,2026-10-26,Desert,2.0
+pauper,lands,2026-10-26,Wooded Ridgeline,2.0
+pauper,lands,2026-10-26,Tangled Islet,2.0
+pauper,lands,2026-10-26,Wind-Scarred Crag,2.0
+pauper,lands,2026-10-26,Idyllic Beachfront,2.0
+pauper,lands,2026-10-26,Snow-Covered Forest,2.0

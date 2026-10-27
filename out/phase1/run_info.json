@@ -1,0 +1,55 @@
+{
+  "gbt_rounds": 294,
+  "tfidf_alpha": 100,
+  "gbt_tfidf_rounds": 305,
+  "lm_bge_base_alpha": 30,
+  "lm_mpnet_base_alpha": 10,
+  "lm_qwen3_emb_0_6b_alpha": 30,
+  "pp_per_logit": 22.141818521577974,
+  "train_sets": [
+    "KHM",
+    "STX",
+    "AFR",
+    "MID",
+    "VOW",
+    "NEO",
+    "SNC",
+    "DMU",
+    "BRO",
+    "ONE",
+    "MOM",
+    "LTR",
+    "WOE",
+    "LCI",
+    "MKM",
+    "OTJ",
+    "MH3",
+    "BLB",
+    "DSK",
+    "FDN",
+    "DFT",
+    "TDM",
+    "FIN",
+    "EOE"
+  ],
+  "val_sets": [
+    "TDM",
+    "FIN",
+    "EOE"
+  ],
+  "test_sets": [
+    "TLA",
+    "ECL",
+    "TMT",
+    "SOS",
+    "MSH",
+    "HOB",
+    "FRA"
+  ],
+  "n_train_rows": 6533,
+  "n_test_rows": 1748,
+  "vanilla_curve_pt_vs_mv": [
+    1.4936532770171727,
+    0.606565363130881
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "n_cards": 8128,
+  "n_staples_train": 260,
+  "n_staples_test": 73,
+  "staples_per_test_set": {
+    "ECL": 16,
+    "FRA": 11,
+    "HOB": 6,
+    "MSH": 6,
+    "SOS": 12,
+    "TLA": 18,
+    "TMT": 4
+  },
+  "median_cutoff_pct": 6.0,
+  "n_snapshots": 20
+}

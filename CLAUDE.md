@@ -1,0 +1,264 @@
+# MTG card strength model: handoff for coding agents
+
+This file is the full context of the project. Read it before touching the code.
+It was written at the end of the first round of work (Oct 2026), done in a cloud
+sandbox, so that work can continue on Alessandro's local machine.
+
+- `README.md`: short user-facing overview, Phase 0 label model and output columns.
+- `out/phase1/REPORT.md`, `out/phase2/REPORT.md` (and `out/phase3/REPORT.md`,
+  `out/phase4/REPORT.md` once present): detailed results per phase. Trust them
+  over this summary if they disagree.
+- `docs/DESIGN.md`: the original design, verbatim. It is the spec; the phases
+  below follow its roadmap (section 8).
+
+## Standing decisions (from Alessandro)
+
+1. **Target.** Strength of card *c* in environment *E* = expected change in win
+   probability when *c* replaces a replacement-level card in a typical deck that
+   can play it. **Limited (17lands PremierDraft) is the primary supervised
+   target**, because it is the only dense source with outcomes. Constructed play
+   and Commander inclusion are auxiliary heads.
+2. **Evaluation is temporal holdout only.** Never use random splits (reprints and
+   near-duplicates leak). Group by Scryfall oracle ID.
+   - Train: 24 sets, KHM (Feb 2021) to EOE (Aug 2025).
+   - Validation (hyperparameters, epoch count): TDM, FIN, EOE; then refit on all 24.
+   - Test: TLA, ECL, TMT, SOS, MSH, HOB, FRA (Nov 2025 to Oct 2026), 1,748 cards.
+   - The set order is `SETS` in `scripts/phase1.py`; `FIRST_TEST = "TLA"`.
+3. **Metrics** are computed within each test set and averaged over the 7:
+   Spearman, Spearman within rarity, NDCG@20, top-20 overlap, MAE in win-rate
+   points (22.14 points per logit), and calibration of the predicted SD.
+4. **Contamination control.** Any pretrained text encoder must be checked:
+   test sets should postdate its training cutoff, and results on sets it could
+   have seen are reported separately. EmbeddingGemma-2 (documented cutoff Jan
+   2025) is the clean reference encoder.
+5. **SOTA encoders are first tested zero-shot** (frozen embeddings + ridge) and
+   only then fine-tuned. Fine-tuning was what helped, not newer encoders.
+6. **CPU only.** Alessandro uses the GPU for another model. Everything so far
+   ran on 4 CPU cores; large encoders are trained by fine-tuning only the top
+   k layers on cached lower-layer states (`mtgstrength/partial.py`). Ask before
+   using a GPU locally.
+7. **Human baselines are the bar that matters**: Draftsim pre-release ratings
+   (Wayback snapshots from before release) and first-week ATA from the 17lands
+   draft dumps.
+8. Work autonomously through the roadmap; Alessandro prefers results over
+   check-ins.
+
+## Repository layout
+
+```
+mtgstrength/        library code
+  data.py           17lands download + streaming CSV reader (handles 2021 export quirks)
+  labels.py         Phase 0 hierarchical logistic label model (EB partial pooling)
+  scryfall.py       Scryfall bulk download, name -> oracle_id join (DFCs, back faces)
+  features.py       167 engineered card features (+4 set-context features)
+  evaluate.py       within-set metrics
+  partial.py        top-k layer fine-tuning on cached hidden states
+scripts/
+  phase0.py         labels for one set  -> out/<SET>/
+  phase1.py         baselines           -> out/phase1/
+  embed.py          frozen embeddings   -> out/phase1/emb/<name>.parquet  (not in git)
+  phase2.py         prep / zeroshot / train / evaluate -> out/phase2/
+  human_baselines.py Draftsim + first-week ATA -> out/phase2/human_ratings.csv
+  phase3_data.py    decklists+outcomes  -> <work-dir>/<SET>.npz          (not in git)
+  phase3.py         deck model train / values / evaluate -> out/phase3/
+  phase4_data.py    EDHREC + MTGGoldfish scraping -> out/phase4/
+  phase4.py         Commander and Constructed heads -> out/phase4/
+  phase4_interactions.py  card-pair synergy search -> out/phase4/interactions_*.csv
+data/raw/human/     Draftsim pre-release snapshots (small, in git)
+out/<SET>/          Phase 0 labels per set (card_labels.csv, summary.json, ...)
+out/phaseN/         results per phase
+```
+
+Scripts are run from the repo root (`python scripts/phaseN.py ...`); they
+put the repo root and `scripts/` on `sys.path` themselves.
+
+## Setup
+
+```
+python -m venv .venv && source .venv/bin/activate
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements.txt
+```
+
+Network hosts the pipeline needs: `17lands-public.s3.amazonaws.com` (game and
+draft dumps), `api.scryfall.com` and `data.scryfall.io` (oracle bulk data),
+`huggingface.co` / `*.hf.co` (encoders), `json.edhrec.com`, `www.mtggoldfish.com`,
+`web.archive.org` (Draftsim and MTGGoldfish snapshots). Some encoders on Hugging
+Face (EmbeddingGemma) are gated: accept the licence and `huggingface-cli login`.
+
+### Data not in git (regenerate)
+
+| file | how to get it |
+|---|---|
+| `data/raw/scryfall_oracle_cards.jsonl.gz` (25 MB) | downloaded automatically by `mtgstrength.scryfall.download_oracle_cards("data/raw")`, which `phase0.py` calls. Note: oracle text is Scryfall's current wording. |
+| 17lands `game_data_public.<SET>.PremierDraft.csv.gz` | downloaded automatically by `phase0.py` / `phase3_data.py` into `--data-dir` / `--raw-dir`. 0.5–2 GB each. |
+| 17lands `draft_data_public.<SET>.PremierDraft.csv.gz` | downloaded by `human_baselines.py --draft-dir` (test sets only) |
+| `out/phase1/emb/*.parquet` (35–95 MB each) | `scripts/embed.py`, see below. Phase 3 needs `embeddinggemma2.parquet`. |
+| Phase 3 deck-game arrays (`<SET>.npz`) and the deck model checkpoint | `phase3_data.py`, then `phase3.py train`. The checkpoint was never saved outside the sandbox: **retrain it** before `phase3.py values` or `phase4_interactions.py`. |
+| fine-tuned encoder weights | never saved (only predictions are). Retrain with `phase2.py train`. |
+
+Defaults for `--work-dir`, `--model-dir`, `--cache-dir` point at
+`/tmp/claude-0/...` (the sandbox). Pass local paths, e.g. `--work-dir work/p3
+--model-dir models/p3 --cache-dir work/cache` (all git-ignored).
+
+## How to rerun each phase
+
+```
+# Phase 0: labels (one set; ~10 min and ~4 GB RAM per set on 4 CPUs)
+python scripts/phase0.py --set ECL --data-dir data --out-dir out
+#   batch mode used for the other 30 sets:
+python scripts/phase0.py --set <SET> --skip-oh --min-arch-games 1000000000 --max-games 800000
+
+# Phase 1: baselines (~1 min) + frozen embeddings (5–60 min each)
+python scripts/embed.py --model BAAI/bge-base-en-v1.5 --name bge_base
+python scripts/embed.py --model google/embeddinggemma-2 --name embeddinggemma2
+python scripts/phase1.py
+
+# Phase 2: card encoder
+python scripts/phase2.py prep
+python scripts/phase2.py zeroshot --embeddings out/phase1/emb/*.parquet
+python scripts/phase2.py train --encoder google/embeddinggemma-2 --top-k 4 \
+    --name ft_embeddinggemma2_k4 --max-epochs 6 --seeds 0 1 2 --cache-dir work/cache
+python scripts/human_baselines.py --draft-dir data/raw/draft
+python scripts/phase2.py evaluate
+
+# Phase 3: deck model
+python scripts/phase3_data.py --raw-dir <17lands cache> --work-dir work/p3 --max-games 200000
+python scripts/phase3.py train    --work-dir work/p3 --model-dir models/p3   # ~2 h CPU
+python scripts/phase3.py values   --work-dir work/p3 --model-dir models/p3
+python scripts/phase3.py evaluate
+#   distillation into the card head (ablation of design section 6):
+python scripts/phase2.py train --encoder google/embeddinggemma-2 --top-k 4 \
+    --deck-values out/phase3/deck_values.csv --target deck --name ft_embeddinggemma2_k4_deckonly ...
+python scripts/phase2.py train ... --deck-values out/phase3/deck_values.csv --aux-w 0.5 --epochs 4 --skip-val --seeds 0 1 \
+    --name ft_embeddinggemma2_k4_aux
+python scripts/phase2.py train ... --deck-values out/phase3/deck_values.csv --aux-w 0.5 --epochs 4 --skip-val --seeds 0 1 \
+    --consistency-on-test --name ft_embeddinggemma2_k4_auxcons
+
+# Phase 4: extensions
+python scripts/phase4_data.py edhrec
+python scripts/phase4_data.py goldfish
+python scripts/phase4.py commander
+python scripts/phase4.py constructed
+python scripts/phase4_interactions.py --sets TLA ECL TMT SOS MSH HOB FRA \
+    --work-dir work/p3 --model-dir models/p3
+#   fine-tuned Commander head:
+python scripts/phase2.py train ... --target label --label-csv out/phase4/commander_labels.csv \
+    --name ft_embeddinggemma2_k4_commander
+```
+
+Check exact flags with `--help`; the `...` stand for the same encoder/top-k/seed
+flags as the Phase 2 run. The exact config of every run is the first line of
+`out/phase2/runs/<name>/log.jsonl`.
+
+## Results so far
+
+All numbers are mean within-set Spearman on the 7 test sets unless noted.
+
+### Phase 0: debiased labels (done)
+
+One hierarchical logistic regression per set on 17lands games: nuisance terms
+(skill bucket, rank, colours, splash, opponent colours, play/draw, mulligans),
+θ_c for "in hand", θ'_c for deck copies, η_{c,arch} archetype deviations;
+partial pooling by rarity × colour with empirical-Bayes τ²; SDs from the
+inverse Hessian. Label = `theta_vs_repl` (vs median regularly played common),
+weight = 1/(SD² + 0.02). 31 sets labelled (KHM–FRA), 8,281 (set, oracle_id) rows.
+Only ECL has the opening-hand and archetype labels; the batch runs skipped them.
+Label noise ceiling ≈ 0.96–0.98 correlation.
+
+### Phase 1: card-only baselines (done, `out/phase1/`)
+
+| model | Spearman | NDCG@20 | MAE pts |
+|---|---|---|---|
+| rarity only | 0.42 | 0.68 | 2.04 |
+| GBT, 167 engineered features | 0.58 | 0.81 | 1.80 |
+| TF-IDF + ridge | 0.60 | 0.80 | 1.80 |
+| GBT + TF-IDF SVD (`gbt_tfidf`) | 0.59 | **0.83** | **1.75** |
+| frozen mpnet / bge / Qwen3-0.6B + ridge | 0.51–0.52 | 0.78 | ~1.97 |
+
+Frozen sentence embeddings lose numbers and exact wording; bigger frozen
+encoders don't help.
+
+### Phase 2: fine-tuned card encoder (done, `out/phase2/`)
+
+- Fine-tuned EmbeddingGemma-2 (top 4 layers + structured MLP, Gaussian NLL with
+  label variance + within-set Bradley–Terry loss): **0.62** (within rarity 0.51),
+  NDCG@20 0.78. Text-only 0.62, structured-only 0.59, Harrier-0.6B (k=2) 0.61.
+- Average of FT Gemma-2 and `gbt_tfidf`: **0.63**, NDCG@20 0.81: best all-round.
+- Zero-shot 2025–26 encoders (EmbeddingGemma-2, Harrier, Nemotron-3.5-1B):
+  0.515–0.530, no better than older ones. Contamination check: weak, not
+  significant differences (see report).
+- Humans: Draftsim pre-release 0.55 (model beats it on 6/7 sets); first-week
+  ATA 0.65 (model does not beat it). Model + ATA = **0.69**, model + Draftsim = 0.65.
+- Uncertainty roughly calibrated: z-score SD 1.12, 88% coverage of 90% interval.
+
+### Phase 3: deck model (core done, report pending, `out/phase3/`)
+
+- Deck model: card tokens = MLP(engineered features + frozen EmbeddingGemma-2
+  embedding) + per-card ID embedding (dropped at random, p=0.5) + seen/copies
+  embeddings; environment z_E from the set pool; 2-layer transformer, attention
+  pooling; nuisance terms linear. Trained on 4.65M games (200k per training set).
+- Val log-loss 0.642 (0.643 without IDs) vs 0.666 nuisance-only, 0.688 constant.
+- Counterfactual card values vs θ (`deck_values_vs_theta.csv`): training sets
+  0.80–0.92 with real decks, 0.63–0.86 with synthetic decks; **test sets, from
+  synthetic decks only (no game data of the set): 0.48–0.64, mean 0.54**.
+- Distillation ablation (`out/phase2/runs/ft_embeddinggemma2_k4_{deckonly,aux,auxcons}`):
+  runs were finishing at handoff; see `out/phase3/REPORT.md` if present,
+  otherwise run `python scripts/phase2.py evaluate` to score them.
+
+### Phase 4: extensions (core done, report pending, `out/phase4/`)
+
+- **Commander** (target: logit of EDHREC inclusion rate, 8,128 cards):
+  TF-IDF ridge **0.75**, GBT+TF-IDF 0.68, GBT 0.67, rarity 0.47. Limited θ
+  transfers poorly (0.22). Fine-tuned Commander head run:
+  `out/phase2/runs/ft_embeddinggemma2_k4_commander`.
+- **Constructed** (censored: best share of decks in MTGGoldfish top-50 staples,
+  20 snapshots, Standard/Pioneer/Modern/Legacy/Pauper; 73 test staples):
+  AUC within set: GBT 0.81, censored GBT 0.81, TF-IDF logistic 0.79, Limited θ
+  0.65, rarity 0.65. Spearman among staples only ~0.2.
+- **Interaction search**: deck-model 2×2 synergy over the top 40 cards per colour
+  pair, validated against empirical interactions in the held-out test-set
+  games. Precision-weighted correlation 0.13–0.29 on all 7 sets, permutation
+  p = 0.002 each (`interactions_summary_dedup.csv`).
+- **Simulation labels (Forge/XMage self-play): dropped.** Forge download host
+  returned 502 from the sandbox, and the game counts needed are infeasible on CPU.
+
+## What is not done (next steps, in rough priority)
+
+1. **Write/finish the Phase 3 and Phase 4 reports** if `out/phase3/REPORT.md` /
+   `out/phase4/REPORT.md` are missing: evaluate the distillation ablation
+   (θ only vs deck values only vs θ + aux vs θ + aux + consistency on test cards)
+   and the fine-tuned Commander head with the Phase 2 metrics.
+2. **Top-of-ranking weakness**: FT model NDCG@20 0.78 vs GBT 0.83. Try a
+   top-weighted ranking loss (LambdaRank-style) or make the ensemble the default.
+3. **Bayesian update with early play data**: model as prior + first-week
+   17lands data (model + ATA already gives 0.69). Likely the most useful product.
+4. **Real environment encoder** (Set Transformer over the set pool) for the card
+   head, replacing the 4 set-context features; ablate with/without (design 6).
+   HOB is the hardest set for every model and both human baselines.
+5. **Monotonicity regularizer** (design 4) with augmented counterfactual pairs
+   (more P/T, lower MV), and **behavioural probes** (design 5.5): bigger-card
+   edits, reprints in new environments, uncertainty on new mechanics. Requires
+   saving the fine-tuned model weights (currently not saved).
+6. **Forge script AST encoder** (design 3, "symbolic parse") and the
+   text / structured / AST / all ablation. Not started: needs the Forge
+   card scripts (github.com/Card-Forge/forge, `res/cardsfolder`).
+7. **Reminder-text expansion and LLM keyword normalization** for unseen mechanics
+   (design 7). Not started.
+8. **Backfill opening-hand and archetype labels** for the 30 batch-run sets
+   (~10 min/set), then an archetype-conditional head.
+9. **Draft pick-order head** (design 4 multi-task) from the 17lands draft dumps.
+10. **Size-vs-contamination ablation** with fine-tuned encoders of several sizes.
+11. Time-varying environment embedding for Constructed metagame drift (design 7).
+12. Simulation labels (Forge self-play) only if a GPU/cluster becomes available.
+
+## Known caveats
+
+- `user_game_win_rate_bucket` (skill proxy) includes the modelled game; 17lands
+  has no player ID, so skill is a bucket, not a random effect.
+- GIH labels keep some survivorship bias; compare with the opening-hand label.
+- KHM–VOW exports lack colour columns: colours are inferred from decklists.
+- Sets over 800k games were subsampled to 800k for labels; 200k for Phase 3.
+- Differences of ~0.01 Spearman are within seed/run noise.
+- Draftsim FRA ratings changed a lot between 22 and 25 Sep 2026; the 25 Sep
+  snapshot is used (22 Sep kept in `data/raw/human/` for reference).

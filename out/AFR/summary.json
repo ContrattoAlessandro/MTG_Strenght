@@ -1,0 +1,131 @@
+{
+  "set": "AFR",
+  "event_type": "PremierDraft",
+  "n_games": 366660,
+  "n_cards": 266,
+  "archetypes": [],
+  "max_games": 800000,
+  "gih": {
+    "prior_vars": {
+      "nuisance": 10.0,
+      "mu_hand": 10.0,
+      "delta_hand": 0.020978674704608246,
+      "mu_deck": 10.0,
+      "delta_deck": 0.0002449883836762753
+    },
+    "history": [
+      {
+        "em": 0,
+        "newton_iters": 5,
+        "loglik": -232935.9029236239,
+        "tau2_delta_hand": 0.01,
+        "tau2_delta_deck": 0.001
+      },
+      {
+        "em": 1,
+        "newton_iters": 3,
+        "loglik": -232924.32414078235,
+        "tau2_delta_hand": 0.016584115989096274,
+        "tau2_delta_deck": 0.0006278641358523685
+      },
+      {
+        "em": 2,
+        "newton_iters": 3,
+        "loglik": -232928.66265147808,
+        "tau2_delta_hand": 0.019663777330427668,
+        "tau2_delta_deck": 0.0004594987818062808
+      },
+      {
+        "em": 3,
+        "newton_iters": 3,
+        "loglik": -232934.8563015383,
+        "tau2_delta_hand": 0.020675709518325158,
+        "tau2_delta_deck": 0.00036745637055139745
+      },
+      {
+        "em": 4,
+        "newton_iters": 3,
+        "loglik": -232940.5554369056,
+        "tau2_delta_hand": 0.020946061072636565,
+        "tau2_delta_deck": 0.0003104630661486336
+      },
+      {
+        "em": 5,
+        "newton_iters": 3,
+        "loglik": -232945.40465391416,
+        "tau2_delta_hand": 0.020992227273858296,
+        "tau2_delta_deck": 0.00027218821205743176
+      },
+      {
+        "em": 6,
+        "newton_iters": 2,
+        "loglik": -232949.46092143693,
+        "tau2_delta_hand": 0.020978674704608246,
+        "tau2_delta_deck": 0.0002449883836762753
+      }
+    ],
+    "replacement_theta": 0.03705881086451397,
+    "fit_seconds": 193,
+    "nuisance": {
+      "intercept": 0.5222,
+      "n_games=1": 0.0474,
+      "n_games=10": 0.063,
+      "n_games=100": 0.1303,
+      "n_games=5": 0.0378,
+      "n_games=50": 0.0983,
+      "n_games=500": 0.1453,
+      "skill_x_n_games=1": 1.8231,
+      "skill_x_n_games=10": 0.97,
+      "skill_x_n_games=100": 0.9049,
+      "skill_x_n_games=5": 1.1526,
+      "skill_x_n_games=50": 0.9042,
+      "skill_x_n_games=500": 0.9138,
+      "rank=diamond": -0.462,
+      "rank=gold": -0.3082,
+      "rank=mythic": -0.4815,
+      "rank=platinum": -0.3864,
+      "rank=silver": -0.1388,
+      "arch=BR": -0.0665,
+      "arch=RG": -0.1607,
+      "arch=UB": 0.0465,
+      "arch=UG": -0.0547,
+      "arch=UR": -0.0943,
+      "arch=WB": -0.0411,
+      "arch=WG": -0.0948,
+      "arch=WR": -0.1653,
+      "arch=WU": -0.1131,
+      "arch=other": -0.2375,
+      "n_splash=1": -0.2815,
+      "n_splash=2": -0.4474,
+      "opp=BG": -1.1311,
+      "opp=BR": -1.3434,
+      "opp=BRG": -1.3549,
+      "opp=G": -0.1441,
+      "opp=R": -0.4471,
+      "opp=RG": -1.1956,
+      "opp=U": 0.0417,
+      "opp=UB": -1.0935,
+      "opp=UBG": -1.2604,
+      "opp=UBR": -1.1755,
+      "opp=UG": -1.0995,
+      "opp=UR": -1.0806,
+      "opp=W": 0.0791,
+      "opp=WB": -1.1356,
+      "opp=WBG": -1.4117,
+      "opp=WBR": -1.2339,
+      "opp=WG": -1.2323,
+      "opp=WR": -1.1132,
+      "opp=WRG": -1.3193,
+      "opp=WU": -0.9539,
+      "opp=WUB": -1.0876,
+      "opp=WUG": -1.2001,
+      "opp=other": -0.4617,
+      "on_play": 0.1604,
+      "mull=1": -0.6346,
+      "mull=2": -1.3976,
+      "opp_mull=1": 0.6467,
+      "opp_mull=2": 1.4567
+    }
+  },
+  "scryfall_unmatched": []
+}

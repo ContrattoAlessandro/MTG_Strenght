@@ -1,0 +1,21 @@
+{"config": {"cmd": "train", "embeddings": [], "out_dir": "/mnt/project-files/mtg_strength/out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "ft_embeddinggemma2_k4", "no_struct": false, "seeds": [0, 1, 2], "max_epochs": 6, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "top_k": 4, "cache_dir": "/tmp/claude-0/cache", "limit_sets": null}}
+{"epoch": 1, "nll": 0.4807, "bt": 0.7665, "sec": 475, "val_spearman": 0.5555, "val_ndcg": 0.8026, "val_mae": 0.086, "val_nll": -1.7479}
+{"epoch": 2, "nll": 0.1019, "bt": 0.5371, "sec": 457, "val_spearman": 0.5939, "val_ndcg": 0.8252, "val_mae": 0.0827, "val_nll": -1.8467}
+{"epoch": 3, "nll": -0.0072, "bt": 0.4986, "sec": 442, "val_spearman": 0.6068, "val_ndcg": 0.8467, "val_mae": 0.0793, "val_nll": -1.8781}
+{"epoch": 4, "nll": -0.0979, "bt": 0.468, "sec": 460, "val_spearman": 0.6129, "val_ndcg": 0.8524, "val_mae": 0.0804, "val_nll": -1.8455}
+{"epoch": 5, "nll": -0.2164, "bt": 0.4322, "sec": 455, "val_spearman": 0.606, "val_ndcg": 0.8464, "val_mae": 0.0807, "val_nll": -1.8053}
+{"epoch": 6, "nll": -0.3419, "bt": 0.4033, "sec": 454, "val_spearman": 0.6107, "val_ndcg": 0.8424, "val_mae": 0.0804, "val_nll": -1.7392}
+{"chosen_epochs": 4}
+{"epoch": 1, "nll": 0.4642, "bt": 0.7191, "sec": 526}
+{"epoch": 2, "nll": 0.0722, "bt": 0.5316, "sec": 521}
+{"epoch": 3, "nll": -0.0402, "bt": 0.494, "sec": 517}
+{"epoch": 4, "nll": -0.1539, "bt": 0.458, "sec": 528}
+{"epoch": 1, "nll": 1.3947, "bt": 0.7734, "sec": 527}
+{"epoch": 2, "nll": 0.0808, "bt": 0.5313, "sec": 513}
+{"epoch": 3, "nll": -0.0233, "bt": 0.4993, "sec": 547}
+{"epoch": 4, "nll": -0.1252, "bt": 0.4668, "sec": 517}
+{"epoch": 1, "nll": 0.4083, "bt": 0.7504, "sec": 511}
+{"epoch": 2, "nll": 0.0747, "bt": 0.5335, "sec": 530}
+{"epoch": 3, "nll": -0.022, "bt": 0.5037, "sec": 530}
+{"epoch": 4, "nll": -0.1229, "bt": 0.4681, "sec": 524}
+{"done": true, "epochs": 4}
