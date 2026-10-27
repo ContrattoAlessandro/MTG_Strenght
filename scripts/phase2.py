@@ -50,6 +50,7 @@ RES = "phase2"
 # Forward-chaining validation folds (docs/RESEARCH_PLAN.md): each fold trains
 # on the training sets released before its first validation set.
 FOLDS = {"V1": ["MKM", "OTJ", "MH3"], "V2": ["BLB", "DSK", "FDN"], "V3": ["TDM", "FIN", "EOE"]}
+ROLLING = ["MKM", "OTJ", "MH3", "BLB", "DSK", "FDN", "DFT", "TDM", "FIN", "EOE"]   # fold "R"
 
 
 # --------------------------------------------------------------------------- data
@@ -630,32 +631,42 @@ def train_folds(args, cards, f, enc, use_struct, run_dir, log) -> None:
     order = {s: i for i, s in enumerate(SETS)}
     epochs = args.epochs or args.max_epochs
     for fold in args.val_fold:
-        first = min(order[s] for s in FOLDS[fold])
-        fit = (cards["set_idx"] < first).to_numpy() & cards["is_train"].to_numpy()
-        va = cards["set"].isin(FOLDS[fold]).to_numpy()
-        X = struct_matrix(f, fit)
+        # Fold R (rolling origin, step G): every set MKM..EOE predicted from
+        # all sets before it, one training run per set, one output file.
+        parts = ([[s] for s in ROLLING] if fold == "R" else [FOLDS[fold]])
         for seed in args.seeds:
             out = os.path.join(run_dir, f"val_pred_{fold}_seed{seed}.csv")
             if os.path.exists(out):
                 continue
             part = out + ".partial"
+            for sets in parts:
+                tag = fold if fold != "R" else f"R_{sets[0]}"
+                if os.path.exists(part) and fold == "R" and \
+                        (pd.read_csv(part)["set"] == sets[0]).any():
+                    continue   # this rolling set finished before a restart
+                first = min(order[s] for s in sets)
+                fit = (cards["set_idx"] < first).to_numpy() & cards["is_train"].to_numpy()
+                va = cards["set"].isin(sets).to_numpy()
+                if not va.any():
+                    continue   # set not in the data (--limit-sets)
+                X = struct_matrix(f, fit)
 
-            def on_epoch(ep, m, sd, part=part):
-                rows = cards.loc[va, ["set", "oracle_id"]].assign(epoch=ep, pred=m, pred_sd=sd)
-                rows.to_csv(part, mode="a", header=not os.path.exists(part), index=False)
+                def on_epoch(ep, m, sd, part=part, va=va):
+                    rows = cards.loc[va, ["set", "oracle_id"]].assign(epoch=ep, pred=m, pred_sd=sd)
+                    rows.to_csv(part, mode="a", header=not os.path.exists(part), index=False)
 
-            save_path = (os.path.join(args.save_dir, args.name, f"{fold}_seed{seed}.pt")
-                         if args.save_dir else None)
-            run_one(cards, X, enc, use_struct, fit, va, epochs, seed, args, eval_mask=va,
-                    save_path=save_path,
-                    log=lambda msg, fold=fold: log(msg.replace("{", f'{{"fold": "{fold}", ', 1)
-                                                   if msg.startswith("{") else msg),
-                    tag=f"{fold}", on_epoch=on_epoch)
-            if save_path:
-                import torch
-                meta = torch.load(save_path, weights_only=False)
-                meta["struct"] = struct_stats(f, fit)
-                torch.save(meta, save_path)
+                save_path = (os.path.join(args.save_dir, args.name, f"{tag}_seed{seed}.pt")
+                             if args.save_dir else None)
+                run_one(cards, X, enc, use_struct, fit, va, epochs, seed, args, eval_mask=va,
+                        save_path=save_path,
+                        log=lambda msg, tag=tag: log(msg.replace("{", f'{{"fold": "{tag}", ', 1)
+                                                     if msg.startswith("{") else msg),
+                        tag=tag, on_epoch=on_epoch)
+                if save_path:
+                    import torch
+                    meta = torch.load(save_path, weights_only=False)
+                    meta["struct"] = struct_stats(f, fit)
+                    torch.save(meta, save_path)
             # A restart from scratch rewrites earlier epochs: keep the last copy.
             p = pd.read_csv(part).drop_duplicates(["set", "oracle_id", "epoch"], keep="last")
             p.to_csv(out, index=False)
@@ -913,7 +924,7 @@ def main() -> None:
                     help="fine-tune only the top k encoder layers, on cached lower-layer states;"
                          " -1 = all layers (full fine-tuning, no cache, embeddings frozen);"
                          " 0 = legacy full fine-tuning with mean pooling")
-    ap.add_argument("--val-fold", nargs="*", default=[], choices=sorted(FOLDS),
+    ap.add_argument("--val-fold", nargs="*", default=[], choices=sorted(FOLDS) + ["R"],
                     help="validation-only run on these folds (no test predictions)")
     ap.add_argument("--llrd", type=float, default=1.0, help="layer-wise lr decay per layer")
     ap.add_argument("--amp", choices=["none", "fp16"], default="none",

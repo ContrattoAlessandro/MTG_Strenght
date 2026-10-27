@@ -51,7 +51,7 @@ def load_val(run_dir: str, folds: list[str]) -> pd.DataFrame:
     """All validation predictions of a run: set, oracle_id, epoch, pred, fold, seed."""
     parts = []
     for x in sorted(os.listdir(run_dir)):
-        m = re.fullmatch(r"val_pred_(V\d)_seed(\d+)\.csv", x)
+        m = re.fullmatch(r"val_pred_(V\d|R)_seed(\d+)\.csv", x)
         if m and m.group(1) in folds:
             parts.append(pd.read_csv(os.path.join(run_dir, x)).assign(fold=m.group(1),
                                                                       seed=int(m.group(2))))
