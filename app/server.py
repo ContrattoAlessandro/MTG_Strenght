@@ -144,10 +144,11 @@ _typical_cache: dict[str, dict] = {}
 
 def typical_score(oracle_id: str, c: dict) -> dict:
     """Limited estimate in a typical recent set for a card without 17lands
-    data: the precomputed GBT, averaged with the fine-tuned encoder when it
-    is loaded (computed on first view, about half a second, then cached)."""
-    mu, sd, model = c["lim_pred"], c["lim_sd"], "gbt"
-    if S.ft is not None:
+    data: precomputed (Gemma + GBT when app/precompute_ft.py was run, else
+    GBT), or averaged live with the fine-tuned encoder when it is loaded
+    (about half a second on first view, then cached)."""
+    mu, sd, model = c["lim_pred"], c["lim_sd"], c.get("lim_model") or "gbt"
+    if model == "gbt" and S.ft is not None:
         if oracle_id not in _typical_cache:
             b = S.bundle
             kw = [k for k in (c.get("keywords") or "").split(", ") if k]

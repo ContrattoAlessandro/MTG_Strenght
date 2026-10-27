@@ -267,7 +267,20 @@ def main() -> None:
     un["front_name"] = u["front_name"].to_numpy()
     fu = engine.featurize(un, [TYPICAL] * len(un), bundle)
     mu, sd = engine.limited_gbt(un, fu, bundle)
-    u["lim_pred"], u["lim_sd"] = mu, sd
+    u["lim_gbt"], u["lim_gbt_sd"] = mu, sd
+    u["lim_pred"], u["lim_sd"], u["lim_model"] = mu, sd, "gbt"
+    # Fine-tuned encoder scores from app/precompute_ft.py, when present:
+    # the Gemma + GBT average, the best model on the test sets.
+    ft_path = os.path.join(OUT, "app", "ft_scores.parquet")
+    if os.path.exists(ft_path):
+        fs = pd.read_parquet(ft_path).drop_duplicates("oracle_id").set_index("oracle_id")
+        has = u["oracle_id"].isin(fs.index).to_numpy()
+        fp = fs.loc[u.loc[has, "oracle_id"]]
+        u.loc[has, "lim_pred"] = 0.5 * (mu[has] + fp["ft_pred"].to_numpy())
+        u.loc[has, "lim_sd"] = np.sqrt(0.5 * (sd[has] ** 2 + fp["ft_sd"].to_numpy() ** 2))
+        u.loc[has, "lim_model"] = "ensemble"
+        log(f"fine-tuned scores for {has.sum()} of {len(u)} cards ({ft_path})")
+    mu, sd = u["lim_pred"].to_numpy(), u["lim_sd"].to_numpy()
     u["lim_pct"] = 100 * np.searchsorted(ref[TYPICAL], mu) / len(ref[TYPICAL])
     u["lim_grade"] = u["lim_pct"].map(engine.grade)
     u["cmd_pred"] = engine.commander_logit(un, fu, bundle)
@@ -286,7 +299,7 @@ def main() -> None:
     keep_u = ["oracle_id", "name", "front_name", "mana_cost", "cmc", "type_line", "oracle_text",
               "power", "toughness", "loyalty", "color_identity", "keywords", "layout", "rarity", "set",
               "released_at", "image", "image_small", "image_back", "art", "scryfall_uri", "lim_pred",
-              "lim_sd", "lim_pct", "lim_grade", "cmd_pred", "con_prob", "staple_pct", "staple_format",
+              "lim_sd", "lim_model", "lim_gbt", "lim_gbt_sd", "lim_pct", "lim_grade", "cmd_pred", "con_prob", "staple_pct", "staple_format",
               "staple_formats", "edhrec_incl", "edhrec_decks", "labelled_sets", "arena"]
     u = u[keep_u].copy()
     u["keywords"] = u["keywords"].map(lambda k: ", ".join(k) if isinstance(k, (list, np.ndarray)) else "")
