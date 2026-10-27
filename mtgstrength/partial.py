@@ -61,7 +61,7 @@ def text_submodule(model: nn.Module) -> nn.Module:
 def pool(h: torch.Tensor, mask: torch.Tensor, mode: str) -> torch.Tensor:
     if mode == "last":
         idx = mask.sum(1) - 1
-        return h[torch.arange(len(h)), idx]
+        return h[torch.arange(len(h), device=h.device), idx]
     m = mask.unsqueeze(-1).to(h.dtype)
     return (h * m).sum(1) / m.sum(1).clamp(min=1)
 
@@ -80,7 +80,7 @@ def _first_arg(args, kwargs):
 
 @torch.no_grad()
 def cache_hidden(name: str, texts: list[str], k: int, max_len: int, cache_dir: str,
-                 batch_size: int = 16, log=print) -> list[np.ndarray]:
+                 batch_size: int = 16, log=print, device="cpu") -> list[np.ndarray]:
     """Hidden states entering the top k layers, one float16 array
     (n_tokens x d) per text. Cached on disk by model, k and texts."""
     key = hashlib.sha1(json.dumps([name, k, max_len, texts]).encode()).hexdigest()[:16]
@@ -91,6 +91,7 @@ def cache_hidden(name: str, texts: list[str], k: int, max_len: int, cache_dir: s
         flat = z["h"]
         return [flat[offs[i]:offs[i + 1]] for i in range(len(offs) - 1)]
     tok, text, _ = load_encoder(name)
+    text.to(device)
     n = len(text.layers)
     grabbed = {}
 
@@ -105,12 +106,12 @@ def cache_hidden(name: str, texts: list[str], k: int, max_len: int, cache_dir: s
     for bi, b in enumerate(np.array_split(order, max(1, len(order) // batch_size))):
         p = tok.pad({"input_ids": [ids[i] for i in b]}, return_tensors="pt", padding_side="right")
         try:
-            text(input_ids=p["input_ids"], attention_mask=p["attention_mask"])
+            text(input_ids=p["input_ids"].to(device), attention_mask=p["attention_mask"].to(device))
         except _Stop:
             pass
         hs = grabbed["h"]
         for j, i in enumerate(b):
-            out[i] = hs[j, :len(ids[i])].to(torch.float16).numpy()
+            out[i] = hs[j, :len(ids[i])].to(torch.float16).cpu().numpy()
         if bi % 100 == 0:
             log(f"cache {name} k={k}: batch {bi}")
     hook.remove()
