@@ -89,14 +89,23 @@ def prep(args) -> None:
     print(f"{len(df)} rows, {f.shape[1]} structured features, train sets {train_sets}")
 
 
+def struct_stats(f: pd.DataFrame, fit_mask: np.ndarray) -> dict:
+    """Standardisation statistics (training rows only), saved with the model."""
+    return {"cols": list(f.columns), "nan_cols": [c for c in f.columns if f[c].isna().any()],
+            "mu": f[fit_mask].mean().to_numpy(),
+            "sd": f[fit_mask].std().replace(0, 1).fillna(1).to_numpy()}
+
+
+def struct_apply(f: pd.DataFrame, st: dict) -> np.ndarray:
+    f = f[st["cols"]]
+    miss = f[st["nan_cols"]].isna().astype(float)
+    z = ((f - st["mu"]) / st["sd"]).fillna(0.0).clip(-6, 6)
+    return np.hstack([z.to_numpy(), miss.to_numpy()]).astype(np.float32)
+
+
 def struct_matrix(f: pd.DataFrame, fit_mask: np.ndarray) -> np.ndarray:
     """Standardise with training statistics; NaN -> 0 plus a missing flag."""
-    nan_cols = [c for c in f.columns if f[c].isna().any()]
-    miss = f[nan_cols].isna().astype(float).add_suffix("_missing")
-    mu = f[fit_mask].mean()
-    sd = f[fit_mask].std().replace(0, 1).fillna(1)
-    z = ((f - mu) / sd).fillna(0.0).clip(-6, 6)
-    return np.hstack([z.to_numpy(), miss.to_numpy()]).astype(np.float32)
+    return struct_apply(f, struct_stats(f, fit_mask))
 
 
 # --------------------------------------------------------------------------- model
@@ -148,6 +157,41 @@ def build_model(encoder_name: str | None, n_struct: int, use_struct: bool, hidde
     return CardModel()
 
 
+def save_model(model, path: str, meta: dict) -> None:
+    """Save the trained parameters only: the frozen encoder weights come from
+    the Hugging Face checkpoint, so they are left out (float16 to halve the
+    file; the reload check in load_model tolerates the rounding)."""
+    import torch
+    trainable = {n for n, p in model.named_parameters() if p.requires_grad}
+    state = {k: (v.half() if v.is_floating_point() and k.startswith("encoder.") else v)
+             for k, v in model.state_dict().items()
+             if k in trainable or not k.startswith("encoder.")}
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    torch.save({**meta, "state": state}, path)
+
+
+def load_model(path: str):
+    """Rebuild a model saved by --save-dir. Returns (model, meta); the model
+    is in eval mode and takes the same inputs as during training."""
+    import torch
+    meta = torch.load(path, weights_only=False)
+    cfg = meta["config"]
+    enc = None if cfg["encoder"] == "none" else cfg["encoder"]
+    n_struct = len(meta["struct"]["cols"]) + len(meta["struct"]["nan_cols"])
+    model = build_model(enc, n_struct, not cfg["no_struct"], top_k=cfg["top_k"],
+                        **model_kwargs(cfg))
+    state = {k: v.float() if v.is_floating_point() else v for k, v in meta["state"].items()}
+    missing, unexpected = model.load_state_dict(state, strict=False)
+    assert not unexpected, unexpected
+    assert all(k.startswith("encoder.") for k in missing), missing
+    return model.eval(), meta
+
+
+def model_kwargs(cfg: dict) -> dict:
+    """Architecture options beyond the encoder (none yet)."""
+    return {}
+
+
 def set_batches(sets: np.ndarray, idx: np.ndarray, bs: int, rng) -> list[np.ndarray]:
     """Batches that each hold cards from a single set (for the pairwise loss)."""
     out = []
@@ -172,7 +216,7 @@ def loss_fn(mu, var, y, s, bt_scale, pair_w):
 
 
 def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, args,
-            eval_mask=None, log=print, tag="full"):
+            eval_mask=None, log=print, tag="full", save_path=None):
     """Train on fit_mask; return predictions (mean, sd in label units) on
     pred_mask after the final epoch, plus per-epoch metrics on eval_mask."""
     import torch
@@ -311,6 +355,9 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
                     "hist": hist, "epoch": ep + 1, "torch_rng": torch.get_rng_state()}, ckpt + ".tmp")
         os.replace(ckpt + ".tmp", ckpt)
     m, sd = predict(pred_mask)
+    if save_path:
+        save_model(model, save_path, {"config": vars(args), "seed": seed, "epochs": epochs,
+                                      "y_mu": float(y_mu), "y_sd": float(y_sd)})
     if os.path.exists(ckpt):
         os.remove(ckpt)
     return m, sd, hist
@@ -371,11 +418,72 @@ def train(args) -> None:
     for seed in args.seeds:
         if os.path.exists(os.path.join(run_dir, f"test_pred_seed{seed}.csv")):
             continue   # finished before a restart
-        m, sd, _ = run_one(cards, X, enc, use_struct, tr, te, epochs, seed, args, log=log)
+        save_path = None
+        if args.save_dir:
+            save_path = os.path.join(args.save_dir, args.name, f"seed{seed}.pt")
+        m, sd, _ = run_one(cards, X, enc, use_struct, tr, te, epochs, seed, args, log=log,
+                           save_path=save_path)
+        if save_path:
+            import torch
+            meta = torch.load(save_path, weights_only=False)
+            meta["struct"] = struct_stats(f, tr)
+            meta["test_pred"] = m
+            torch.save(meta, save_path)
         preds.append((m, sd))
         out = cards.loc[te, ["set", "oracle_id"]].assign(pred=m, pred_sd=sd)
         out.to_csv(os.path.join(run_dir, f"test_pred_seed{seed}.csv"), index=False)
     log(json.dumps({"done": True, "epochs": epochs}))
+
+
+def predict_saved(args) -> None:
+    """Predict with saved weights (--model-path, one or more seeds) for the
+    cards in cards.parquet (default: test sets) and check that the reloaded
+    model reproduces the predictions made at the end of training."""
+    import torch
+    from transformers import AutoTokenizer
+    torch.set_num_threads(args.threads)
+    res_dir = os.path.join(args.out_dir, RES)
+    cards = pd.read_parquet(os.path.join(res_dir, "cards.parquet"))
+    f = pd.read_parquet(os.path.join(res_dir, "struct.parquet"))
+    mask = cards["set"].isin(args.limit_sets).to_numpy() if args.limit_sets else cards["is_test"].to_numpy()
+    preds = []
+    for path in args.model_path:
+        model, meta = load_model(path)
+        cfg = meta["config"]
+        X = torch.tensor(struct_apply(f, meta["struct"]))
+        idx = np.flatnonzero(mask)
+        enc = None if cfg["encoder"] == "none" else cfg["encoder"]
+        if enc:
+            tok = AutoTokenizer.from_pretrained(enc)
+            ids = tok(cards["text"].tolist(), truncation=True, max_length=cfg["max_len"])["input_ids"]
+            from mtgstrength.partial import cache_hidden, pad_batch
+            states = cache_hidden(enc, cards["text"].tolist(), cfg["top_k"], cfg["max_len"],
+                                  args.cache_dir)
+        mu, sd = np.empty(len(idx)), np.empty(len(idx))
+        with torch.no_grad():
+            for j in np.array_split(np.arange(len(idx)), max(1, len(idx) // 64)):
+                b = idx[j]
+                kw = {"x": X[b]} if not cfg["no_struct"] else {}
+                if enc:
+                    t, h, m = pad_batch(states, ids, list(b), tok.pad_token_id or 0)
+                    kw.update(input_ids=t, h=h, attention_mask=m)
+                kw.update(env_kwargs(model, cards, f, b))
+                m_, v_ = model(**kw)
+                mu[j], sd[j] = m_.numpy(), np.sqrt(v_.numpy())
+        mu, sd = mu * meta["y_sd"] + meta["y_mu"], sd * meta["y_sd"]
+        if not args.limit_sets and "test_pred" in meta:
+            print(f"{path}: max |reloaded - saved| = {np.abs(mu - meta['test_pred']).max():.2e} logits")
+        preds.append((mu, sd))
+    out = cards.loc[mask, ["set", "name", "oracle_id"]].assign(
+        pred=np.mean([p[0] for p in preds], 0), pred_sd=np.mean([p[1] for p in preds], 0))
+    if args.pred_out:
+        out.to_csv(args.pred_out, index=False)
+        print(f"wrote {args.pred_out}")
+
+
+def env_kwargs(model, cards, f, b) -> dict:
+    """Extra forward inputs for models with an environment encoder (none yet)."""
+    return {}
 
 
 # --------------------------------------------------------------------------- zero-shot
@@ -536,7 +644,9 @@ def contamination_table(per: pd.DataFrame, res_dir: str) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["prep", "train", "zeroshot", "evaluate"])
+    ap.add_argument("cmd", choices=["prep", "train", "zeroshot", "evaluate", "predict"])
+    ap.add_argument("--model-path", nargs="*", default=[], help="predict: saved seed files")
+    ap.add_argument("--pred-out", default=None, help="predict: output CSV")
     ap.add_argument("--embeddings", nargs="*", default=[])
     ap.add_argument("--out-dir", default="out")
     ap.add_argument("--oracle", default="data/raw/scryfall_oracle_cards.jsonl.gz")
@@ -566,8 +676,11 @@ def main() -> None:
                     help="also fit the auxiliary head on test-set cards (deck values from "
                          "synthetic decks, no labels)")
     ap.add_argument("--limit-sets", nargs="*", default=None, help="debugging")
+    ap.add_argument("--save-dir", default=None,
+                    help="save each seed's trained weights to <save-dir>/<name>/seed<k>.pt")
     args = ap.parse_args()
-    {"prep": prep, "train": train, "zeroshot": zeroshot, "evaluate": evaluate_all}[args.cmd](args)
+    {"prep": prep, "train": train, "zeroshot": zeroshot, "evaluate": evaluate_all,
+     "predict": predict_saved}[args.cmd](args)
 
 
 if __name__ == "__main__":
