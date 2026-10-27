@@ -41,7 +41,7 @@ LANES = [
 #   "python scripts/phase3.py train --device cuda --work-dir /kaggle/input/mtg-p3"
 #   " --model-dir models --batch-size 4096"
 RESULTS = "/kaggle/working/results"
-USE_LANES_JSON = False   # True: take the lanes from gpu/kaggle/lanes.json on BRANCH
+USE_LANES_JSON = True   # True: take the lanes from gpu/kaggle/lanes.json on BRANCH
 
 
 def sh(cmd: str, cwd: str | None = None) -> None:

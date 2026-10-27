@@ -34,6 +34,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from mtgstrength import evaluate  # noqa: E402
 
+SEEDS = None   # --seeds: restrict validation scoring to these seeds
 METRICS = ["spearman", "spearman_within_rarity", "ndcg@20", "top20_overlap"]
 LABEL_COLS = ["set", "oracle_id", "rarity", "theta_vs_repl", "ame_vs_repl_pp"]
 
@@ -52,7 +53,7 @@ def load_val(run_dir: str, folds: list[str]) -> pd.DataFrame:
     parts = []
     for x in sorted(os.listdir(run_dir)):
         m = re.fullmatch(r"val_pred_(V\d|R)_seed(\d+)\.csv", x)
-        if m and m.group(1) in folds:
+        if m and m.group(1) in folds and (SEEDS is None or int(m.group(2)) in SEEDS):
             parts.append(pd.read_csv(os.path.join(run_dir, x)).assign(fold=m.group(1),
                                                                       seed=int(m.group(2))))
     return pd.concat(parts) if parts else pd.DataFrame()
@@ -77,7 +78,11 @@ def main() -> None:
     ap.add_argument("--blend-w", type=float, nargs="+", default=[0.5])
     ap.add_argument("--boot", type=int, default=500, help="bootstrap replicates (0 = off)")
     ap.add_argument("--csv", default=None)
+    ap.add_argument("--seeds", type=int, nargs="+", default=None,
+                    help="validation: only these seeds (seed-matched comparisons)")
     args = ap.parse_args()
+    global SEEDS
+    SEEDS = args.seeds
     if args.test and not args.why:
         ap.error("--test needs --why: every test look goes into out/TEST_LOG.md")
     runs_dir = os.path.join(args.out_dir, "phase2", "runs")

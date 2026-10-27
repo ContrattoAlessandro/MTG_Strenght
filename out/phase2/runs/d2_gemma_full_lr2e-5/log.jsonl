@@ -1,0 +1,40 @@
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "d2_gemma_full_lr2e-5", "no_struct": false, "seeds": [0], "max_epochs": 6, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 2e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": -1, "val_fold": ["V1", "V2", "V3"], "llrd": 0.9, "amp": "none", "peft": "none", "lora_r": 16, "enc_fp16": false, "grad_ckpt": true, "optim": "adamw", "weight_decay": 0.01, "warmup": 0.06, "dropout": 0.1, "text_variant": "original", "cache_dir": "/tmp/cache0", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": null}}
+{"fold": "V1", "epoch": 1, "nll": 0.5221, "bt": 0.7926, "sec": 255, "val_spearman": 0.5344, "val_ndcg": 0.8223, "val_mae": 0.088, "val_nll": -1.7071}
+{"fold": "V1", "epoch": 2, "nll": 0.0948, "bt": 0.5342, "sec": 255, "val_spearman": 0.5617, "val_ndcg": 0.8335, "val_mae": 0.0987, "val_nll": -1.6428}
+{"fold": "V1", "epoch": 3, "nll": -0.0671, "bt": 0.4743, "sec": 255, "val_spearman": 0.5739, "val_ndcg": 0.8426, "val_mae": 0.0862, "val_nll": -1.7145}
+{"fold": "V1", "epoch": 4, "nll": -0.223, "bt": 0.4243, "sec": 254, "val_spearman": 0.5824, "val_ndcg": 0.8413, "val_mae": 0.0869, "val_nll": -1.5347}
+{"fold": "V1", "epoch": 5, "nll": -0.4433, "bt": 0.372, "sec": 254, "val_spearman": 0.5888, "val_ndcg": 0.847, "val_mae": 0.0867, "val_nll": -1.2868}
+{"fold": "V1", "epoch": 6, "nll": -0.6547, "bt": 0.3351, "sec": 256, "val_spearman": 0.5933, "val_ndcg": 0.8386, "val_mae": 0.0857, "val_nll": -0.5819}
+{"fold": "V2", "epoch": 1, "nll": 0.4941, "bt": 0.7693, "sec": 310, "val_spearman": 0.6333, "val_ndcg": 0.8186, "val_mae": 0.0843, "val_nll": -1.7814}
+{"fold": "V2", "epoch": 2, "nll": 0.0742, "bt": 0.5315, "sec": 309, "val_spearman": 0.6449, "val_ndcg": 0.8329, "val_mae": 0.0824, "val_nll": -1.8181}
+{"fold": "V2", "epoch": 3, "nll": -0.0678, "bt": 0.4827, "sec": 309, "val_spearman": 0.669, "val_ndcg": 0.845, "val_mae": 0.082, "val_nll": -1.8166}
+{"fold": "V2", "epoch": 4, "nll": -0.2645, "bt": 0.4173, "sec": 311, "val_spearman": 0.6755, "val_ndcg": 0.8313, "val_mae": 0.0814, "val_nll": -1.6622}
+{"fold": "V2", "epoch": 5, "nll": -0.487, "bt": 0.3606, "sec": 313, "val_spearman": 0.683, "val_ndcg": 0.8408, "val_mae": 0.083, "val_nll": -1.0739}
+{"fold": "V2", "epoch": 6, "nll": -0.7153, "bt": 0.3241, "sec": 307, "val_spearman": 0.6602, "val_ndcg": 0.8289, "val_mae": 0.0833, "val_nll": -0.2511}
+{"fold": "V3", "epoch": 1, "nll": 0.4052, "bt": 0.7367, "sec": 367, "val_spearman": 0.5892, "val_ndcg": 0.8255, "val_mae": 0.0816, "val_nll": -1.8198}
+{"fold": "V3", "epoch": 2, "nll": 0.0495, "bt": 0.5212, "sec": 371, "val_spearman": 0.6138, "val_ndcg": 0.8278, "val_mae": 0.0784, "val_nll": -1.8968}
+{"fold": "V3", "epoch": 3, "nll": -0.0839, "bt": 0.4677, "sec": 370, "val_spearman": 0.6126, "val_ndcg": 0.8653, "val_mae": 0.0774, "val_nll": -1.9095}
+{"fold": "V3", "epoch": 4, "nll": -0.3001, "bt": 0.3991, "sec": 372, "val_spearman": 0.6097, "val_ndcg": 0.8468, "val_mae": 0.0819, "val_nll": -1.7862}
+{"fold": "V3", "epoch": 5, "nll": -0.569, "bt": 0.3387, "sec": 369, "val_spearman": 0.6014, "val_ndcg": 0.8526, "val_mae": 0.0822, "val_nll": -1.2591}
+{"fold": "V3", "epoch": 6, "nll": -0.832, "bt": 0.3071, "sec": 372, "val_spearman": 0.6011, "val_ndcg": 0.8274, "val_mae": 0.0809, "val_nll": -0.3709}
+{"done": true, "val_folds": ["V1", "V2", "V3"], "epochs": 6}
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "d2_gemma_full_lr2e-5", "no_struct": false, "seeds": [1], "max_epochs": 6, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 2e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": -1, "val_fold": ["V1", "V2", "V3"], "llrd": 0.9, "amp": "none", "peft": "none", "lora_r": 16, "enc_fp16": false, "grad_ckpt": true, "optim": "adamw", "weight_decay": 0.01, "warmup": 0.06, "dropout": 0.1, "text_variant": "original", "cache_dir": "/tmp/cache0", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": null}}
+{"fold": "V1", "epoch": 1, "nll": 1.6243, "bt": 0.9047, "sec": 258, "val_spearman": 0.5482, "val_ndcg": 0.8072, "val_mae": 0.0874, "val_nll": -1.674}
+{"fold": "V1", "epoch": 2, "nll": 0.1012, "bt": 0.5364, "sec": 258, "val_spearman": 0.5859, "val_ndcg": 0.8186, "val_mae": 0.0838, "val_nll": -1.7775}
+{"fold": "V1", "epoch": 3, "nll": -0.0503, "bt": 0.4832, "sec": 257, "val_spearman": 0.5994, "val_ndcg": 0.8416, "val_mae": 0.0843, "val_nll": -1.7755}
+{"fold": "V1", "epoch": 4, "nll": -0.218, "bt": 0.4319, "sec": 257, "val_spearman": 0.5967, "val_ndcg": 0.7985, "val_mae": 0.0857, "val_nll": -1.6538}
+{"fold": "V1", "epoch": 5, "nll": -0.4096, "bt": 0.3759, "sec": 255, "val_spearman": 0.6092, "val_ndcg": 0.8127, "val_mae": 0.0844, "val_nll": -1.3323}
+{"fold": "V1", "epoch": 6, "nll": -0.652, "bt": 0.3354, "sec": 255, "val_spearman": 0.6133, "val_ndcg": 0.7938, "val_mae": 0.0853, "val_nll": -0.6966}
+{"fold": "V2", "epoch": 1, "nll": 2.0076, "bt": 0.8481, "sec": 311, "val_spearman": 0.6345, "val_ndcg": 0.8115, "val_mae": 0.0836, "val_nll": -1.7891}
+{"fold": "V2", "epoch": 2, "nll": 0.075, "bt": 0.532, "sec": 308, "val_spearman": 0.6433, "val_ndcg": 0.8254, "val_mae": 0.0843, "val_nll": -1.7823}
+{"fold": "V2", "epoch": 3, "nll": -0.0734, "bt": 0.4783, "sec": 309, "val_spearman": 0.6439, "val_ndcg": 0.8286, "val_mae": 0.0841, "val_nll": -1.7822}
+{"fold": "V2", "epoch": 4, "nll": -0.2658, "bt": 0.4121, "sec": 308, "val_spearman": 0.6701, "val_ndcg": 0.8196, "val_mae": 0.0839, "val_nll": -1.5575}
+{"fold": "V2", "epoch": 5, "nll": -0.5093, "bt": 0.3581, "sec": 307, "val_spearman": 0.673, "val_ndcg": 0.8163, "val_mae": 0.0831, "val_nll": -1.1408}
+{"fold": "V2", "epoch": 6, "nll": -0.7573, "bt": 0.3196, "sec": 308, "val_spearman": 0.6651, "val_ndcg": 0.8201, "val_mae": 0.0837, "val_nll": -0.1144}
+{"fold": "V3", "epoch": 1, "nll": 1.4792, "bt": 0.8286, "sec": 370, "val_spearman": 0.5507, "val_ndcg": 0.829, "val_mae": 0.0827, "val_nll": -1.7984}
+{"fold": "V3", "epoch": 2, "nll": 0.0738, "bt": 0.5267, "sec": 373, "val_spearman": 0.6085, "val_ndcg": 0.8566, "val_mae": 0.0792, "val_nll": -1.8668}
+{"fold": "V3", "epoch": 3, "nll": -0.0714, "bt": 0.4713, "sec": 372, "val_spearman": 0.6113, "val_ndcg": 0.8604, "val_mae": 0.0773, "val_nll": -1.8726}
+{"fold": "V3", "epoch": 4, "nll": -0.2328, "bt": 0.4191, "sec": 372, "val_spearman": 0.6249, "val_ndcg": 0.8438, "val_mae": 0.0784, "val_nll": -1.8211}
+{"fold": "V3", "epoch": 5, "nll": -0.4635, "bt": 0.3586, "sec": 373, "val_spearman": 0.6138, "val_ndcg": 0.8374, "val_mae": 0.0831, "val_nll": -1.4502}
+{"fold": "V3", "epoch": 6, "nll": -0.6935, "bt": 0.3241, "sec": 371, "val_spearman": 0.6084, "val_ndcg": 0.8413, "val_mae": 0.0809, "val_nll": -0.7011}
+{"done": true, "val_folds": ["V1", "V2", "V3"], "epochs": 6}

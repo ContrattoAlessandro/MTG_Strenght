@@ -117,3 +117,19 @@ Each finished step adds one line here and its result to CLAUDE.md.
   0.6334 (+0.0089 ± 0.0047, 8/9 sets, just under the bar). Full FT ran out of
   memory; rerun with gradient checkpointing plus top-12 in job v9. The 50/50
   blend with gbt_tfidf_folds adds ~+0.01 to every variant (top-8 blend 0.643).
+- 21:50 **D2 done: top-12 is the reference.** Val (9 sets, best epoch, all
+  seeds) vs top-4 0.6246: top-8 0.6334 (+0.009 ± 0.005, tie), **top-12 0.6444
+  (+0.020 ± 0.006, 7/9, better; 3 seeds, seed SD 0.001)**, full FT lr 2e-5 0.6387
+  (2 seeds, +0.014 ± 0.007), full FT lr 5e-5 0.6389 (1 seed). Seed-0-only:
+  full FT lr 5e-5 0.639 vs top-12 0.635 (tie). By the pre-registered rule
+  (highest val Spearman among variants passing the bar) top-12 wins; it is also
+  2.7× cheaper than full FT (113 vs 310 s/epoch). Its curve still rises at
+  epoch 8, so D3 allows 10 epochs.
+- 21:50 **E1 lr screen** (session B, V3, 1 seed): Qwen3-Emb-0.6B best at 3e-5
+  (V3 0.649), Harrier-0.6B at 1e-4 (0.652); ~320 s/epoch full FT fp16. Qwen3-4B
+  LoRA screen running.
+- 21:50 **D3 cut to 10 configs** (default + 9 drawn, 1 seed × 3 folds, ≤ 10
+  epochs, ~4 h on 2 lanes): at ~57 min per config 20 would not fit this week's
+  quota next to E–G.
+- 18:30 **G prep**: gbt_tfidf rolling-origin backtest over MKM–EOE (10 sets) =
+  0.616 Spearman, NDCG@20 0.819 (CPU).
