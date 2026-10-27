@@ -62,6 +62,8 @@ def main() -> None:
     # torch with CUDA is preinstalled; requirements.txt leaves it as is.
     sh(f"{sys.executable} -m pip install -q -r requirements.txt", cwd=repo)
     sh(f"{sys.executable} -m pip install -q -U transformers sentence-transformers peft bitsandbytes", cwd=repo)
+    # Kaggle's preinstalled torchao (0.10) is too old for peft's LoRA import; we don't use it.
+    sh(f"{sys.executable} -m pip uninstall -y -q torchao", cwd=repo)
     # gpu/kaggle/lanes.json on the cloned branch (e.g. from sweep_d3.py) replaces LANES;
     # only this file is uploaded by `kernels push`, so the JSON comes from git.
     lanes_json = os.path.join(repo, "gpu", "kaggle", "lanes.json")
