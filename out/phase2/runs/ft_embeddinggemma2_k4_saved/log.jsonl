@@ -3,3 +3,18 @@ cache google/embeddinggemma-2 k=4: batch 0
 cache google/embeddinggemma-2 k=4: batch 100
 cache google/embeddinggemma-2 k=4: batch 200
 cache google/embeddinggemma-2 k=4: batch 300
+cache google/embeddinggemma-2 k=4: batch 400
+cache google/embeddinggemma-2 k=4: batch 500
+{"epoch": 1, "nll": 0.4502, "bt": 0.7186, "sec": 1235}
+{"epoch": 2, "nll": 0.0787, "bt": 0.5294, "sec": 1052}
+{"epoch": 3, "nll": -0.0397, "bt": 0.4951, "sec": 1038}
+{"epoch": 4, "nll": -0.15, "bt": 0.4609, "sec": 1070}
+{"epoch": 1, "nll": 1.9449, "bt": 0.7786, "sec": 1017}
+{"epoch": 2, "nll": 0.0853, "bt": 0.5369, "sec": 948}
+{"epoch": 3, "nll": -0.0204, "bt": 0.4991, "sec": 988}
+{"epoch": 4, "nll": -0.1391, "bt": 0.4649, "sec": 956}
+{"epoch": 1, "nll": 0.3924, "bt": 0.7489, "sec": 1059}
+{"epoch": 2, "nll": 0.0755, "bt": 0.5329, "sec": 1056}
+{"epoch": 3, "nll": -0.0301, "bt": 0.4999, "sec": 1009}
+{"epoch": 4, "nll": -0.1328, "bt": 0.4648, "sec": 930}
+{"done": true, "epochs": 4}
