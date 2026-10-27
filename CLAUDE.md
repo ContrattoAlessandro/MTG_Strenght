@@ -5,8 +5,7 @@ It was written at the end of the first round of work (Oct 2026), done in a cloud
 sandbox, so that work can continue on Alessandro's local machine.
 
 - `README.md`: short user-facing overview, Phase 0 label model and output columns.
-- `out/phase1/REPORT.md`, `out/phase2/REPORT.md` (and `out/phase3/REPORT.md`,
-  `out/phase4/REPORT.md` once present): detailed results per phase. Trust them
+- `out/phase1/REPORT.md` … `out/phase4/REPORT.md`: detailed results per phase. Trust them
   over this summary if they disagree.
 - `docs/DESIGN.md`: the original design, verbatim. It is the spec; the phases
   below follow its roadmap (section 8).
@@ -94,12 +93,12 @@ Face (EmbeddingGemma) are gated: accept the licence and `huggingface-cli login`.
 | 17lands `game_data_public.<SET>.PremierDraft.csv.gz` | downloaded automatically by `phase0.py` / `phase3_data.py` into `--data-dir` / `--raw-dir`. 0.5–2 GB each. |
 | 17lands `draft_data_public.<SET>.PremierDraft.csv.gz` | downloaded by `human_baselines.py --draft-dir` (test sets only) |
 | `out/phase1/emb/*.parquet` (35–95 MB each) | `scripts/embed.py`, see below. Phase 3 needs `embeddinggemma2.parquet`. |
-| Phase 3 deck-game arrays (`<SET>.npz`) and the deck model checkpoint | `phase3_data.py`, then `phase3.py train`. The checkpoint was never saved outside the sandbox: **retrain it** before `phase3.py values` or `phase4_interactions.py`. |
+| Phase 3 deck-game arrays (`<SET>.npz`) | `phase3_data.py`. The trained deck model **is** in git: `models/deck_model.pt` (36 MB); pass `--model-dir models` to `phase3.py values` / `phase4_interactions.py`, or retrain with `phase3.py train`. |
 | fine-tuned encoder weights | never saved (only predictions are). Retrain with `phase2.py train`. |
 
 Defaults for `--work-dir`, `--model-dir`, `--cache-dir` point at
 `/tmp/claude-0/...` (the sandbox). Pass local paths, e.g. `--work-dir work/p3
---model-dir models/p3 --cache-dir work/cache` (all git-ignored).
+--model-dir models --cache-dir work/cache` (all git-ignored).
 
 ## How to rerun each phase
 
@@ -124,8 +123,8 @@ python scripts/phase2.py evaluate
 
 # Phase 3: deck model
 python scripts/phase3_data.py --raw-dir <17lands cache> --work-dir work/p3 --max-games 200000
-python scripts/phase3.py train    --work-dir work/p3 --model-dir models/p3   # ~2 h CPU
-python scripts/phase3.py values   --work-dir work/p3 --model-dir models/p3
+python scripts/phase3.py train    --work-dir work/p3 --model-dir models   # ~2 h CPU
+python scripts/phase3.py values   --work-dir work/p3 --model-dir models
 python scripts/phase3.py evaluate
 #   distillation into the card head (ablation of design section 6):
 python scripts/phase2.py train --encoder google/embeddinggemma-2 --top-k 4 \
@@ -141,7 +140,7 @@ python scripts/phase4_data.py goldfish
 python scripts/phase4.py commander
 python scripts/phase4.py constructed
 python scripts/phase4_interactions.py --sets TLA ECL TMT SOS MSH HOB FRA \
-    --work-dir work/p3 --model-dir models/p3
+    --work-dir work/p3 --model-dir models
 #   fine-tuned Commander head:
 python scripts/phase2.py train ... --target label --label-csv out/phase4/commander_labels.csv \
     --name ft_embeddinggemma2_k4_commander
@@ -192,43 +191,50 @@ encoders don't help.
   ATA 0.65 (model does not beat it). Model + ATA = **0.69**, model + Draftsim = 0.65.
 - Uncertainty roughly calibrated: z-score SD 1.12, 88% coverage of 90% interval.
 
-### Phase 3: deck model (core done, report pending, `out/phase3/`)
+### Phase 3: deck model (done, `out/phase3/REPORT.md`)
 
 - Deck model: card tokens = MLP(engineered features + frozen EmbeddingGemma-2
   embedding) + per-card ID embedding (dropped at random, p=0.5) + seen/copies
   embeddings; environment z_E from the set pool; 2-layer transformer, attention
-  pooling; nuisance terms linear. Trained on 4.65M games (200k per training set).
+  pooling; nuisance terms linear. Trained on 4.65M games (200k per training set),
+  ~2 h CPU. Weights: `models/deck_model.pt`.
 - Val log-loss 0.642 (0.643 without IDs) vs 0.666 nuisance-only, 0.688 constant.
-- Counterfactual card values vs θ (`deck_values_vs_theta.csv`): training sets
-  0.80–0.92 with real decks, 0.63–0.86 with synthetic decks; **test sets, from
-  synthetic decks only (no game data of the set): 0.48–0.64, mean 0.54**.
-- Distillation ablation (`out/phase2/runs/ft_embeddinggemma2_k4_{deckonly,aux,auxcons}`):
-  runs were finishing at handoff; see `out/phase3/REPORT.md` if present,
-  otherwise run `python scripts/phase2.py evaluate` to score them.
+- Counterfactual values vs θ: training sets 0.86 (real decks), 0.80 (no ID),
+  0.75 (synthetic); **test sets from synthetic decks only: 0.54**.
+- Distillation (2 seeds, `distill_per_set_spearman.csv`): θ only 0.621;
+  **θ + aux deck-value head (aux 0.5) 0.624** (tie, within noise);
+  θ + aux + consistency on test cards 0.614; deck values only 0.601;
+  undistilled deck values 0.521.
+- Conclusion: the deck model works but distilling it adds nothing measurable.
+  Best test predictor is still the Phase 2 ensemble (0.627–0.629), behind
+  first-week ATA (0.652), ahead of Draftsim (0.551).
 
-### Phase 4: extensions (core done, report pending, `out/phase4/`)
+### Phase 4: extensions (done, `out/phase4/REPORT.md`)
 
-- **Commander** (target: logit of EDHREC inclusion rate, 8,128 cards):
-  TF-IDF ridge **0.75**, GBT+TF-IDF 0.68, GBT 0.67, rarity 0.47. Limited θ
-  transfers poorly (0.22). Fine-tuned Commander head run:
-  `out/phase2/runs/ft_embeddinggemma2_k4_commander`.
-- **Constructed** (censored: best share of decks in MTGGoldfish top-50 staples,
-  20 snapshots, Standard/Pioneer/Modern/Legacy/Pauper; 73 test staples):
-  AUC within set: GBT 0.81, censored GBT 0.81, TF-IDF logistic 0.79, Limited θ
-  0.65, rarity 0.65. Spearman among staples only ~0.2.
+- **Commander** (logit of EDHREC inclusion, 8,046 cards with data): TF-IDF ridge
+  **0.749**, fine-tuned EmbeddingGemma-2 0.717 (1 seed, Limited hyperparameters),
+  GBT+TF-IDF 0.684, GBT 0.672, rarity 0.465, Limited θ 0.222.
+- **Constructed** (censored: MTGGoldfish top-50 staples, Standard/Pioneer/
+  Modern/Legacy/Pauper): **only the 20 live lists** were used because the
+  Wayback history was unreachable (connection resets). 333 staples (73 test).
+  AUC within set: GBT 0.81, censored GBT 0.81, TF-IDF logistic 0.79 (best avg.
+  precision 0.27), Limited θ 0.65, rarity 0.65. Spearman among staples ≤ 0.2.
 - **Interaction search**: deck-model 2×2 synergy over the top 40 cards per colour
-  pair, validated against empirical interactions in the held-out test-set
-  games. Precision-weighted correlation 0.13–0.29 on all 7 sets, permutation
-  p = 0.002 each (`interactions_summary_dedup.csv`).
-- **Simulation labels (Forge/XMage self-play): dropped.** Forge download host
-  returned 502 from the sandbox, and the game counts needed are infeasible on CPU.
+  pair, validated against empirical b_ab in held-out test-set games. Weighted
+  correlation mean **0.22** (0.13–0.29), p = 0.002 in all 7 sets; top-decile
+  pairs positive, bottom-decile negative everywhere. Caveat: "both seen"
+  correlates with game length; condition on turns played for a cleaner test.
+- **Simulation labels (Forge/XMage self-play): dropped.** Forge hosts returned
+  502 from the sandbox, and ±1 pp per card needs ~10^4 games per card (~10^7
+  per set), infeasible on CPU.
+- Takeaway: Limited, Commander and Constructed strength are close to unrelated,
+  so use separate format heads, not one shared strength score.
 
 ## What is not done (next steps, in rough priority)
 
-1. **Write/finish the Phase 3 and Phase 4 reports** if `out/phase3/REPORT.md` /
-   `out/phase4/REPORT.md` are missing: evaluate the distillation ablation
-   (θ only vs deck values only vs θ + aux vs θ + aux + consistency on test cards)
-   and the fine-tuned Commander head with the Phase 2 metrics.
+1. **Constructed history**: rerun `python scripts/phase4_data.py goldfish`
+   from a network that reaches web.archive.org to add the monthly MTGGoldfish
+   snapshots, then `phase4.py constructed` again (only 73 test staples now).
 2. **Top-of-ranking weakness**: FT model NDCG@20 0.78 vs GBT 0.83. Try a
    top-weighted ranking loss (LambdaRank-style) or make the ensemble the default.
 3. **Bayesian update with early play data**: model as prior + first-week
@@ -250,7 +256,9 @@ encoders don't help.
 9. **Draft pick-order head** (design 4 multi-task) from the 17lands draft dumps.
 10. **Size-vs-contamination ablation** with fine-tuned encoders of several sizes.
 11. Time-varying environment embedding for Constructed metagame drift (design 7).
-12. Simulation labels (Forge self-play) only if a GPU/cluster becomes available.
+12. Interaction search conditioned on turns played (remove the game-length
+    confound); Commander fine-tune with tuned hyperparameters and more seeds.
+13. Simulation labels (Forge self-play) only if a GPU/cluster becomes available.
 
 ## Known caveats
 

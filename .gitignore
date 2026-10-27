@@ -10,8 +10,9 @@ data/raw/*.tar*
 data/cache/
 out/phase1/emb/
 work/
-models/
+models/*
 *.pt
+!models/deck_model.pt
 *.npz
 *.safetensors
 data/raw/draft/

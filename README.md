@@ -6,7 +6,7 @@ and evaluated on a temporal holdout of the 7 newest sets. Design: `docs/DESIGN.m
 Setup: `pip install -r requirements.txt` (CPU builds of torch are fine).
 
 Large files are not in git (Scryfall bulk data, 17lands dumps, frozen embeddings,
-model weights); `CLAUDE.md` says how to regenerate each one.
+fine-tuned encoder weights); `CLAUDE.md` says how to regenerate each one.
 
 ## Phase 0: data pipeline
 
@@ -93,11 +93,29 @@ human baselines: Draftsim pre-release ratings and first-week ATA.
 Best result: EmbeddingGemma-2 fine-tuned, with 0.62 test Spearman. Results,
 contamination check and human comparison: `out/phase2/REPORT.md`.
 
-## Phase 3 (deck model) and Phase 4 (extensions)
+## Phase 3 (deck model, counterfactual values, distillation)
 
-`scripts/phase3.py` trains a transformer deck win model on 4.65M games and reads
-card values out by counterfactual swaps (0.54 Spearman with θ on unseen test
-sets, from synthetic decks only). `scripts/phase4*.py` add a Commander head
-(EDHREC inclusion, TF-IDF 0.75), a censored Constructed head (MTGGoldfish
-staples, GBT AUC 0.81) and a card-pair interaction search validated on
-held-out games. Summary in `CLAUDE.md`; reports in `out/phase3/`, `out/phase4/`.
+`scripts/phase3_data.py` turns the 17lands game dumps into per-set deck
+arrays (200k games per set). `scripts/phase3.py` trains a set-transformer
+win model on decks from the 24 training sets, computes counterfactual card
+values on real and synthetic decks, and compares them to θ. Distillation into
+the card head uses `scripts/phase2.py train --deck-values out/phase3/deck_values.csv`
+with `--target deck`, `--aux-w` or `--consistency-on-test`. Trained deck model:
+`models/deck_model.pt`.
+
+Result: deck values agree with θ (0.86 on training sets, 0.54 on new sets
+from synthetic decks), but distillation ties plain fine-tuning (0.624 vs
+0.621). Details: `out/phase3/REPORT.md`.
+
+## Phase 4 (Commander, Constructed, interactions)
+
+`scripts/phase4_data.py` fetches EDHREC inclusion and MTGGoldfish staples.
+`scripts/phase4.py commander|constructed` fits and scores the format heads.
+`scripts/phase4_interactions.py` scores card-pair synergy with the deck model
+and validates it on held-out games.
+
+Result: Limited strength barely transfers to other formats; text predicts
+Commander play (0.75) and Constructed staples (AUC 0.81) when trained on
+their own labels; pair synergy correlates 0.22 with held-out empirical
+interactions. Simulation labels were not feasible here. Details:
+`out/phase4/REPORT.md`.

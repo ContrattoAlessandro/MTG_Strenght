@@ -1,0 +1,5 @@
+{"config": {"cmd": "train", "embeddings": [], "out_dir": "/mnt/project-files/mtg_strength/out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "ft_embeddinggemma2_k4_commander", "no_struct": false, "seeds": [0, 1], "max_epochs": 8, "epochs": 4, "skip_val": true, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "top_k": 4, "cache_dir": "/tmp/claude-0/cache", "deck_values": null, "target": "label", "label_csv": "/mnt/project-files/mtg_strength/out/phase4/commander_labels.csv", "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null}}
+{"epoch": 1, "nll": 0.4569, "bt": 0.6296, "sec": 638}
+{"epoch": 2, "nll": 0.0638, "bt": 0.4417, "sec": 600}
+{"epoch": 3, "nll": -0.0819, "bt": 0.4068, "sec": 600}
+{"epoch": 4, "nll": -0.2232, "bt": 0.3752, "sec": 626}
