@@ -100,4 +100,20 @@ GPU hours (checked from v7's quota use), two lanes per session halve the cost.
 
 Each finished step adds one line here and its result to CLAUDE.md.
 
-- 2026-10-27: plan written; B running.
+- 2026-10-27 14:20: plan written; B running.
+- 14:50 **A done** (tooling, test log). **B done**: v7 screening on test, all
+  ties (env +0.005 ± 0.003, no-ctx +0.003 ± 0.004, LambdaRank −0.006 ± 0.003);
+  LambdaRank dropped from F. Kaggle bills session time, so 2 lanes = 1.
+- 17:30 **C done, no encoder flagged.** Name-only probe, seen − unseen gain over
+  mpnet/bge: Gemma-2 +0.002 ± 0.011, Qwen3-Emb-0.6B +0.007 ± 0.009, 4B
+  −0.004 ± 0.011, Harrier +0.003 ± 0.008, Nemotron −0.004 ± 0.015 (threshold
+  0.03). Names add only ~0.01 over rarity for every encoder. Paraphrase drops on
+  Gemma-2 fold models are ≤ 0.012 and not larger on seen sets. All encoders may
+  be scored on all sets; the probe's detection limit is ~0.02. Qwen3-Emb-8B is
+  probed only if E2 runs.
+- 17:30 **D1 done: keep the original text.** no_reminder +0.0046 ± 0.0052 (5/9),
+  below the +0.01 bar.
+- 17:30 **D2 partial**: val (9 sets, 3 seeds, best epoch) top-4 0.6246, top-8
+  0.6334 (+0.0089 ± 0.0047, 8/9 sets, just under the bar). Full FT ran out of
+  memory; rerun with gradient checkpointing plus top-12 in job v9. The 50/50
+  blend with gbt_tfidf_folds adds ~+0.01 to every variant (top-8 blend 0.643).
