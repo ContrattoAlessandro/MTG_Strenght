@@ -4,6 +4,13 @@
 4 CPU cores to Kaggle T4s (about 30 GPU hours per week, `docs/GPU.md` on the
 `gpu-kaggle` branch).
 
+**Scope (Alessandro, Oct 27): encoders and embedding models only, no LLMs**,
+even with the GPU. Every run below uses an embedding/encoder backbone
+(EmbeddingGemma-2, Harrier, Qwen3-Embedding, Nemotron-Embed). No generative
+model is used as a rater, a feature or a probe. Qwen3-Embedding and Harrier
+are built on a Qwen3 backbone but are released, trained and used here only as
+embedding models (pooled vectors into our head, never text generation).
+
 ## Bottom line
 
 1. **Most of our conclusions were shaped by what the CPU allowed, but only a few
@@ -17,13 +24,15 @@
    experiments that could move Spearman by 0.03 or more, plus the work that
    makes our comparisons sharper. Re-running ablations that moved things by 0.003
    isn't worth it.
-3. **Highest value per GPU hour:** (a) a generative LLM that rates cards
-   zero-shot. It doubles as the contamination probe the Phase 2 report called
-   infeasible on CPU. (b) Full fine-tuning against top-k fine-tuning, and a real
-   hyperparameter sweep on the 300M encoder over several validation folds.
-   (c) A size ladder of decoder models from one family (Qwen3 0.6B → 1.7B → 4B,
-   then 8B if the trend is positive). All of these were released before the first
-   test set's spoilers, so they are contamination-clean by release date.
+3. **Highest value per GPU hour:** (a) a contamination probe that needs only
+   encoders: embed each card's *name alone* and check whether a newer encoder
+   can rank cards from the name on sets it could have seen. Plus a
+   paraphrase-sensitivity test. (b) Full fine-tuning against top-k fine-tuning,
+   and a real hyperparameter sweep on EmbeddingGemma-2 over several validation
+   folds. (c) A size ladder of embedding models from one family
+   (Qwen3-Embedding 0.6B → 4B, then 8B if the trend is positive). Qwen3-Embedding
+   was released in June 2025, before the first test set's spoilers, so it is
+   contamination-clean by release date.
 4. **Before scaling, fix the protocol.** Use paired per-set statistics, select
    on several temporal validation folds instead of 3 sets, and keep a log of
    every look at the test sets. With a GPU we will run 10× more configurations,
@@ -34,7 +43,7 @@
    Java CPU time. Forge self-play gains nothing from a GPU, so next step 13 in
    CLAUDE.md should drop "GPU" as its precondition.
 
-Week 1 plan: about 22 GPU h of runs plus 4 h in reserve (section 4). The first
+Week 1 plan: about 20 GPU h of runs plus 4 h in reserve (section 4). The first
 Kaggle job, already running (EmbeddingGemma-2 top-4, 3 seeds), is step R0. It
 measures real T4 throughput and CPU↔GPU parity, and every cost below gets
 recalibrated from it.
@@ -67,7 +76,8 @@ What this means:
   different families.
 - **3 seeds is enough for comparisons.** Use 5 only for the model we ship, where
   the seed average is itself the product. One exception: measure seed spread
-  again for LoRA decoders, which are usually noisier on 6.5k examples.
+  again for the LoRA-tuned 4B/8B encoders, which are usually noisier on 6.5k
+  examples.
 - **The FT Gemma vs Harrier gap (0.015 ± 0.007) is borderline significant, and
   it is confounded.** Harrier was trained with k = 2 to fit the CPU budget,
   Gemma with k = 4 (see E3).
@@ -83,9 +93,9 @@ model). "Verdict" says whether to rerun it.
 
 | # | experiment | how the CPU shaped it | conclusion at risk | GPU version | GPU h | verdict |
 |---|---|---|---|---|---|---|
-| E1 | Frozen encoders zero-shot (Phase 1–2: mpnet, bge, Qwen3-Emb-0.6B, Gemma-2, Harrier, Nemotron) | only ≤1.5B embedding models; no generative models | "bigger frozen encoders don't help" | add generative LLMs as raters (R1); the frozen-embedding result stands | 2 | **rerun as R1** |
-| E2 | Contamination check (Phase 2) | probe limited to frozen embeddings; "a generative probe isn't feasible on this CPU budget" | "no clear sign of contamination" rests on a weak probe | prompt matched pre-/post-cutoff generative models for card grades on the test sets (R1) | in R1 | **rerun as R1** |
-| E3 | Fine-tuned encoders (Phase 2): Gemma-2 top-4, Harrier top-2, Nemotron not fine-tuned | top-k layers on cached states; k fixed by time (Harrier k = 2); 1.5B skipped | "fine-tuning helped, newer encoders didn't"; "Harrier ≈ Gemma" | full fine-tuning plus k ∈ {4, 8, all} on Gemma-2 (R2); same-family decoder ladder with LoRA (R4) | 2 + 7–15 | **rerun as R2, R4** |
+| E1 | Frozen encoders zero-shot (Phase 1–2: mpnet, bge, Qwen3-Emb-0.6B, Gemma-2, Harrier, Nemotron) | only ≤1.5B embedding models, frozen | "bigger frozen encoders don't help" | stands as is; the bigger-encoder question moves to fine-tuning (R4) | 0 | **no rerun** |
+| E2 | Contamination check (Phase 2) | probe limited to whole-text frozen embeddings and 2–3 sets per side | "no clear sign of contamination" rests on a weak probe | encoder-only probes: name-only embeddings and paraphrase sensitivity, seen vs unseen sets (R1) | 1 | **rerun as R1** |
+| E3 | Fine-tuned encoders (Phase 2): Gemma-2 top-4, Harrier top-2, Nemotron not fine-tuned | top-k layers on cached states; k fixed by time (Harrier k = 2); 1.5B skipped | "fine-tuning helped, newer encoders didn't"; "Harrier ≈ Gemma" | full fine-tuning plus k ∈ {4, 8, all} on Gemma-2 (R2); same-family embedding-model ladder, Qwen3-Embedding 0.6B/4B/8B (R4) | 2 + 7–15 | **rerun as R2, R4** |
 | E4 | Hyperparameters (Phase 2) | never searched: lr 5e-5 / 1e-3, batch 32, pair_w 1, epochs picked on 3 validation sets | every FT comparison is between untuned models | sweep of about 20 configs over 3 temporal validation folds (R3) | 5 | **rerun as R3** |
 | E5 | Seeds (all phases) | 2–3 seeds, 1 for text-only and Commander | comparisons are noise-limited | keep 3; give the 1-seed runs (text-only, Commander) 3 seeds | <1 | only the 1-seed runs |
 | E6 | `max_len` 256 | chosen for speed | none: the longest card text is 920 characters (≈250 tokens), mean 238 | no change | 0 | **no rerun** |
@@ -147,19 +157,19 @@ cost. Probabilities are my judgment, not measurements.
 | rank | run | GPU h | why it ranks here | go / no-go |
 |---|---|---|---|---|
 | R0 | **GPU parity + throughput** (running now: Gemma-2 top-4, 3 seeds) | ~1.5 | Calibrates every estimate here and validates the pipeline. | Must match CPU 0.623 ± 0.01. Record sec/epoch. |
-| R1 | **Generative LLM rater + contamination probe.** Grades from Qwen3-8B and Llama-3.1-8B-Instruct (released Apr 2025 and Jul 2024, so clean) via log-prob over grade tokens, plus one open model released after the test sets as the contaminated contrast. 1,748 test cards + validation sets, inference only. | ~2 | Cheap. Closes a rigor gap (E2). An LLM that already knows MTG could be a strong prior feature: if it reaches ≥0.55 zero-shot it beats Draftsim and is a new ensemble member. | Use as a feature if ≥0.50 on validation folds. Flag contamination if the post-cutoff model's gain over clean ones is ≥0.03 on sets it could have seen. |
+| R1 | **Encoder-only contamination probe.** (a) *Name-only probe:* embed only each card's name with EmbeddingGemma-2 (cutoff Jan 2025), Qwen3-Embedding-0.6B (released Jun 2025), Harrier-0.6B (Mar 2026) and Nemotron-3.5-1B (Oct 2026). Fit ridge on training-set names, score within-set Spearman on the test sets. A name carries little strength signal beyond creature type, so a newer encoder that does better on sets it could have seen than on ones it couldn't (vs the clean encoders) has memorised reputations. (b) *Paraphrase sensitivity:* score the fine-tuned models on meaning-preserving rewrites of the rules text (ability order swapped, reminder text dropped or added). A memoriser loses more on seen cards than unseen ones. Inference only. | ~1 | Closes the rigor gap in E2 without a generative model, and decides whether Harrier and Nemotron can be used on all 7 test sets or only the ones after their release. | Flag an encoder if its seen-minus-unseen gain over the clean encoders is ≥0.03 on (a), or its paraphrase drop is ≥0.02 larger on seen sets in (b). Flagged encoders are reported on clean sets only. |
 | R2 | **Full FT vs top-k on EmbeddingGemma-2**: k ∈ {4, 8, all}, layer-wise lr decay for "all", 3 seeds, fold V3. | ~2 | Clean answer to "full fine-tuning vs partial" at almost no cost. Full FT of 300M is cheap on a T4. Sets the backbone for R3. | Adopt full FT if ≥ +0.01 over k = 4 on validation. |
 | R3 | **Hyperparameter sweep, 300M encoder**: ~20 configs (enc lr 1e-5–2e-4, head lr, pair_w 0.3–3, epochs, dropout, batch 16–64), 1 seed × 3 folds, then 3 seeds for the top 2. | ~5 | Every later comparison needs a tuned reference, or a "bigger model wins" result just means "the untuned baseline was weak". Expected gain +0.01–0.02. | The tuned config becomes the reference for R4–R7. |
-| R4a | **Decoder size ladder, stage 1**: Qwen3-0.6B, 1.7B and 4B, LoRA r=16 on all linear layers, fp16, last-token pooling + the same struct tower and head. lr from a 3-point mini sweep on V3, then 3 seeds. | ~7 | The biggest possible gain, and it answers next step 10 (size vs contamination) with one family and a clean release date. Prior: about 35% chance of ≥ +0.02 over the tuned 300M model. | Go to R4b if 4B beats the tuned 300M by ≥0.015 on the validation folds, or if the within-family slope 0.6B → 1.7B → 4B is clearly positive. |
-| R4b | Stage 2 (week 2, gated): Qwen3-8B QLoRA (4-bit, fp16 compute), 3 seeds. | ~8 | Only if the trend says it pays. | Ship it only if it beats 4B by ≥0.01 at <3× inference cost on CPU (the web app runs on CPU). |
+| R4a | **Embedding-model size ladder, stage 1**: Qwen3-Embedding-0.6B (full FT, 8-bit Adam) and Qwen3-Embedding-4B (LoRA r=16 on all linear layers, fp16), last-token pooling as the model was trained, plus the same struct tower and head. lr from a 3-point mini sweep on V3, then 3 seeds. Optionally Harrier-0.6B full FT (same Qwen3 base) to settle "Harrier ≈ Gemma" on the sets R1 marks clean. | ~6 | The biggest possible gain. It answers next step 10 (size vs contamination) with one family and a clean release date. Prior: about 30% chance of ≥ +0.02 over the tuned EmbeddingGemma-2. | Go to R4b if 4B beats the tuned EmbeddingGemma-2 by ≥0.015 on the validation folds, or if the within-family slope 0.6B → 4B is clearly positive. |
+| R4b | Stage 2 (week 2, gated): Qwen3-Embedding-8B, QLoRA (4-bit, fp16 compute), 3 seeds. | ~8 | Only if the trend says it pays. | Ship it only if it beats 4B by ≥0.01 at <3× inference cost on CPU (the web app runs on CPU). |
 | R5 | **Re-check FT ablations on the winning backbone**: env encoder (Set Transformer) and LambdaRank top-weighting, 3 seeds. Text-only vs +struct only if the backbone changed. | ~3 | The structured-model ablations were ties. A stronger text tower may leave more for the environment to explain (HOB is still the hardest set). | Adopt if > 2 SE on the validation folds. |
-| R6 | **Rolling-origin backtest of the final model and gbt_tfidf**: predict each set from MKM to EOE using only earlier sets (one run per fold, 3 seeds). | ~5 | Raises the held-out evaluation from 7 sets to 18 (11 backtest sets + 7 test), so the final "model vs GBT" and "decoder vs encoder" claims become solid. Run once, at the end. | Reporting only. |
+| R6 | **Rolling-origin backtest of the final model and gbt_tfidf**: predict each set from MKM to EOE using only earlier sets (one run per fold, 3 seeds). | ~5 | Raises the held-out evaluation from 7 sets to 18 (11 backtest sets + 7 test), so the final "model vs GBT" and "small vs large encoder" claims become solid. Run once, at the end. | Reporting only. |
 | R7 | **Commander head**: short lr/epoch sweep with the R3 recipe, 3 seeds. | ~1 | Small; tests whether fine-tuning really loses to TF-IDF (0.717 vs 0.749) or was just untuned with 1 seed. | Replace the TF-IDF ridge in the app if ≥ +0.01. |
 | R8 | **Deck model scale-up**: all games (arrays built on CPU first), d = 256, 4 layers, more epochs until validation log loss stops improving. | ~3 | Improves the synergy search and the aux head. Unlikely to change card-strength metrics, because new-set values are limited by unseen mechanics (0.75 on training sets vs 0.54 on test), which more capacity doesn't fix. | Keep if validation log loss < 0.638 (now 0.642). |
 | R9 | **End-to-end deck model with a trainable card encoder** (week 3): card tokens come from the fine-tuned text tower, and game outcomes train the encoder alongside θ. | 8+ | The one design that attacks the 0.75 → 0.54 generalization gap: it trains the text model on millions of games instead of 6.5k labels. High risk, needs new code. | Pilot on 6 sets; continue if new-set deck values reach ≥0.60 vs θ. |
 | — | More seeds on existing CPU runs; Phase 0 or Forge on GPU | 0 | See sections 1 and 2. | Don't run. |
 
-**Week 1 (≈26 of 30 h):** R0 1.5 · R1 2 · R2 2 · R3 5 · R4a 7 · reserve 4
+**Week 1 (≈24 of 30 h):** R0 1.5 · R1 1 · R2 2 · R3 5 · R4a 6 · reserve 4
 (failed jobs, reruns), plus about 4 h to move future FT ablations off the CPU (a 3-seed FT run is
 about 2.5 h on 4 cores and should take well under 1 h on a T4).
 
@@ -174,9 +184,10 @@ independent and can share a session with anything else.
 
 - **No bf16 on T4.** EmbeddingGemma's model card says its activations don't
   support float16, so run EmbeddingGemma-2 in fp32 on a T4. That is still fast
-  at 300M. Qwen3 and Llama are fine in fp16 autocast with a grad scaler. The
-  larger Gemma 3 decoders have the same fp16 overflow problem, which is why the
-  ladder uses Qwen3. Verify with a 50-step smoke test (no NaN, loss matches the
+  at 300M. Qwen3-Embedding and Harrier (Qwen3-based) are fine in fp16 autocast with a
+  grad scaler, which is one reason the size ladder uses Qwen3-Embedding: there
+  is no EmbeddingGemma larger than ~300M, and a fp32 4B model would be slow on
+  a T4. Verify with a 50-step smoke test (no NaN, loss matches the
   fp32 run) before each new model family.
 - **Use both T4s.** The Kaggle accelerator is 2× T4 and the job uses one. Run
   two seeds or two folds in parallel (`CUDA_VISIBLE_DEVICES=0` / `1`, separate
@@ -188,10 +199,9 @@ independent and can share a session with anything else.
   | model | method | fits? |
   |---|---|---|
   | EmbeddingGemma-2 (~300M text) | full FT, fp32, AdamW (~5 GB + activations) | yes |
-  | Qwen3-0.6B | full FT, fp32 (~10 GB) | tight; use 8-bit Adam or LoRA |
-  | Qwen3-1.7B | LoRA, fp16 weights (3.4 GB) | yes |
-  | Qwen3-4B | LoRA, fp16 weights (8 GB) + gradient checkpointing | yes |
-  | Qwen3-8B | QLoRA 4-bit (~5.5 GB) + gradient checkpointing | yes, slow |
+  | Qwen3-Embedding-0.6B / Harrier-0.6B | full FT, fp32 (~10 GB) | tight; use 8-bit Adam or LoRA |
+  | Qwen3-Embedding-4B | LoRA, fp16 weights (8 GB) + gradient checkpointing | yes |
+  | Qwen3-Embedding-8B | QLoRA 4-bit (~5.5 GB) + gradient checkpointing | yes, slow |
 
 - **Keep cached states where they still help.** For top-k runs the cache is
   still the cheapest path. For full FT and LoRA, drop it and tokenize on the
@@ -205,7 +215,8 @@ independent and can share a session with anything else.
   Factor this into R4b's go/no-go.
 - **New code needed:** LoRA and full-FT paths in `phase2.py` (`--peft lora`,
   `--top-k all`), `--amp fp16`, multi-fold validation (`--val-fold`),
-  `compare_runs.py --ref/--val`, and an `llm_rate.py` for R1. All can be
+  `compare_runs.py --ref/--val`, and a `contamination_probe.py` for R1
+  (name-only embeddings through `embed.py`, plus the paraphrase set). All can be
   written and smoke-tested on CPU with a tiny model before using quota.
 
 ## 6. Cost model (recalibrate after R0)
@@ -220,9 +231,9 @@ Multiply by 2–3 for padding, validation passes and Python overhead.
 |---|---|---|
 | EmbeddingGemma-2 top-4 (cached) | ~1 | ~0.5 (CPU: ~8 min/epoch) |
 | EmbeddingGemma-2 full FT, fp32 | ~3–5 | ~1–1.5 |
-| Qwen3-1.7B LoRA | ~5–8 | ~2 |
-| Qwen3-4B LoRA | ~12–20 | ~4 |
-| Qwen3-8B QLoRA | ~30–45 | ~8 (4 epochs) |
+| Qwen3-Embedding-0.6B full FT | ~5–8 | ~2 |
+| Qwen3-Embedding-4B LoRA | ~12–20 | ~4 |
+| Qwen3-Embedding-8B QLoRA | ~30–45 | ~8 (4 epochs) |
 
 If R0 comes in more than 1.5× off these numbers, rescale section 4 before
 launching R2.
