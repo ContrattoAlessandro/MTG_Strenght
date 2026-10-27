@@ -29,12 +29,12 @@ class Skip(nn.Module):
         return hidden_states
 
 
-def load_encoder(name: str):
+def load_encoder(name: str, dtype=torch.float32):
     """Return (tokenizer, text model with .layers, pooling mode)."""
     from transformers import AutoModel, AutoTokenizer
 
     tok = AutoTokenizer.from_pretrained(name)
-    model = AutoModel.from_pretrained(name, dtype=torch.float32)
+    model = AutoModel.from_pretrained(name, dtype=dtype)
     text = text_submodule(model)
     pooling = "mean"
     try:
@@ -121,47 +121,77 @@ def cache_hidden(name: str, texts: list[str], k: int, max_len: int, cache_dir: s
     return out
 
 
+LORA_TARGETS = ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
+
+
 class TopLayers(nn.Module):
     """The top k layers of ``name`` (and everything after them), run on
-    cached states. Only these parameters are trainable."""
+    cached states. Only these parameters are trainable.
 
-    def __init__(self, name: str, k: int):
+    ``k`` < 0 (or >= the number of layers) is full fine-tuning: every layer
+    is trainable, no cache is used and the token embeddings stay frozen.
+    ``lora_r`` > 0 trains LoRA adapters (rank r, all linear layers of the
+    trainable block) instead of the layers' own weights; ``dtype`` is the
+    dtype of the frozen weights (float16 with LoRA keeps a 4B model on a
+    T4). ``grad_ckpt`` turns on gradient checkpointing."""
+
+    def __init__(self, name: str, k: int, lora_r: int = 0, dtype=torch.float32,
+                 grad_ckpt: bool = False):
         super().__init__()
-        self.tok, text, self.pooling = load_encoder(name)
+        self.tok, text, self.pooling = load_encoder(name, dtype)
         n = len(text.layers)
+        self.full = k < 0 or k >= n
+        k = n if self.full else k
+        self.n_layers, self.k = n, k
         for i in range(n - k):
             text.layers[i] = Skip()
         for p in text.parameters():
             p.requires_grad = False
-        # Trainable: the top k layers and any module applied after them
-        # (final norm, output projection).
-        for p in text.layers[n - k:].parameters():
-            p.requires_grad = True
-        for nm, mod in text.named_children():
-            if nm in ("norm", "final_norm", "embedding_projection", "final_layernorm"):
-                for p in mod.parameters():
-                    p.requires_grad = True
+        if lora_r:
+            from peft import LoraConfig, inject_adapter_in_model
+            cfg = LoraConfig(r=lora_r, lora_alpha=2 * lora_r, lora_dropout=0.05,
+                             target_modules=LORA_TARGETS)
+            text = inject_adapter_in_model(cfg, text)
+            for nm, p in text.named_parameters():
+                p.requires_grad = "lora_" in nm
+        else:
+            # Trainable: the top k layers and any module applied after them
+            # (final norm, output projection).
+            for p in text.layers[n - k:].parameters():
+                p.requires_grad = True
+            for nm, mod in text.named_children():
+                if nm in ("norm", "final_norm", "embedding_projection", "final_layernorm"):
+                    for p in mod.parameters():
+                        p.requires_grad = True
+        if grad_ckpt:
+            text.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
         self.text = text
         self._inject = None
-        text.layers[n - k].register_forward_pre_hook(self._swap, with_kwargs=True)
+        if not self.full:
+            text.layers[n - k].register_forward_pre_hook(self._swap, with_kwargs=True)
         # Output width (can differ from hidden_size, e.g. an output projection).
         with torch.no_grad():
             ids = torch.tensor([[self.tok.pad_token_id or 0, 1]])
             d = text.config.hidden_size
-            self._inject = torch.zeros(1, 2, d)
+            if not self.full:
+                self._inject = torch.zeros(1, 2, d, dtype=dtype)
             self.hidden_size = text(input_ids=ids, attention_mask=torch.ones_like(ids)) \
                 .last_hidden_state.shape[-1]
             self._inject = None
         self.text.train()
 
-    def _swap(self, _mod, args, kwargs):
-        return _replace_first_arg(args, kwargs, self._inject)
+    def layer_of(self) -> dict[int, int]:
+        """id(parameter) -> layer index, for layer-wise learning-rate decay."""
+        return {id(p): i for i, layer in enumerate(self.text.layers) for p in layer.parameters()}
 
-    def forward(self, input_ids: torch.Tensor, h: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
+    def _swap(self, _mod, args, kwargs):
+        return _replace_first_arg(args, kwargs, self._inject.to(_first_arg(args, kwargs).dtype))
+
+    def forward(self, input_ids: torch.Tensor, h: torch.Tensor | None, mask: torch.Tensor) -> torch.Tensor:
+        # Kept after the call: gradient checkpointing reruns the hook in backward.
         self._inject = h
         out = self.text(input_ids=input_ids, attention_mask=mask).last_hidden_state
-        self._inject = None
-        return pool(out, mask, self.pooling)
+        return pool(out, mask, self.pooling).float()
 
 
 def pad_batch(states: list[np.ndarray], ids: list[list[int]], idx, pad_id: int = 0):

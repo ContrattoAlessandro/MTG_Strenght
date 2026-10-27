@@ -47,6 +47,9 @@ from mtgstrength import evaluate, features, scryfall  # noqa: E402
 from phase1 import FIRST_TEST, MIN_GAMES_WELL_MEASURED, N_VAL, SETS  # noqa: E402
 
 RES = "phase2"
+# Forward-chaining validation folds (docs/RESEARCH_PLAN.md): each fold trains
+# on the training sets released before its first validation set.
+FOLDS = {"V1": ["MKM", "OTJ", "MH3"], "V2": ["BLB", "DSK", "FDN"], "V3": ["TDM", "FIN", "EOE"]}
 
 
 # --------------------------------------------------------------------------- data
@@ -111,7 +114,8 @@ def struct_matrix(f: pd.DataFrame, fit_mask: np.ndarray) -> np.ndarray:
 # --------------------------------------------------------------------------- model
 
 def build_model(encoder_name: str | None, n_struct: int, use_struct: bool, hidden: int = 256,
-                top_k: int = 0, n_pool: int = 0, env_dim: int = 64):
+                top_k: int = 0, n_pool: int = 0, env_dim: int = 64, lora_r: int = 0,
+                enc_fp16: bool = False, grad_ckpt: bool = False, dropout: float = 0.1):
     import torch
     from torch import nn
 
@@ -153,7 +157,8 @@ def build_model(encoder_name: str | None, n_struct: int, use_struct: bool, hidde
             d = 0
             if encoder_name and top_k:
                 from mtgstrength.partial import TopLayers
-                self.encoder = TopLayers(encoder_name, top_k)
+                self.encoder = TopLayers(encoder_name, top_k, lora_r=lora_r, grad_ckpt=grad_ckpt,
+                                         dtype=torch.float16 if enc_fp16 else torch.float32)
                 d += self.encoder.hidden_size
             elif encoder_name:
                 from transformers import AutoModel
@@ -161,15 +166,15 @@ def build_model(encoder_name: str | None, n_struct: int, use_struct: bool, hidde
                 d += self.encoder.config.hidden_size
             self.use_struct = use_struct
             if use_struct:
-                self.struct = nn.Sequential(nn.Linear(n_struct, hidden), nn.GELU(), nn.Dropout(0.1),
+                self.struct = nn.Sequential(nn.Linear(n_struct, hidden), nn.GELU(), nn.Dropout(dropout),
                                             nn.Linear(hidden, hidden), nn.GELU())
                 d += hidden
             self.env = None
             if n_pool:
                 self.env = EnvEncoder(n_pool, d, env_dim)
                 d += self.env.out_dim
-            self.head = nn.Sequential(nn.Dropout(0.1), nn.Linear(d, hidden), nn.GELU(),
-                                      nn.Dropout(0.1), nn.Linear(hidden, 3))
+            self.head = nn.Sequential(nn.Dropout(dropout), nn.Linear(d, hidden), nn.GELU(),
+                                      nn.Dropout(dropout), nn.Linear(hidden, 3))
             self.bt_scale = nn.Parameter(torch.tensor(2.0))   # Bradley-Terry slope, z-units
 
         def forward(self, input_ids=None, attention_mask=None, x=None, h=None, pool=None,
@@ -226,9 +231,11 @@ def load_model(path: str):
 
 def model_kwargs(cfg: dict) -> dict:
     """Architecture options beyond the encoder."""
+    kw = {"lora_r": cfg.get("lora_r", 0) if cfg.get("peft", "none") == "lora" else 0,
+          "enc_fp16": cfg.get("enc_fp16", False)}
     if cfg.get("env", "none") == "none":
-        return {}
-    return {"n_pool": cfg["n_pool"], "env_dim": cfg["env_dim"]}
+        return kw
+    return {**kw, "n_pool": cfg["n_pool"], "env_dim": cfg["env_dim"]}
 
 
 CTX_COLS = ["set_stat_eff", "set_removal_rate", "set_creature_rate", "set_mean_mv",
@@ -318,9 +325,10 @@ def loss_fn(mu, var, y, s, bt_scale, pair_w, lambda_w=0.0, n_set=None, lambda_k=
 
 
 def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, args,
-            eval_mask=None, log=print, tag="full", save_path=None):
+            eval_mask=None, log=print, tag="full", save_path=None, on_epoch=None):
     """Train on fit_mask; return predictions (mean, sd in label units) on
-    pred_mask after the final epoch, plus per-epoch metrics on eval_mask."""
+    pred_mask after the final epoch, plus per-epoch metrics on eval_mask
+    (and ``on_epoch(epoch, mean, sd)`` with the eval_mask predictions)."""
     import torch
     from transformers import AutoTokenizer, get_linear_schedule_with_warmup
 
@@ -360,13 +368,17 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
         pools = build_pools(cards, X, vars(args))
         args.n_pool = pools[0].shape[2]
     model = build_model(enc_name, X.shape[1], use_struct, top_k=args.top_k,
-                        **model_kwargs(vars(args))).to(dev)
+                        grad_ckpt=getattr(args, "grad_ckpt", False),
+                        dropout=getattr(args, "dropout", 0.1), **model_kwargs(vars(args))).to(dev)
+    amp = getattr(args, "amp", "none") == "fp16" and dev.type == "cuda"
+    scaler = torch.amp.GradScaler("cuda", enabled=amp)
     tok = None
     if enc_name:
         tok = AutoTokenizer.from_pretrained(enc_name)
         enc = tok(cards["text"].tolist(), truncation=True, max_length=args.max_len)
         ids = enc["input_ids"]
-    if enc_name and args.top_k:
+    cached = bool(enc_name and args.top_k) and not model.encoder.full
+    if cached:
         from mtgstrength.partial import cache_hidden, pad_batch
         states = cache_hidden(enc_name, cards["text"].tolist(), args.top_k, args.max_len,
                               args.cache_dir, log=log, device=dev)
@@ -374,11 +386,12 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
 
     def collate(b):
         out = {"x": Xt[b]} if use_struct else {}
-        if tok is not None and args.top_k:
+        if cached:
             t, h, m = pad_batch(states, ids, list(b), pad_id)
             out.update(input_ids=t, h=h, attention_mask=m)
         elif tok is not None:
-            p = tok.pad({"input_ids": [ids[i] for i in b]}, return_tensors="pt")
+            # Right padding: last-token pooling reads position mask.sum() - 1.
+            p = tok.pad({"input_ids": [ids[i] for i in b]}, return_tensors="pt", padding_side="right")
             out.update(input_ids=p["input_ids"], attention_mask=p["attention_mask"])
         if pools is not None:
             out.update(env_batch(pools, b))
@@ -389,14 +402,27 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
     enc_ids = {id(p) for p in enc_params}
     other = [p for p in model.parameters() if id(p) not in enc_ids and p.requires_grad]
     groups = [{"params": other, "lr": args.head_lr}]
-    if enc_params:
+    llrd = getattr(args, "llrd", 1.0)
+    if enc_params and llrd != 1.0 and args.top_k:
+        # Layer-wise lr decay: layer i of n gets enc_lr * llrd^(n - 1 - i).
+        layer_of, n = model.encoder.layer_of(), model.encoder.n_layers
+        by_lr: dict[float, list] = {}
+        for p in enc_params:
+            by_lr.setdefault(args.enc_lr * llrd ** (n - 1 - layer_of.get(id(p), n - 1)), []).append(p)
+        groups += [{"params": ps, "lr": lr} for lr, ps in by_lr.items()]
+    elif enc_params:
         groups.append({"params": enc_params, "lr": args.enc_lr})
-    opt = torch.optim.AdamW(groups, weight_decay=0.01)
+    wd = getattr(args, "weight_decay", 0.01)
+    if getattr(args, "optim", "adamw") == "adamw8bit":
+        import bitsandbytes as bnb
+        opt = bnb.optim.AdamW8bit(groups, weight_decay=wd)
+    else:
+        opt = torch.optim.AdamW(groups, weight_decay=wd)
     sets = cards["set"].to_numpy()
     set_size = cards["set"].value_counts().to_dict()
     fit_idx = np.flatnonzero(fit_mask | aux_extra) if aux_w else np.flatnonzero(fit_mask)
     n_steps = epochs * len(set_batches(sets, fit_idx, args.batch_size, np.random.default_rng(0)))
-    sched = get_linear_schedule_with_warmup(opt, int(0.06 * n_steps), n_steps)
+    sched = get_linear_schedule_with_warmup(opt, int(getattr(args, "warmup", 0.06) * n_steps), n_steps)
 
     def predict(mask):
         model.eval()
@@ -407,8 +433,9 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
         mus, vs = np.empty(len(cards)), np.empty(len(cards))
         with torch.no_grad():
             for b in np.array_split(idx, max(1, len(idx) // 64)):
-                mu, var = model(**collate(b))
-                mus[b], vs[b] = mu.cpu().numpy(), var.cpu().numpy()
+                with torch.autocast("cuda", dtype=torch.float16, enabled=amp):
+                    mu, var = model(**collate(b))
+                mus[b], vs[b] = mu.float().cpu().numpy(), var.float().cpu().numpy()
         model.train()
         return mus[mask] * y_sd + y_mu, np.sqrt(vs[mask]) * y_sd
 
@@ -429,7 +456,9 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
         t0 = time.time()
         tot = [0.0, 0.0, 0]
         for b in set_batches(sets, fit_idx, args.batch_size, rng):
-            mu, var = model(**collate(b))
+            with torch.autocast("cuda", dtype=torch.float16, enabled=amp):
+                mu, var = model(**collate(b))
+            mu, var = mu.float(), var.float()
             lab = torch.from_numpy(labelled[b]).to(dev)
             if lab.sum() >= 2:
                 loss, nll, bt = loss_fn(mu[lab], var[lab], yz[b][lab], sz[b][lab], model.bt_scale,
@@ -443,9 +472,11 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
                 if m.any():
                     loss = loss + aux_w * ((model.aux_out[m] - dz[b][m]) ** 2).mean()
             opt.zero_grad()
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-            opt.step()
+            scaler.scale(loss).backward()
+            scaler.unscale_(opt)
+            torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad], 1.0)
+            scaler.step(opt)
+            scaler.update()
             sched.step()
             tot[0] += nll
             tot[1] += bt
@@ -454,6 +485,8 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
                "sec": round(time.time() - t0)}
         if eval_mask is not None:
             m, sd = predict(eval_mask)
+            if on_epoch:
+                on_epoch(ep + 1, m, sd)
             ev = cards[eval_mask].assign(pred=m, pred_pp=m)
             per = evaluate.evaluate(ev, ["pred"], "val")
             rec.update(val_spearman=per["spearman"].mean(), val_ndcg=per["ndcg@20"].mean(),
@@ -513,6 +546,9 @@ def train(args) -> None:
         logf.flush()
 
     log(json.dumps({"config": vars(args)}))
+    if args.val_fold:
+        train_folds(args, cards, f, enc, use_struct, run_dir, log)
+        return
     epochs = args.epochs
     done_val = [json.loads(l)["chosen_epochs"] for l in open(os.path.join(run_dir, "log.jsonl"))
                 if '"chosen_epochs"' in l]
@@ -550,12 +586,97 @@ def train(args) -> None:
     log(json.dumps({"done": True, "epochs": epochs}))
 
 
+def train_folds(args, cards, f, enc, use_struct, run_dir, log) -> None:
+    """Validation-only training (--val-fold): for each fold and seed, train on
+    the sets before the fold's validation sets for --epochs (default
+    --max-epochs) and write the validation predictions after every epoch to
+    val_pred_<fold>_seed<k>.csv (columns set, oracle_id, epoch, pred,
+    pred_sd), so the epoch count can be chosen afterwards from the mean
+    curve over folds. Test sets are never predicted."""
+    order = {s: i for i, s in enumerate(SETS)}
+    epochs = args.epochs or args.max_epochs
+    for fold in args.val_fold:
+        first = min(order[s] for s in FOLDS[fold])
+        fit = (cards["set_idx"] < first).to_numpy() & cards["is_train"].to_numpy()
+        va = cards["set"].isin(FOLDS[fold]).to_numpy()
+        X = struct_matrix(f, fit)
+        for seed in args.seeds:
+            out = os.path.join(run_dir, f"val_pred_{fold}_seed{seed}.csv")
+            if os.path.exists(out):
+                continue
+            part = out + ".partial"
+
+            def on_epoch(ep, m, sd, part=part):
+                rows = cards.loc[va, ["set", "oracle_id"]].assign(epoch=ep, pred=m, pred_sd=sd)
+                rows.to_csv(part, mode="a", header=not os.path.exists(part), index=False)
+
+            save_path = (os.path.join(args.save_dir, args.name, f"{fold}_seed{seed}.pt")
+                         if args.save_dir else None)
+            run_one(cards, X, enc, use_struct, fit, va, epochs, seed, args, eval_mask=va,
+                    save_path=save_path,
+                    log=lambda msg, fold=fold: log(msg.replace("{", f'{{"fold": "{fold}", ', 1)
+                                                   if msg.startswith("{") else msg),
+                    tag=f"{fold}", on_epoch=on_epoch)
+            if save_path:
+                import torch
+                meta = torch.load(save_path, weights_only=False)
+                meta["struct"] = struct_stats(f, fit)
+                torch.save(meta, save_path)
+            # A restart from scratch rewrites earlier epochs: keep the last copy.
+            p = pd.read_csv(part).drop_duplicates(["set", "oracle_id", "epoch"], keep="last")
+            p.to_csv(out, index=False)
+            os.remove(part)
+    log(json.dumps({"done": True, "val_folds": args.val_fold, "epochs": epochs}))
+
+
+def predict_with(model, meta, cards: pd.DataFrame, f: pd.DataFrame, mask: np.ndarray,
+                 cache_dir: str, texts: list[str] | None = None, device: str = "cpu"):
+    """Predictions (mean, sd in label units) of a model from load_model for
+    the cards in mask. ``texts`` replaces cards["text"] (paraphrase probes)."""
+    import torch
+    from transformers import AutoTokenizer
+    cfg = meta["config"]
+    texts = cards["text"].tolist() if texts is None else list(texts)
+    dev = torch.device(device)
+    model = model.to(dev)
+    Xn = struct_apply(f, meta["struct"])
+    X = torch.tensor(Xn)
+    pools = build_pools(cards, Xn, cfg) if cfg.get("env", "none") != "none" else None
+    idx = np.flatnonzero(mask)
+    enc = None if cfg["encoder"] == "none" else cfg["encoder"]
+    if enc:
+        tok = AutoTokenizer.from_pretrained(enc)
+        ids = tok(texts, truncation=True, max_length=cfg["max_len"])["input_ids"]
+        from mtgstrength.partial import cache_hidden, pad_batch
+        full = model.encoder.full
+        if not full:
+            states = cache_hidden(enc, texts, cfg["top_k"], cfg["max_len"], cache_dir, device=dev)
+    amp = cfg.get("amp", "none") == "fp16" and dev.type == "cuda"
+    mu, sd = np.empty(len(idx)), np.empty(len(idx))
+    with torch.no_grad():
+        for j in np.array_split(np.arange(len(idx)), max(1, len(idx) // 64)):
+            b = idx[j]
+            kw = {"x": X[b]} if not cfg["no_struct"] else {}
+            if enc and full:
+                p = tok.pad({"input_ids": [ids[i] for i in b]}, return_tensors="pt",
+                            padding_side="right")
+                kw.update(input_ids=p["input_ids"], attention_mask=p["attention_mask"])
+            elif enc:
+                t, h, m = pad_batch(states, ids, list(b), tok.pad_token_id or 0)
+                kw.update(input_ids=t, h=h, attention_mask=m)
+            if pools is not None:
+                kw.update(env_batch(pools, b))
+            with torch.autocast("cuda", dtype=torch.float16, enabled=amp):
+                m_, v_ = model(**{k: v.to(dev) for k, v in kw.items()})
+            mu[j], sd[j] = m_.float().cpu().numpy(), np.sqrt(v_.float().cpu().numpy())
+    return mu * meta["y_sd"] + meta["y_mu"], sd * meta["y_sd"]
+
+
 def predict_saved(args) -> None:
     """Predict with saved weights (--model-path, one or more seeds) for the
     cards in cards.parquet (default: test sets) and check that the reloaded
     model reproduces the predictions made at the end of training."""
     import torch
-    from transformers import AutoTokenizer
     torch.set_num_threads(args.threads)
     res_dir = os.path.join(args.out_dir, RES)
     cards = pd.read_parquet(os.path.join(res_dir, "cards.parquet"))
@@ -564,31 +685,7 @@ def predict_saved(args) -> None:
     preds = []
     for path in args.model_path:
         model, meta = load_model(path)
-        cfg = meta["config"]
-        Xn = struct_apply(f, meta["struct"])
-        X = torch.tensor(Xn)
-        pools = build_pools(cards, Xn, cfg) if cfg.get("env", "none") != "none" else None
-        idx = np.flatnonzero(mask)
-        enc = None if cfg["encoder"] == "none" else cfg["encoder"]
-        if enc:
-            tok = AutoTokenizer.from_pretrained(enc)
-            ids = tok(cards["text"].tolist(), truncation=True, max_length=cfg["max_len"])["input_ids"]
-            from mtgstrength.partial import cache_hidden, pad_batch
-            states = cache_hidden(enc, cards["text"].tolist(), cfg["top_k"], cfg["max_len"],
-                                  args.cache_dir)
-        mu, sd = np.empty(len(idx)), np.empty(len(idx))
-        with torch.no_grad():
-            for j in np.array_split(np.arange(len(idx)), max(1, len(idx) // 64)):
-                b = idx[j]
-                kw = {"x": X[b]} if not cfg["no_struct"] else {}
-                if enc:
-                    t, h, m = pad_batch(states, ids, list(b), tok.pad_token_id or 0)
-                    kw.update(input_ids=t, h=h, attention_mask=m)
-                if pools is not None:
-                    kw.update(env_batch(pools, b))
-                m_, v_ = model(**kw)
-                mu[j], sd[j] = m_.numpy(), np.sqrt(v_.numpy())
-        mu, sd = mu * meta["y_sd"] + meta["y_mu"], sd * meta["y_sd"]
+        mu, sd = predict_with(model, meta, cards, f, mask, args.cache_dir, device=args.device)
         if not args.limit_sets and "test_pred" in meta:
             print(f"{path}: max |reloaded - saved| = {np.abs(mu - meta['test_pred']).max():.2e} logits")
         preds.append((mu, sd))
@@ -779,7 +876,23 @@ def main() -> None:
     ap.add_argument("--device", default="cpu",
                     help="train: torch device, e.g. cuda on a Colab/Kaggle GPU (docs/GPU.md)")
     ap.add_argument("--top-k", type=int, default=0,
-                    help="fine-tune only the top k encoder layers, on cached lower-layer states")
+                    help="fine-tune only the top k encoder layers, on cached lower-layer states;"
+                         " -1 = all layers (full fine-tuning, no cache, embeddings frozen);"
+                         " 0 = legacy full fine-tuning with mean pooling")
+    ap.add_argument("--val-fold", nargs="*", default=[], choices=sorted(FOLDS),
+                    help="validation-only run on these folds (no test predictions)")
+    ap.add_argument("--llrd", type=float, default=1.0, help="layer-wise lr decay per layer")
+    ap.add_argument("--amp", choices=["none", "fp16"], default="none",
+                    help="fp16 autocast + grad scaler on CUDA (not for EmbeddingGemma)")
+    ap.add_argument("--peft", choices=["none", "lora"], default="none")
+    ap.add_argument("--lora-r", type=int, default=16)
+    ap.add_argument("--enc-fp16", action="store_true",
+                    help="keep the frozen encoder weights in float16 (with --peft lora)")
+    ap.add_argument("--grad-ckpt", action="store_true", help="gradient checkpointing")
+    ap.add_argument("--optim", choices=["adamw", "adamw8bit"], default="adamw")
+    ap.add_argument("--weight-decay", type=float, default=0.01)
+    ap.add_argument("--warmup", type=float, default=0.06, help="warm-up share of the steps")
+    ap.add_argument("--dropout", type=float, default=0.1)
     ap.add_argument("--cache-dir", default="/tmp/claude-0/cache")
     ap.add_argument("--deck-values", default=None,
                     help="out/phase3/deck_values.csv: enables --target deck and --aux-w")
