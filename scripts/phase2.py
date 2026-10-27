@@ -111,9 +111,39 @@ def struct_matrix(f: pd.DataFrame, fit_mask: np.ndarray) -> np.ndarray:
 # --------------------------------------------------------------------------- model
 
 def build_model(encoder_name: str | None, n_struct: int, use_struct: bool, hidden: int = 256,
-                top_k: int = 0):
+                top_k: int = 0, n_pool: int = 0, env_dim: int = 64):
     import torch
     from torch import nn
+
+    class EnvEncoder(nn.Module):
+        """Set Transformer over the set's card pool (design section 6).
+
+        Pool tokens are the cards of the set (their structured features, plus
+        a frozen text embedding when given). One self-attention block lets the
+        cards see each other; then (a) attention pooling with a learned seed
+        gives the environment vector z_E, and (b) the card being scored attends
+        over the pool, which gives a card-specific context (e.g. how its stats
+        compare with the set's other creatures)."""
+
+        def __init__(self, n_in: int, n_query: int, d: int, heads: int = 4):
+            super().__init__()
+            self.tok = nn.Sequential(nn.Linear(n_in, d), nn.GELU(), nn.Linear(d, d))
+            self.sab = nn.TransformerEncoderLayer(d, heads, 2 * d, dropout=0.1, batch_first=True,
+                                                  norm_first=True)
+            self.seed = nn.Parameter(torch.randn(1, 1, d) * 0.02)
+            self.pma = nn.MultiheadAttention(d, heads, batch_first=True)
+            self.q = nn.Linear(n_query, d)
+            self.cross = nn.MultiheadAttention(d, heads, batch_first=True)
+            self.out_dim = 2 * d
+
+        def forward(self, pool, pool_mask, set_idx, query):
+            # pool: (S, P, n_in); pool_mask: (S, P) True for real cards;
+            # set_idx: (B,) index into S; query: (B, n_query).
+            t = self.sab(self.tok(pool), src_key_padding_mask=~pool_mask)
+            z, _ = self.pma(self.seed.expand(len(t), -1, -1), t, t, key_padding_mask=~pool_mask)
+            q = self.q(query).unsqueeze(1)
+            c, _ = self.cross(q, t[set_idx], t[set_idx], key_padding_mask=~pool_mask[set_idx])
+            return torch.cat([z[set_idx, 0], c[:, 0]], -1)
 
     class CardModel(nn.Module):
         def __init__(self):
@@ -134,11 +164,16 @@ def build_model(encoder_name: str | None, n_struct: int, use_struct: bool, hidde
                 self.struct = nn.Sequential(nn.Linear(n_struct, hidden), nn.GELU(), nn.Dropout(0.1),
                                             nn.Linear(hidden, hidden), nn.GELU())
                 d += hidden
+            self.env = None
+            if n_pool:
+                self.env = EnvEncoder(n_pool, d, env_dim)
+                d += self.env.out_dim
             self.head = nn.Sequential(nn.Dropout(0.1), nn.Linear(d, hidden), nn.GELU(),
                                       nn.Dropout(0.1), nn.Linear(hidden, 3))
             self.bt_scale = nn.Parameter(torch.tensor(2.0))   # Bradley-Terry slope, z-units
 
-        def forward(self, input_ids=None, attention_mask=None, x=None, h=None):
+        def forward(self, input_ids=None, attention_mask=None, x=None, h=None, pool=None,
+                    pool_mask=None, set_idx=None):
             parts = []
             if self.top_k:
                 parts.append(self.encoder(input_ids, h, attention_mask))
@@ -148,6 +183,8 @@ def build_model(encoder_name: str | None, n_struct: int, use_struct: bool, hidde
                 parts.append((h * m).sum(1) / m.sum(1).clamp(min=1))
             if self.use_struct:
                 parts.append(self.struct(x))
+            if self.env is not None:
+                parts.append(self.env(pool, pool_mask, set_idx, torch.cat(parts, -1)))
             out = self.head(torch.cat(parts, -1))
             mu = out[:, 0]
             var = nn.functional.softplus(out[:, 1]) + 1e-3
@@ -188,8 +225,45 @@ def load_model(path: str):
 
 
 def model_kwargs(cfg: dict) -> dict:
-    """Architecture options beyond the encoder (none yet)."""
-    return {}
+    """Architecture options beyond the encoder."""
+    if cfg.get("env", "none") == "none":
+        return {}
+    return {"n_pool": cfg["n_pool"], "env_dim": cfg["env_dim"]}
+
+
+CTX_COLS = ["set_stat_eff", "set_removal_rate", "set_creature_rate", "set_mean_mv",
+            "stat_eff_vs_set"]
+
+
+def build_pools(cards: pd.DataFrame, X: np.ndarray, cfg: dict):
+    """Per-set pool tensors for the environment encoder: (S, P, n) features,
+    (S, P) mask, and each card's set index. Pool features are the card's
+    standardised structured features, plus its frozen text embedding when
+    --env-emb is given."""
+    import torch
+    feats = X
+    if cfg.get("env_emb"):
+        E = pd.read_parquet(cfg["env_emb"]).set_index("oracle_id")
+        E = E.reindex(cards["oracle_id"]).fillna(0.0).to_numpy(np.float32)
+        feats = np.hstack([X, E / (np.linalg.norm(E, axis=1, keepdims=True) + 1e-6)])
+    sets = list(dict.fromkeys(cards["set"]))
+    P = max((cards["set"] == s).sum() for s in sets)
+    pool = torch.zeros(len(sets), P, feats.shape[1])
+    mask = torch.zeros(len(sets), P, dtype=torch.bool)
+    for i, s in enumerate(sets):
+        rows = np.flatnonzero((cards["set"] == s).to_numpy())
+        pool[i, :len(rows)] = torch.from_numpy(feats[rows].astype(np.float32))
+        mask[i, :len(rows)] = True
+    set_of = cards["set"].map({s: i for i, s in enumerate(sets)}).to_numpy()
+    return pool, mask, set_of
+
+
+def env_batch(pools, b) -> dict:
+    """The pools of the sets in batch b, with set indices remapped."""
+    import torch
+    pool, mask, set_of = pools
+    uniq, inv = np.unique(set_of[b], return_inverse=True)
+    return {"pool": pool[uniq], "pool_mask": mask[uniq], "set_idx": torch.from_numpy(inv)}
 
 
 def set_batches(sets: np.ndarray, idx: np.ndarray, bs: int, rng) -> list[np.ndarray]:
@@ -203,7 +277,14 @@ def set_batches(sets: np.ndarray, idx: np.ndarray, bs: int, rng) -> list[np.ndar
     return out
 
 
-def loss_fn(mu, var, y, s, bt_scale, pair_w):
+def loss_fn(mu, var, y, s, bt_scale, pair_w, lambda_w=0.0, n_set=None):
+    """Gaussian NLL + within-set Bradley-Terry. With ``lambda_w`` > 0 each
+    pair is reweighted LambdaRank-style by the NDCG change of swapping the two
+    cards: |y_i - y_j| (linear gain, as in the NDCG metric) times the
+    difference of their rank discounts 1/log2(1 + rank). Ranks are the
+    current predicted ranks in the batch, scaled up to the set size
+    ``n_set``. Weights are normalised to mean 1 and mixed with uniform
+    weights: w = (1 - lambda_w) + lambda_w * lambda_ij."""
     import torch
     tv = var + s ** 2
     nll = 0.5 * (torch.log(tv) + (y - mu) ** 2 / tv)
@@ -211,7 +292,19 @@ def loss_fn(mu, var, y, s, bt_scale, pair_w):
     target = 0.5 * (1 + torch.erf((y[:, None] - y[None, :])
                                   / torch.sqrt(2 * (s[:, None] ** 2 + s[None, :] ** 2))))
     off = ~torch.eye(len(y), dtype=torch.bool)
-    bt = torch.nn.functional.binary_cross_entropy_with_logits(bt_scale * d[off], target[off])
+    w = None
+    if lambda_w:
+        with torch.no_grad():
+            n = len(y)
+            rank = torch.empty(n)
+            rank[torch.argsort(mu, descending=True)] = torch.arange(n, dtype=torch.float32)
+            rank = (rank + 0.5) * (n_set or n) / n + 0.5
+            disc = 1.0 / torch.log2(1.0 + rank)
+            lam = (y[:, None] - y[None, :]).abs() * (disc[:, None] - disc[None, :]).abs()
+            lam = lam[off]
+            w = (1 - lambda_w) + lambda_w * lam / lam.mean().clamp(min=1e-8)
+    bt = torch.nn.functional.binary_cross_entropy_with_logits(bt_scale * d[off], target[off],
+                                                              weight=w)
     return nll.mean() + pair_w * bt, nll.mean().item(), bt.item()
 
 
@@ -252,7 +345,12 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
     sz = torch.tensor(s_all / y_sd, dtype=torch.float32)
     Xt = torch.tensor(X)
 
-    model = build_model(enc_name, X.shape[1], use_struct, top_k=args.top_k)
+    pools = None
+    if args.env != "none":
+        pools = build_pools(cards, X, vars(args))
+        args.n_pool = pools[0].shape[2]
+    model = build_model(enc_name, X.shape[1], use_struct, top_k=args.top_k,
+                        **model_kwargs(vars(args)))
     tok = None
     if enc_name:
         tok = AutoTokenizer.from_pretrained(enc_name)
@@ -272,6 +370,8 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
         elif tok is not None:
             p = tok.pad({"input_ids": [ids[i] for i in b]}, return_tensors="pt")
             out.update(input_ids=p["input_ids"], attention_mask=p["attention_mask"])
+        if pools is not None:
+            out.update(env_batch(pools, b))
         return out
 
     enc_params = ([p for p in model.encoder.parameters() if p.requires_grad]
@@ -283,6 +383,7 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
         groups.append({"params": enc_params, "lr": args.enc_lr})
     opt = torch.optim.AdamW(groups, weight_decay=0.01)
     sets = cards["set"].to_numpy()
+    set_size = cards["set"].value_counts().to_dict()
     fit_idx = np.flatnonzero(fit_mask | aux_extra) if aux_w else np.flatnonzero(fit_mask)
     n_steps = epochs * len(set_batches(sets, fit_idx, args.batch_size, np.random.default_rng(0)))
     sched = get_linear_schedule_with_warmup(opt, int(0.06 * n_steps), n_steps)
@@ -322,7 +423,7 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
             lab = torch.from_numpy(labelled[b])
             if lab.sum() >= 2:
                 loss, nll, bt = loss_fn(mu[lab], var[lab], yz[b][lab], sz[b][lab], model.bt_scale,
-                                        args.pair_w)
+                                        args.pair_w, args.lambda_w, set_size[sets[b[0]]])
             else:
                 loss, nll, bt = mu.sum() * 0, 0.0, 0.0
             if aux_w:
@@ -371,6 +472,8 @@ def train(args) -> None:
     os.makedirs(run_dir, exist_ok=True)
     cards = pd.read_parquet(os.path.join(res_dir, "cards.parquet"))
     f = pd.read_parquet(os.path.join(res_dir, "struct.parquet"))
+    if args.no_ctx:
+        f = f.drop(columns=CTX_COLS)
     if args.limit_sets:
         keep = cards["set"].isin(args.limit_sets).to_numpy()
         cards, f = cards[keep].reset_index(drop=True), f[keep].reset_index(drop=True)
@@ -450,7 +553,9 @@ def predict_saved(args) -> None:
     for path in args.model_path:
         model, meta = load_model(path)
         cfg = meta["config"]
-        X = torch.tensor(struct_apply(f, meta["struct"]))
+        Xn = struct_apply(f, meta["struct"])
+        X = torch.tensor(Xn)
+        pools = build_pools(cards, Xn, cfg) if cfg.get("env", "none") != "none" else None
         idx = np.flatnonzero(mask)
         enc = None if cfg["encoder"] == "none" else cfg["encoder"]
         if enc:
@@ -467,7 +572,8 @@ def predict_saved(args) -> None:
                 if enc:
                     t, h, m = pad_batch(states, ids, list(b), tok.pad_token_id or 0)
                     kw.update(input_ids=t, h=h, attention_mask=m)
-                kw.update(env_kwargs(model, cards, f, b))
+                if pools is not None:
+                    kw.update(env_batch(pools, b))
                 m_, v_ = model(**kw)
                 mu[j], sd[j] = m_.numpy(), np.sqrt(v_.numpy())
         mu, sd = mu * meta["y_sd"] + meta["y_mu"], sd * meta["y_sd"]
@@ -479,11 +585,6 @@ def predict_saved(args) -> None:
     if args.pred_out:
         out.to_csv(args.pred_out, index=False)
         print(f"wrote {args.pred_out}")
-
-
-def env_kwargs(model, cards, f, b) -> dict:
-    """Extra forward inputs for models with an environment encoder (none yet)."""
-    return {}
 
 
 # --------------------------------------------------------------------------- zero-shot
@@ -676,6 +777,15 @@ def main() -> None:
                     help="also fit the auxiliary head on test-set cards (deck values from "
                          "synthetic decks, no labels)")
     ap.add_argument("--limit-sets", nargs="*", default=None, help="debugging")
+    ap.add_argument("--lambda-w", type=float, default=0.0,
+                    help="LambdaRank-style NDCG weighting of the pairwise loss (0 = off, 1 = full)")
+    ap.add_argument("--env", choices=["none", "set"], default="none",
+                    help="set: Set Transformer environment encoder over the set's card pool")
+    ap.add_argument("--env-dim", type=int, default=64)
+    ap.add_argument("--env-emb", default=None,
+                    help="frozen embedding parquet added to the pool tokens (out/phase1/emb/...)")
+    ap.add_argument("--no-ctx", action="store_true",
+                    help="drop the 5 hand-made set-context features")
     ap.add_argument("--save-dir", default=None,
                     help="save each seed's trained weights to <save-dir>/<name>/seed<k>.pt")
     args = ap.parse_args()

@@ -49,7 +49,8 @@ def download(url: str, dest_dir: str, force: bool = False) -> str:
         tmp = path + ".part"
         urllib.request.urlretrieve(url, tmp)
         os.replace(tmp, path)
-        _untar_if_needed(path)
+        if path.endswith(".gz"):
+            _untar_if_needed(path)
     return path
 
 
@@ -91,14 +92,16 @@ def _count_rows(path: str) -> int:
 
 
 def load_game_data(path: str, max_games: int | None = None,
-                   seed: int = 0) -> GameData:
+                   seed: int = 0, row_filter=None, extra_cols: tuple[str, ...] = ()) -> GameData:
     """Load one game-data file, streaming it in batches so that peak memory
     stays near the size of the int8 arrays. ``max_games`` keeps a random
-    subset of about that many games (Bernoulli sampling per game)."""
+    subset of about that many games (Bernoulli sampling per game).
+    ``row_filter(batch) -> bool array`` keeps only some games (e.g. a date
+    window); ``extra_cols`` are kept in ``games`` too (e.g. game_time)."""
     header = pd.read_csv(path, nrows=0).columns
     cards = [c[len("deck_"):] for c in header if c.startswith("deck_")]
     card_cols = [c for c in header if c.startswith(CARD_PREFIXES[:4])]
-    game_cols = [c for c in GAME_COLS if c in header]
+    game_cols = [c for c in GAME_COLS + list(extra_cols) if c in header]
     if "user_win_rate_bucket" in header:
         game_cols.append("user_win_rate_bucket")
     keep_p = 1.0
@@ -114,6 +117,8 @@ def load_game_data(path: str, max_games: int | None = None,
             column_types={c: pa.float32() for c in card_cols}))
     frames, mats = [], {p: [] for p in CARD_PREFIXES[:4]}
     for batch in reader:
+        if row_filter is not None:
+            batch = batch.filter(pa.array(np.asarray(row_filter(batch), bool)))
         if keep_p < 1.0:
             batch = batch.filter(pa.array(rng.random(batch.num_rows) < keep_p))
         frames.append(batch.select(game_cols).to_pandas())
@@ -141,7 +146,7 @@ def load_game_data(path: str, max_games: int | None = None,
         return np.concatenate(mats[prefix])
 
     return GameData(
-        games=df[GAME_COLS].reset_index(drop=True),
+        games=df[GAME_COLS + [c for c in extra_cols if c in df]].reset_index(drop=True),
         # Older files (2021-22) replaced the comma in names with a space,
         # e.g. "Ao  the Dawn Sky" for "Ao, the Dawn Sky".
         cards=[c.replace("  ", ", ") for c in cards],
