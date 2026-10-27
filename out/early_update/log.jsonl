@@ -23,3 +23,30 @@ TMT: late target from 115,751 games (121s)
 {"set": "TMT", "days": 7, "games": 64453, "b": 1.168, "tau2_resid": 0.0142, "sec": 187}
 {"config": {"out_dir": "out", "raw_dir": "data/raw", "draft_dir": "data/raw/draft", "pred_csv": "out/phase2/test_predictions.csv", "prior_col": "ens_embeddinggemma2_k4+gbt_tfidf", "prior_sd_col": "ft_embeddinggemma2_k4_sd", "name": "early_update", "sets": ["TLA", "ECL", "TMT", "SOS", "MSH", "HOB", "FRA"]}}
 SOS: day one 2026-04-21 (game_time)
+SOS: late target from 391,079 games (519s)
+{"set": "SOS", "days": 1, "games": 15316, "b": 0.853, "tau2_resid": 0.01, "sec": 221}
+{"set": "SOS", "days": 2, "games": 50314, "b": 0.798, "tau2_resid": 0.0094, "sec": 355}
+{"set": "SOS", "days": 3, "games": 81331, "b": 0.814, "tau2_resid": 0.0096, "sec": 446}
+{"set": "SOS", "days": 5, "games": 138579, "b": 0.847, "tau2_resid": 0.0095, "sec": 552}
+{"set": "SOS", "days": 7, "games": 191835, "b": 0.823, "tau2_resid": 0.0098, "sec": 701}
+MSH: day one 2026-06-23 (game_time)
+MSH: late target from 237,901 games (368s)
+{"set": "MSH", "days": 1, "games": 9579, "b": 1.187, "tau2_resid": 0.0094, "sec": 142}
+{"set": "MSH", "days": 2, "games": 34329, "b": 1.093, "tau2_resid": 0.0093, "sec": 206}
+{"set": "MSH", "days": 3, "games": 57682, "b": 1.073, "tau2_resid": 0.0092, "sec": 239}
+{"set": "MSH", "days": 5, "games": 101744, "b": 1.108, "tau2_resid": 0.0093, "sec": 345}
+{"set": "MSH", "days": 7, "games": 139613, "b": 1.151, "tau2_resid": 0.0092, "sec": 458}
+HOB: day one 2026-08-11 (game_time)
+HOB: late target from 186,312 games (206s)
+{"set": "HOB", "days": 1, "games": 11314, "b": 0.941, "tau2_resid": 0.0097, "sec": 87}
+{"set": "HOB", "days": 2, "games": 40019, "b": 0.822, "tau2_resid": 0.0142, "sec": 138}
+{"set": "HOB", "days": 3, "games": 64888, "b": 0.792, "tau2_resid": 0.0138, "sec": 195}
+{"set": "HOB", "days": 5, "games": 103829, "b": 0.754, "tau2_resid": 0.0145, "sec": 273}
+{"set": "HOB", "days": 7, "games": 136802, "b": 0.8, "tau2_resid": 0.0141, "sec": 341}
+FRA: day one 2026-09-29 (game_time)
+FRA: late target from 150,793 games (234s)
+{"set": "FRA", "days": 1, "games": 11907, "b": 1.04, "tau2_resid": 0.0094, "sec": 123}
+{"set": "FRA", "days": 2, "games": 43888, "b": 1.145, "tau2_resid": 0.0071, "sec": 222}
+{"set": "FRA", "days": 3, "games": 73742, "b": 1.139, "tau2_resid": 0.0072, "sec": 287}
+{"set": "FRA", "days": 5, "games": 124260, "b": 1.135, "tau2_resid": 0.0073, "sec": 404}
+{"set": "FRA", "days": 7, "games": 147171, "b": 1.123, "tau2_resid": 0.0071, "sec": 450}
