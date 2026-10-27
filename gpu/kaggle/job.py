@@ -51,6 +51,7 @@ LANES = [
 #   "python scripts/phase3.py train --device cuda --work-dir /kaggle/input/mtg-p3"
 #   " --model-dir models --batch-size 4096"
 RESULTS = "/kaggle/working/results"
+USE_LANES_JSON = False   # True: take the lanes from gpu/kaggle/lanes.json on BRANCH
 
 
 def sh(cmd: str, cwd: str | None = None) -> None:
@@ -70,12 +71,19 @@ def main() -> None:
     # torch with CUDA is preinstalled; requirements.txt leaves it as is.
     sh(f"{sys.executable} -m pip install -q -r requirements.txt", cwd=repo)
     sh(f"{sys.executable} -m pip install -q -U transformers sentence-transformers peft bitsandbytes", cwd=repo)
+    # gpu/kaggle/lanes.json on the cloned branch (e.g. from sweep_d3.py) replaces LANES;
+    # only this file is uploaded by `kernels push`, so the JSON comes from git.
+    lanes_json = os.path.join(repo, "gpu", "kaggle", "lanes.json")
+    all_lanes = LANES
+    if USE_LANES_JSON and os.path.exists(lanes_json):
+        import json
+        all_lanes = json.load(open(lanes_json))
     import torch
     n_gpu = max(torch.cuda.device_count(), 1)
-    if len(LANES) > n_gpu:   # fewer GPUs than lanes: run the lanes one after another
-        lanes = [[c for lane in LANES for c in lane]]
+    if len(all_lanes) > n_gpu:   # fewer GPUs than lanes: run the lanes one after another
+        lanes = [[c for lane in all_lanes for c in lane]]
     else:
-        lanes = LANES
+        lanes = all_lanes
     os.makedirs(RESULTS, exist_ok=True)
     procs = []
     for i, lane in enumerate(lanes):
