@@ -139,3 +139,10 @@ Each finished step adds one line here and its result to CLAUDE.md.
   than 0.01 behind the best). **E2 (8B) is not run**: 4B does not beat the best
   0.6B model by ≥ 0.01 (−0.002). Stage 2 (3 seeds × 3 folds): Qwen3-0.6B,
   Qwen3-4B and the D3 winner on Gemma-2.
+- 04:00 **D3 done: the default recipe stays**, now with 10 epochs. 8 of 10
+  configs ran (the two with batch 64 ran out of memory on a T4). Val, seed 0,
+  vs the default (d3_c00, 0.640): best c01 (enc-lr 2e-5, head-lr 3e-4, batch 16)
+  +0.003 (4/9), under the +0.005 bar; three configs worse (high enc-lr 1e-4 with
+  head-lr 3e-3, or enc-lr 1e-5). The default at epoch 8 reproduces D2's top-12
+  seed 0 (0.636 vs 0.635); epochs 9-10 add +0.004. The 3-seed follow-up is cut
+  to the default only (seeds 1-2 in job v11, with Qwen3-0.6B seeds 1-2).

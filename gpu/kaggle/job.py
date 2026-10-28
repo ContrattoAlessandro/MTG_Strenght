@@ -22,26 +22,27 @@ REPO = "https://github.com/ContrattoAlessandro/mtg_strenght"
 BRANCH = "research-queue"
 WORK = "/kaggle/temp" if os.path.isdir("/kaggle/temp") else "/tmp"
 CACHE = os.path.join(WORK, "cache")   # hidden-state caches: big, not worth downloading
-# Step D2 completion (job v9): full fine-tuning with gradient checkpointing
-# (v8's full-FT runs ran out of memory) and top-12. Validation folds only.
-FOLD = ("python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3"
-        " --device cuda --cache-dir {cache}")
-FULL = f"{FOLD} --max-epochs 6 --top-k -1 --llrd 0.9 --grad-ckpt"
+# v10 (done): D3 sweep, 10 configs on Gemma-2 top-12 (c07, c09 with batch 64
+# ran out of memory); no config beat the default by >= 0.005, so the default
+# with 10 epochs (d3_c00) is the Gemma-2 reference.
+# Job v11: E1 stage 2, seeds 1-2 for the Gemma-2 reference (d3_c00) and
+# Qwen3-Emb-0.6B (e1_qwen06_lr3e-5); session B runs Qwen3-4B seeds 1-2.
+GEMMA = ("python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3"
+         " --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10 --name d3_c00")
+QWEN06 = ("python scripts/phase2.py train --val-fold V1 V2 V3 --max-epochs 6 --device cuda"
+          " --cache-dir {cache} --top-k -1 --amp fp16 --grad-ckpt --llrd 0.9"
+          " --encoder Qwen/Qwen3-Embedding-0.6B --enc-lr 3e-5 --name e1_qwen06_lr3e-5")
 # One lane per GPU: lanes run in parallel (lane i sees only GPU i and gets its
 # own cache dir, {cache}); the commands within a lane run in order, and a
 # failed command does not stop the ones after it.
-LANES = [
-    [f"{FULL} --enc-lr 2e-5 --seeds 0 --name d2_gemma_full_lr2e-5",
-     f"{FULL} --enc-lr 2e-5 --seeds 1 --name d2_gemma_full_lr2e-5"],
-    [f"{FULL} --enc-lr 5e-5 --seeds 0 --name d2_gemma_full_lr5e-5",
-     f"{FOLD} --max-epochs 8 --top-k 12 --seeds 0 1 2 --name d2_gemma_k12"],
-]
+LANES = [[f"{QWEN06} --seeds 1", f"{GEMMA} --seeds 1"],
+         [f"{QWEN06} --seeds 2", f"{GEMMA} --seeds 2"]]
 # Data from a Kaggle dataset (dataset_sources in kernel-metadata.json) is
 # mounted read-only under /kaggle/input/<slug>/, e.g. for Phase 3:
 #   "python scripts/phase3.py train --device cuda --work-dir /kaggle/input/mtg-p3"
 #   " --model-dir models --batch-size 4096"
 RESULTS = "/kaggle/working/results"
-USE_LANES_JSON = True   # True: take the lanes from gpu/kaggle/lanes.json on BRANCH
+USE_LANES_JSON = False  # True: take the lanes from gpu/kaggle/lanes.json on BRANCH
 
 
 def sh(cmd: str, cwd: str | None = None) -> None:
