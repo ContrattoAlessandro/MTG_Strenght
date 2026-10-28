@@ -171,3 +171,11 @@ Each finished step adds one line here and its result to CLAUDE.md.
   from it would be optimistic, a tie is conclusive.
 - Jobs v13 (env, no-ctx seeds 1-2) and b6 (aux head, Commander head, 3 seeds)
   are committed and go to Kaggle at the quota reset (Sat Oct 31 00:00 UTC).
+- 10:55 **Job b6 (seed 0)**. Aux deck-value head: 0.6398 vs 0.6396
+  (+0.000, 4/9, tie). Even with its optimistic bias (deck model trained on the
+  val sets' games) it adds nothing, matching Phase 3 (+0.001 ± 0.004): **aux
+  head dropped**, its seeds 1-2 are not run. **F2 Commander head** (first-
+  printing labels, val): fine-tuned Gemma-2 top-12 0.793 vs TF-IDF ridge 0.768
+  (+0.025 ± 0.007, 8/9); 50/50 blend with the ridge 0.798 (+0.030 ± 0.004,
+  9/9). Passes the bar on one seed; seeds 1-2 at the reset confirm it before
+  the app switches.
