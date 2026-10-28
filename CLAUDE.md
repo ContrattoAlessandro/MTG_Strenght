@@ -336,6 +336,17 @@ Done so far (Oct 27):
   game data exists. Product rule: ensemble pre-release, model_prior on day 1,
   naive update from day 2. Provisional until step H reruns it with the final prior.
 
+Decisions on validation (Oct 27-28, details in the plan's log):
+- **C contamination**: no encoder flagged (name-only and paraphrase probes).
+- **D recipe on EmbeddingGemma-2**: original text (no reminder expansion);
+  top-12 layers (val 0.644 vs top-4 0.625; full FT no better, 2.7x slower);
+  sweep of 10 configs kept the defaults; 10 epochs. Reference run `d3_c00`
+  (`--top-k 12 --max-epochs 10`), val 0.649 (3 seeds × V1-V3).
+- **E encoder**: Qwen3-Embedding-0.6B (full FT, lr 3e-5) 0.660 and Qwen3-4B
+  (LoRA r16, lr 1e-4) 0.661 are ties vs Gemma-2 (+0.011/+0.012 < 2 SE);
+  Harrier-0.6B 0.622; 8B not run. **Gemma-2 top-12 stays the backbone.**
+- **F1** (env encoder, no-ctx) in progress; the Kaggle quota resets Oct 31.
+
 ## What is not done (next steps, in rough priority)
 
 Superseded by the ordered plan and its "parked items" table in
