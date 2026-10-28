@@ -161,3 +161,13 @@ Each finished step adds one line here and its result to CLAUDE.md.
   0.645 (+0.006 ± 0.003, 7/9), no-ctx 0.644 (+0.005 ± 0.006, 5/9). Both ties
   so far; both get seeds 1-2 after the quota reset (Sat 00:00 UTC), together
   with the aux deck-value head (3 seeds) and the Commander head (F2).
+- 09:40 **F2 prep (CPU)**: `phase4.py commander-folds` writes first-printing
+  Commander labels (`commander_labels_first.csv`, so reprints never carry a
+  label across a fold) and fold baselines: TF-IDF ridge val 0.768, GBT+TF-IDF
+  0.733. `compare_runs.py --label-csv` scores against it. F2 bar: the
+  fine-tuned head replaces the ridge in the app only if ≥ +0.01 and > 2 SE.
+  Caveat for the aux head: the deck model was trained on all 24 training sets,
+  so its values on fold-training cards saw the validation sets' games; a gain
+  from it would be optimistic, a tie is conclusive.
+- Jobs v13 (env, no-ctx seeds 1-2) and b6 (aux head, Commander head, 3 seeds)
+  are committed and go to Kaggle at the quota reset (Sat Oct 31 00:00 UTC).

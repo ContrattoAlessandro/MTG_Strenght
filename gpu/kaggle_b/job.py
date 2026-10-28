@@ -30,12 +30,14 @@ CACHE = os.path.join(WORK, "cache")   # hidden-state caches: big, not worth down
 # (~1450 s/epoch, 4.5x the 0.6B models).
 # b4 (done): E1 stage 1, 1 seed x 3 folds: Qwen3-Emb-0.6B 0.649, Qwen3-4B LoRA
 # 0.647, Harrier-0.6B 0.622 (dropped, > 0.01 behind), Gemma-2 top-12 0.635.
-# Job b5: E1 stage 2 for Qwen3-Emb-4B LoRA: seeds 1 and 2 on V1 V2 V3, one
-# seed per lane (~4 h). Qwen3-0.6B seeds 1-2 and tuned Gemma run in session A.
-LORA4B = ("python scripts/phase2.py train --val-fold V1 V2 V3 --max-epochs 4 --device cuda"
-          " --cache-dir {cache} --top-k -1 --peft lora --lora-r 16 --enc-fp16 --amp fp16 --grad-ckpt"
-          " --encoder Qwen/Qwen3-Embedding-4B --enc-lr 1e-4 --name e1_qwen4b_lora_lr1e-4")
-LANES = [[f"{LORA4B} --seeds 1"], [f"{LORA4B} --seeds 2"]]
+# b5 (done): Qwen3-4B seeds 1-2; E1 kept Gemma-2.
+# Job b6 (after the Oct 31 quota reset): F1 aux deck-value head and F2
+# Commander head on the final recipe (Gemma-2 top-12, 10 epochs), 3 seeds.
+GEMMA = ("python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3"
+         " --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10 --seeds 0 1 2")
+LANES = [[f"{GEMMA} --deck-values out/phase3/deck_values.csv --aux-w 0.5 --name f1_aux"],
+         [f"{GEMMA} --target label --label-csv out/phase4/commander_labels_first.csv"
+          " --name f2_commander"]]
 # Data from a Kaggle dataset (dataset_sources in kernel-metadata.json) is
 # mounted read-only under /kaggle/input/<slug>/, e.g. for Phase 3:
 #   "python scripts/phase3.py train --device cuda --work-dir /kaggle/input/mtg-p3"

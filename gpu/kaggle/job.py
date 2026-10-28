@@ -24,15 +24,16 @@ WORK = "/kaggle/temp" if os.path.isdir("/kaggle/temp") else "/tmp"
 CACHE = os.path.join(WORK, "cache")   # hidden-state caches: big, not worth downloading
 # v10 (done): D3 sweep; defaults kept, 10 epochs (d3_c00). v11 (done): E1
 # stage 2; Gemma-2 kept (Qwen3 0.6B / 4B ties, +0.011 / +0.012 < 2 SE).
-# Job v12: F1 screen on the final encoder, seed 0 (seeds 1-2 after the Oct 31
-# quota reset): set-pool environment encoder and no set-context features.
+# v12 (done): F1 seed-0 screen: env +0.006 ± 0.003, no-ctx +0.005 ± 0.006.
+# Job v13 (after the Oct 31 quota reset): F1 seeds 1-2 for env and no-ctx;
+# session B runs the aux head and the Commander head (F2).
 GEMMA = ("python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3"
          " --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10")
 # One lane per GPU: lanes run in parallel (lane i sees only GPU i and gets its
 # own cache dir, {cache}); the commands within a lane run in order, and a
 # failed command does not stop the ones after it.
-LANES = [[f"{GEMMA} --env set --seeds 0 --name f1_env"],
-         [f"{GEMMA} --no-ctx --seeds 0 --name f1_noctx"]]
+LANES = [[f"{GEMMA} --env set --seeds 1 2 --name f1_env"],
+         [f"{GEMMA} --no-ctx --seeds 1 2 --name f1_noctx"]]
 # Data from a Kaggle dataset (dataset_sources in kernel-metadata.json) is
 # mounted read-only under /kaggle/input/<slug>/, e.g. for Phase 3:
 #   "python scripts/phase3.py train --device cuda --work-dir /kaggle/input/mtg-p3"

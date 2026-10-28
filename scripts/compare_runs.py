@@ -78,6 +78,9 @@ def main() -> None:
     ap.add_argument("--blend-w", type=float, nargs="+", default=[0.5])
     ap.add_argument("--boot", type=int, default=500, help="bootstrap replicates (0 = off)")
     ap.add_argument("--csv", default=None)
+    ap.add_argument("--label-csv", default=None,
+                    help="score against this label (set, oracle_id, label) instead of theta, "
+                         "e.g. out/phase4/commander_labels_first.csv; cards without it are dropped")
     ap.add_argument("--seeds", type=int, nargs="+", default=None,
                     help="validation: only these seeds (seed-matched comparisons)")
     args = ap.parse_args()
@@ -87,6 +90,10 @@ def main() -> None:
         ap.error("--test needs --why: every test look goes into out/TEST_LOG.md")
     runs_dir = os.path.join(args.out_dir, "phase2", "runs")
     cards = pd.read_parquet(os.path.join(args.out_dir, "phase2", "cards.parquet"))[LABEL_COLS]
+    if args.label_csv:
+        lab = pd.read_csv(args.label_csv)[["set", "oracle_id", "label"]].dropna()
+        cards = cards.drop(columns="theta_vs_repl").merge(lab, on=["set", "oracle_id"]).rename(
+            columns={"label": "theta_vs_repl"})
     names = list(dict.fromkeys(args.runs + ([args.ref] if args.ref else [])
                                + ([args.blend] if args.blend else [])))
 
