@@ -2,35 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Card Strength Oracle</title>
-  <meta name="description" content="How strong is a Magic: The Gathering card? Limited strength from 17lands data and a trained model, plus Commander and Constructed signals.">
+  <meta name="description" content="How strong is a Magic: The Gathering card? Limited grades measured on 17lands games and predicted by a trained model, with Commander and Constructed signals.">
+  <meta property="og:title" content="Card Strength Oracle">
+  <meta property="og:description" content="Is this Magic card actually good? Limited grades from 17lands games and a model that grades cards before anyone has played them.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f6f5f1" media="(prefers-color-scheme: light)">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M32 4 56 18v28L32 60 8 46V18z' fill='%232a78d6'/><path d='M32 16 44 23v18l-12 7-12-7V23z' fill='white'/></svg>">
+  <script>
+    // Apply the saved theme before first paint, so the page never flashes.
+    try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cards.scryfall.io" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
+  <a class="skip" href="#view">Skip to content</a>
   <header class="topbar">
-    <a class="brand" href="#/">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4 56 18v28L32 60 8 46V18z" class="brand-hex"/><path d="M32 16 44 23v18l-12 7-12-7V23z" class="brand-core"/></svg>
-      <span>Card Strength <em>Oracle</em></span>
-    </a>
-    <nav class="nav">
-      <a href="#/" data-nav="home">Search</a>
-      <a href="#/sets" data-nav="sets">Sets</a>
-      <a href="#/lab" data-nav="lab">Card Lab</a>
-      <a href="#/about" data-nav="about">How it works</a>
-    </nav>
-    <div class="top-search" id="topSearchWrap">
-      <input id="topSearch" type="search" placeholder="Search any card…" autocomplete="off" aria-label="Search cards">
+    <div class="topbar-inner">
+      <a class="brand" href="#/" aria-label="Card Strength Oracle, home">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4 56 18v28L32 60 8 46V18z" class="brand-hex"/><path d="M32 16 44 23v18l-12 7-12-7V23z" class="brand-core"/></svg>
+        <span>Card Strength <em>Oracle</em></span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="#/" data-nav="home">Search</a>
+        <a href="#/sets" data-nav="sets">Sets</a>
+        <a href="#/lab" data-nav="lab">Card Lab</a>
+        <a href="#/about" data-nav="about">How it works</a>
+      </nav>
+      <div class="top-search" id="topSearchWrap">
+        <input id="topSearch" type="search" placeholder="Search any card…" autocomplete="off" aria-label="Search cards">
+        <kbd class="kbd" aria-hidden="true">/</kbd>
+      </div>
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
     </div>
   </header>
   <main id="view" tabindex="-1"></main>
   <footer class="foot">
-    <span>Limited strength from 17lands public data, card data and images from Scryfall. Not affiliated with Wizards of the Coast.</span>
-    <span id="modelStatus"></span>
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <a class="brand small" href="#/"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 4 56 18v28L32 60 8 46V18z" class="brand-hex"/><path d="M32 16 44 23v18l-12 7-12-7V23z" class="brand-core"/></svg><span>Card Strength <em>Oracle</em></span></a>
+        <p>Limited grades measured on public 17lands game data and predicted by a model that reads the card.</p>
+      </div>
+      <nav class="foot-links" aria-label="Footer">
+        <a href="#/sets">All sets</a>
+        <a href="#/lab">Card Lab</a>
+        <a href="#/about">How it works</a>
+        <a href="https://www.17lands.com/public_datasets" target="_blank" rel="noopener">17lands data</a>
+        <a href="https://scryfall.com" target="_blank" rel="noopener">Scryfall</a>
+      </nav>
+    </div>
+    <p class="legal">Card Strength Oracle is unofficial Fan Content permitted under the Fan Content Policy. Not approved or endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC. Card images and data from Scryfall; game data from 17lands. <span id="modelStatus"></span></p>
   </footer>
   <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
   <script src="/static/app.js"></script>
