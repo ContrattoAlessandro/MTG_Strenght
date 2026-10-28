@@ -28,19 +28,14 @@ CACHE = os.path.join(WORK, "cache")   # hidden-state caches: big, not worth down
 # b1 (done): lr screen, fold V3, seed 0: Qwen3-Emb-0.6B best 3e-5, Harrier-0.6B 1e-4
 # (full FT fp16, ~320 s/epoch). b2 (done): Qwen3-Emb-4B LoRA r16 best 1e-4
 # (~1450 s/epoch, 4.5x the 0.6B models).
-# Job b4: E1 stage 1 (successive halving): complete seed 0 on folds V1 and V2
-# for the three candidates at their screened lr, so every candidate has
-# 1 seed x 3 folds. Stage 2 gives 3 seeds only to the contenders.
-FULL06 = ("python scripts/phase2.py train --val-fold V1 V2 --max-epochs 6 --seeds 0 --device cuda"
-          " --cache-dir {cache} --top-k -1 --amp fp16 --grad-ckpt --llrd 0.9")
-LORA4B = ("python scripts/phase2.py train --val-fold V1 V2 --max-epochs 4 --seeds 0 --device cuda"
+# b4 (done): E1 stage 1, 1 seed x 3 folds: Qwen3-Emb-0.6B 0.649, Qwen3-4B LoRA
+# 0.647, Harrier-0.6B 0.622 (dropped, > 0.01 behind), Gemma-2 top-12 0.635.
+# Job b5: E1 stage 2 for Qwen3-Emb-4B LoRA: seeds 1 and 2 on V1 V2 V3, one
+# seed per lane (~4 h). Qwen3-0.6B seeds 1-2 and tuned Gemma run in session A.
+LORA4B = ("python scripts/phase2.py train --val-fold V1 V2 V3 --max-epochs 4 --device cuda"
           " --cache-dir {cache} --top-k -1 --peft lora --lora-r 16 --enc-fp16 --amp fp16 --grad-ckpt"
           " --encoder Qwen/Qwen3-Embedding-4B --enc-lr 1e-4 --name e1_qwen4b_lora_lr1e-4")
-LANES = [
-    [f"{FULL06} --encoder Qwen/Qwen3-Embedding-0.6B --enc-lr 3e-5 --name e1_qwen06_lr3e-5",
-     f"{FULL06} --encoder microsoft/harrier-oss-v1-0.6b --enc-lr 1e-4 --name e1_harrier06_lr1e-4"],
-    [LORA4B],
-]
+LANES = [[f"{LORA4B} --seeds 1"], [f"{LORA4B} --seeds 2"]]
 # Data from a Kaggle dataset (dataset_sources in kernel-metadata.json) is
 # mounted read-only under /kaggle/input/<slug>/, e.g. for Phase 3:
 #   "python scripts/phase3.py train --device cuda --work-dir /kaggle/input/mtg-p3"

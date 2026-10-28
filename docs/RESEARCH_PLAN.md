@@ -133,3 +133,9 @@ Each finished step adds one line here and its result to CLAUDE.md.
   quota next to E–G.
 - 18:30 **G prep**: gbt_tfidf rolling-origin backtest over MKM–EOE (10 sets) =
   0.616 Spearman, NDCG@20 0.819 (CPU).
+- 00:55 **E1 stage 1 done** (1 seed × 3 folds, best epoch, vs Gemma-2 top-12
+  seed 0 = 0.635): Qwen3-Emb-0.6B 0.649 (+0.014 ± 0.011, 6/9), Qwen3-Emb-4B LoRA
+  0.647 (+0.012 ± 0.010, 6/9), Harrier-0.6B 0.622 (−0.013 ± 0.019, dropped: more
+  than 0.01 behind the best). **E2 (8B) is not run**: 4B does not beat the best
+  0.6B model by ≥ 0.01 (−0.002). Stage 2 (3 seeds × 3 folds): Qwen3-0.6B,
+  Qwen3-4B and the D3 winner on Gemma-2.
