@@ -146,3 +146,14 @@ Each finished step adds one line here and its result to CLAUDE.md.
   head-lr 3e-3, or enc-lr 1e-5). The default at epoch 8 reproduces D2's top-12
   seed 0 (0.636 vs 0.635); epochs 9-10 add +0.004. The 3-seed follow-up is cut
   to the default only (seeds 1-2 in job v11, with Qwen3-0.6B seeds 1-2).
+- 07:30 **E1 done: EmbeddingGemma-2 stays the backbone.** Val, 3 seeds × 3
+  folds, best epoch, vs Gemma-2 top-12 10 epochs (d3_c00, 0.6487): Qwen3-Emb-0.6B
+  0.6598 (+0.011 ± 0.008, 6/9, tie), Qwen3-Emb-4B LoRA 0.6605 (+0.012 ± 0.007,
+  7/9, tie); 4B vs 0.6B +0.001 ± 0.005. Neither passes Δ > 2 SE, so by the
+  pre-registered rule the cheaper reference stays: Gemma-2 (300M, top-12) also
+  keeps CPU inference cheap for the app. Blended 50/50 with gbt_tfidf_folds the
+  gap shrinks to +0.005 (Gemma 0.653 vs Qwen 0.658). 10 epochs beat 8 (d2 −0.004
+  ± 0.002, 7/9). The consistent +0.011 is noted: if F/G leave budget, a 5-seed
+  Qwen3-0.6B rerun could settle it.
+- 07:30 **F1 started** (job v12, seed-0 screen, env encoder and no-ctx);
+  seeds 1-2 after the Oct 31 quota reset (~27 of 30 h used this week).

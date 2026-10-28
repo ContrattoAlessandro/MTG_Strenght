@@ -1,0 +1,76 @@
+$ python scripts/phase2.py train --val-fold V1 V2 V3 --max-epochs 6 --device cuda --cache-dir /tmp/cache0 --top-k -1 --amp fp16 --grad-ckpt --llrd 0.9 --encoder Qwen/Qwen3-Embedding-0.6B --enc-lr 3e-5 --name e1_qwen06_lr3e-5 --seeds 1
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "Qwen/Qwen3-Embedding-0.6B", "name": "e1_qwen06_lr3e-5", "no_struct": false, "seeds": [1], "max_epochs": 6, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 3e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": -1, "val_fold": ["V1", "V2", "V3"], "llrd": 0.9, "amp": "fp16", "peft": "none", "lora_r": 16, "enc_fp16": false, "grad_ckpt": true, "optim": "adamw", "weight_decay": 0.01, "warmup": 0.06, "dropout": 0.1, "text_variant": "original", "cache_dir": "/tmp/cache0", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": null}}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:   0%|          | 1/310 [00:00<05:06,  1.01it/s]Loading weights: 100%|██████████| 310/310 [00:01<00:00, 284.29it/s]
+[transformers] `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+/tmp/repo/scripts/phase2.py:513: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  sched.step()
+{"fold": "V1", "epoch": 1, "nll": 0.3461, "bt": 0.6301, "sec": 217, "val_spearman": 0.5707, "val_ndcg": 0.7876, "val_mae": 0.0927, "val_nll": -1.6614}
+{"fold": "V1", "epoch": 2, "nll": 0.0769, "bt": 0.5261, "sec": 218, "val_spearman": 0.5952, "val_ndcg": 0.8057, "val_mae": 0.0844, "val_nll": -1.7941}
+{"fold": "V1", "epoch": 3, "nll": -0.102, "bt": 0.4549, "sec": 217, "val_spearman": 0.6018, "val_ndcg": 0.8269, "val_mae": 0.0884, "val_nll": -1.7255}
+{"fold": "V1", "epoch": 4, "nll": -0.378, "bt": 0.3763, "sec": 217, "val_spearman": 0.5988, "val_ndcg": 0.8208, "val_mae": 0.0891, "val_nll": -1.4348}
+{"fold": "V1", "epoch": 5, "nll": -0.6817, "bt": 0.3201, "sec": 216, "val_spearman": 0.6079, "val_ndcg": 0.8222, "val_mae": 0.0869, "val_nll": -0.2768}
+{"fold": "V1", "epoch": 6, "nll": -0.9547, "bt": 0.2929, "sec": 217, "val_spearman": 0.6005, "val_ndcg": 0.8102, "val_mae": 0.0863, "val_nll": 1.0619}
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:   0%|          | 1/310 [00:00<01:35,  3.22it/s]Loading weights:  81%|████████  | 251/310 [00:00<00:00, 787.88it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 599.99it/s]
+/tmp/repo/scripts/phase2.py:513: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  sched.step()
+{"fold": "V2", "epoch": 1, "nll": 0.3642, "bt": 0.6275, "sec": 264, "val_spearman": 0.6669, "val_ndcg": 0.8129, "val_mae": 0.0812, "val_nll": -1.8051}
+{"fold": "V2", "epoch": 2, "nll": 0.0543, "bt": 0.5201, "sec": 264, "val_spearman": 0.6748, "val_ndcg": 0.8285, "val_mae": 0.0802, "val_nll": -1.8295}
+{"fold": "V2", "epoch": 3, "nll": -0.1354, "bt": 0.4456, "sec": 265, "val_spearman": 0.6748, "val_ndcg": 0.8841, "val_mae": 0.0802, "val_nll": -1.8343}
+{"fold": "V2", "epoch": 4, "nll": -0.4407, "bt": 0.3583, "sec": 265, "val_spearman": 0.6906, "val_ndcg": 0.8887, "val_mae": 0.0775, "val_nll": -1.6591}
+{"fold": "V2", "epoch": 5, "nll": -0.7677, "bt": 0.3108, "sec": 264, "val_spearman": 0.6909, "val_ndcg": 0.8739, "val_mae": 0.0791, "val_nll": -0.6078}
+{"fold": "V2", "epoch": 6, "nll": -1.0275, "bt": 0.29, "sec": 264, "val_spearman": 0.6799, "val_ndcg": 0.8735, "val_mae": 0.0796, "val_nll": 1.0697}
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights:   0%|          | 1/310 [00:00<01:44,  2.95it/s]Loading weights:  83%|████████▎ | 256/310 [00:00<00:00, 755.47it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 585.29it/s]
+/tmp/repo/scripts/phase2.py:513: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  sched.step()
+{"fold": "V3", "epoch": 1, "nll": 0.297, "bt": 0.612, "sec": 317, "val_spearman": 0.5963, "val_ndcg": 0.8162, "val_mae": 0.083, "val_nll": -1.81}
+{"fold": "V3", "epoch": 2, "nll": 0.033, "bt": 0.5124, "sec": 320, "val_spearman": 0.6079, "val_ndcg": 0.8537, "val_mae": 0.083, "val_nll": -1.8434}
+{"fold": "V3", "epoch": 3, "nll": -0.1801, "bt": 0.4257, "sec": 318, "val_spearman": 0.613, "val_ndcg": 0.8462, "val_mae": 0.0791, "val_nll": -1.8647}
+{"fold": "V3", "epoch": 4, "nll": -0.4788, "bt": 0.3509, "sec": 319, "val_spearman": 0.6256, "val_ndcg": 0.8527, "val_mae": 0.0793, "val_nll": -1.4932}
+{"fold": "V3", "epoch": 5, "nll": -0.7779, "bt": 0.3071, "sec": 319, "val_spearman": 0.6263, "val_ndcg": 0.8491, "val_mae": 0.0808, "val_nll": -0.733}
+{"fold": "V3", "epoch": 6, "nll": -1.0487, "bt": 0.2855, "sec": 320, "val_spearman": 0.6263, "val_ndcg": 0.8544, "val_mae": 0.0798, "val_nll": 0.8293}
+{"done": true, "val_folds": ["V1", "V2", "V3"], "epochs": 6}
+$ python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3 --device cuda --cache-dir /tmp/cache0 --top-k 12 --max-epochs 10 --name d3_c00 --seeds 1
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "d3_c00", "no_struct": false, "seeds": [1], "max_epochs": 10, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": 12, "val_fold": ["V1", "V2", "V3"], "llrd": 1.0, "amp": "none", "peft": "none", "lora_r": 16, "enc_fp16": false, "grad_ckpt": false, "optim": "adamw", "weight_decay": 0.01, "warmup": 0.06, "dropout": 0.1, "text_variant": "original", "cache_dir": "/tmp/cache0", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": null}}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  12%|█▏        | 167/1376 [00:00<00:00, 1604.86it/s]Loading weights:  24%|██▍       | 328/1376 [00:00<00:00, 1560.07it/s]Loading weights:  35%|███▌      | 485/1376 [00:00<00:00, 1492.49it/s]Loading weights:  46%|████▌     | 635/1376 [00:00<00:00, 1460.70it/s]Loading weights:  57%|█████▋    | 782/1376 [00:00<00:00, 694.58it/s] Loading weights:  87%|████████▋ | 1194/1376 [00:00<00:00, 1337.40it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1170.73it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  16%|█▋        | 227/1376 [00:00<00:00, 2269.72it/s]Loading weights:  33%|███▎      | 454/1376 [00:00<00:00, 2200.34it/s]Loading weights:  54%|█████▍    | 742/1376 [00:00<00:00, 2500.89it/s]Loading weights:  72%|███████▏  | 993/1376 [00:00<00:00, 1039.24it/s]Loading weights:  95%|█████████▌| 1308/1376 [00:00<00:00, 1419.32it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1426.10it/s]
+cache google/embeddinggemma-2 k=12: batch 0
+cache google/embeddinggemma-2 k=12: batch 100
+cache google/embeddinggemma-2 k=12: batch 200
+cache google/embeddinggemma-2 k=12: batch 300
+cache google/embeddinggemma-2 k=12: batch 400
+cache google/embeddinggemma-2 k=12: batch 500
+{"fold": "V1", "epoch": 1, "nll": 1.7776, "bt": 0.8755, "sec": 96, "val_spearman": 0.554, "val_ndcg": 0.7881, "val_mae": 0.0887, "val_nll": -1.7221}
+{"fold": "V1", "epoch": 2, "nll": 0.1273, "bt": 0.5434, "sec": 93, "val_spearman": 0.5599, "val_ndcg": 0.7951, "val_mae": 0.09, "val_nll": -1.7159}
+{"fold": "V1", "epoch": 3, "nll": 0.0023, "bt": 0.4998, "sec": 93, "val_spearman": 0.5889, "val_ndcg": 0.8549, "val_mae": 0.083, "val_nll": -1.7943}
+{"fold": "V1", "epoch": 4, "nll": -0.1376, "bt": 0.4449, "sec": 92, "val_spearman": 0.5561, "val_ndcg": 0.7886, "val_mae": 0.0861, "val_nll": -1.6992}
+{"fold": "V1", "epoch": 5, "nll": -0.3273, "bt": 0.3901, "sec": 91, "val_spearman": 0.5934, "val_ndcg": 0.8286, "val_mae": 0.0929, "val_nll": -1.4003}
+{"fold": "V1", "epoch": 6, "nll": -0.5516, "bt": 0.3319, "sec": 92, "val_spearman": 0.5881, "val_ndcg": 0.8198, "val_mae": 0.0856, "val_nll": -0.2971}
+{"fold": "V1", "epoch": 7, "nll": -0.7686, "bt": 0.3065, "sec": 93, "val_spearman": 0.6016, "val_ndcg": 0.8442, "val_mae": 0.0901, "val_nll": 0.4694}
+{"fold": "V1", "epoch": 8, "nll": -0.9867, "bt": 0.2835, "sec": 92, "val_spearman": 0.6089, "val_ndcg": 0.8219, "val_mae": 0.0834, "val_nll": 1.7006}
+{"fold": "V1", "epoch": 9, "nll": -1.1777, "bt": 0.2731, "sec": 92, "val_spearman": 0.6039, "val_ndcg": 0.8426, "val_mae": 0.0832, "val_nll": 3.3494}
+{"fold": "V1", "epoch": 10, "nll": -1.3545, "bt": 0.2652, "sec": 94, "val_spearman": 0.6066, "val_ndcg": 0.8408, "val_mae": 0.0836, "val_nll": 5.2901}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  14%|█▎        | 189/1376 [00:00<00:00, 1768.24it/s]Loading weights:  27%|██▋       | 375/1376 [00:00<00:00, 1788.27it/s]Loading weights:  45%|████▍     | 613/1376 [00:00<00:00, 2050.86it/s]Loading weights:  60%|█████▉    | 819/1376 [00:00<00:00, 804.91it/s] Loading weights:  93%|█████████▎| 1273/1376 [00:00<00:00, 1469.57it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1353.79it/s]
+{"fold": "V2", "epoch": 1, "nll": 2.1558, "bt": 0.8179, "sec": 111, "val_spearman": 0.6098, "val_ndcg": 0.8219, "val_mae": 0.0859, "val_nll": -1.7424}
+{"fold": "V2", "epoch": 2, "nll": 0.1513, "bt": 0.5489, "sec": 111, "val_spearman": 0.6248, "val_ndcg": 0.8167, "val_mae": 0.0865, "val_nll": -1.744}
+{"fold": "V2", "epoch": 3, "nll": 0.0274, "bt": 0.5043, "sec": 111, "val_spearman": 0.6763, "val_ndcg": 0.8302, "val_mae": 0.0822, "val_nll": -1.8299}
+{"fold": "V2", "epoch": 4, "nll": -0.1085, "bt": 0.4576, "sec": 111, "val_spearman": 0.6866, "val_ndcg": 0.8191, "val_mae": 0.0832, "val_nll": -1.7772}
+{"fold": "V2", "epoch": 5, "nll": -0.3185, "bt": 0.3933, "sec": 110, "val_spearman": 0.6852, "val_ndcg": 0.8179, "val_mae": 0.0823, "val_nll": -1.5625}
+{"fold": "V2", "epoch": 6, "nll": -0.5336, "bt": 0.3388, "sec": 111, "val_spearman": 0.6698, "val_ndcg": 0.8184, "val_mae": 0.0814, "val_nll": -1.2891}
+{"fold": "V2", "epoch": 7, "nll": -0.775, "bt": 0.3041, "sec": 111, "val_spearman": 0.6527, "val_ndcg": 0.8256, "val_mae": 0.0838, "val_nll": 0.1126}
+{"fold": "V2", "epoch": 8, "nll": -0.9538, "bt": 0.2868, "sec": 111, "val_spearman": 0.6806, "val_ndcg": 0.8286, "val_mae": 0.0829, "val_nll": 2.5338}
+{"fold": "V2", "epoch": 9, "nll": -1.1773, "bt": 0.2714, "sec": 111, "val_spearman": 0.6833, "val_ndcg": 0.8224, "val_mae": 0.0797, "val_nll": 3.7409}
+{"fold": "V2", "epoch": 10, "nll": -1.3664, "bt": 0.2656, "sec": 113, "val_spearman": 0.6852, "val_ndcg": 0.8239, "val_mae": 0.0801, "val_nll": 5.8178}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  21%|██        | 285/1376 [00:00<00:00, 2846.41it/s]Loading weights:  41%|████▏     | 570/1376 [00:00<00:00, 2611.32it/s]Loading weights:  61%|██████    | 833/1376 [00:00<00:00, 966.48it/s] Loading weights:  94%|█████████▍| 1296/1376 [00:00<00:00, 1633.36it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1517.49it/s]
+{"fold": "V3", "epoch": 1, "nll": 1.5417, "bt": 0.8066, "sec": 133, "val_spearman": 0.5716, "val_ndcg": 0.8155, "val_mae": 0.0841, "val_nll": -1.7693}
+{"fold": "V3", "epoch": 2, "nll": 0.1125, "bt": 0.5372, "sec": 134, "val_spearman": 0.589, "val_ndcg": 0.8461, "val_mae": 0.0832, "val_nll": -1.7979}
+{"fold": "V3", "epoch": 3, "nll": -0.0116, "bt": 0.4868, "sec": 133, "val_spearman": 0.5852, "val_ndcg": 0.8501, "val_mae": 0.0779, "val_nll": -1.877}
+{"fold": "V3", "epoch": 4, "nll": -0.1296, "bt": 0.4419, "sec": 134, "val_spearman": 0.6208, "val_ndcg": 0.8215, "val_mae": 0.0802, "val_nll": -1.8404}
+{"fold": "V3", "epoch": 5, "nll": -0.338, "bt": 0.3789, "sec": 134, "val_spearman": 0.6352, "val_ndcg": 0.8762, "val_mae": 0.0779, "val_nll": -1.7801}
+{"fold": "V3", "epoch": 6, "nll": -0.5784, "bt": 0.3251, "sec": 134, "val_spearman": 0.6298, "val_ndcg": 0.8927, "val_mae": 0.0798, "val_nll": -1.4172}
+{"fold": "V3", "epoch": 7, "nll": -0.7835, "bt": 0.2987, "sec": 132, "val_spearman": 0.6288, "val_ndcg": 0.8621, "val_mae": 0.0803, "val_nll": -0.9371}
+{"fold": "V3", "epoch": 8, "nll": -1.0051, "bt": 0.2785, "sec": 134, "val_spearman": 0.636, "val_ndcg": 0.8664, "val_mae": 0.0769, "val_nll": 0.3475}
+{"fold": "V3", "epoch": 9, "nll": -1.2138, "bt": 0.2632, "sec": 133, "val_spearman": 0.6426, "val_ndcg": 0.8643, "val_mae": 0.0757, "val_nll": 1.7367}
+{"fold": "V3", "epoch": 10, "nll": -1.392, "bt": 0.2564, "sec": 136, "val_spearman": 0.642, "val_ndcg": 0.8692, "val_mae": 0.0764, "val_nll": 2.8974}
+{"done": true, "val_folds": ["V1", "V2", "V3"], "epochs": 10}
