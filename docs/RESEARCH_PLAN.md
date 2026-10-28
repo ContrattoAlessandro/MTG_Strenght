@@ -157,3 +157,7 @@ Each finished step adds one line here and its result to CLAUDE.md.
   Qwen3-0.6B rerun could settle it.
 - 07:30 **F1 started** (job v12, seed-0 screen, env encoder and no-ctx);
   seeds 1-2 after the Oct 31 quota reset (~27 of 30 h used this week).
+- 09:05 **F1 screen** (seed 0, val, vs d3_c00 seed 0 = 0.640): env encoder
+  0.645 (+0.006 ± 0.003, 7/9), no-ctx 0.644 (+0.005 ± 0.006, 5/9). Both ties
+  so far; both get seeds 1-2 after the quota reset (Sat 00:00 UTC), together
+  with the aux deck-value head (3 seeds) and the Commander head (F2).
