@@ -284,6 +284,16 @@ def main() -> None:
     u["lim_pct"] = 100 * np.searchsorted(ref[TYPICAL], mu) / len(ref[TYPICAL])
     u["lim_grade"] = u["lim_pct"].map(engine.grade)
     u["cmd_pred"] = engine.commander_logit(un, fu, bundle)
+    # Fine-tuned Commander head (phase2.py --target label, scored by
+    # precompute_ft.py --out out/app/ft_cmd_scores.parquet): averaged with the
+    # TF-IDF ridge, the best Commander model on validation (plan, step F2).
+    cmd_path = os.path.join(OUT, "app", "ft_cmd_scores.parquet")
+    if os.path.exists(cmd_path):
+        fs = pd.read_parquet(cmd_path).drop_duplicates("oracle_id").set_index("oracle_id")
+        has = u["oracle_id"].isin(fs.index).to_numpy()
+        u.loc[has, "cmd_pred"] = 0.5 * (u.loc[has, "cmd_pred"].to_numpy()
+                                        + fs.loc[u.loc[has, "oracle_id"], "ft_pred"].to_numpy())
+        log(f"fine-tuned Commander scores for {has.sum()} of {len(u)} cards ({cmd_path})")
     u["con_prob"] = engine.constructed_prob(fu, bundle)
     u["color_identity"] = u["color_identity"].map(lambda c: "".join(c) if isinstance(c, (list, np.ndarray)) else (c or ""))
     k = u["front_name"].str.lower().str.strip()

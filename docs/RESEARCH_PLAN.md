@@ -179,3 +179,9 @@ Each finished step adds one line here and its result to CLAUDE.md.
   (+0.025 ± 0.007, 8/9); 50/50 blend with the ridge 0.798 (+0.030 ± 0.004,
   9/9). Passes the bar on one seed; seeds 1-2 at the reset confirm it before
   the app switches.
+- 13:00 **G staged** (`gpu/kaggle/lanes_g.json`, CPU prep): lane 0 trains the
+  final model (5 seeds, all 24 training sets, 10 epochs, weights saved), builds
+  the app bundle, precomputes all Scryfall cards, runs the behavioural probes,
+  then the final Commander head (3 seeds) and its precompute; lane 1 runs the
+  rolling backtest (fold R, 10 sets). ~4.5 GPU h. `app/build.py` now averages
+  `out/app/ft_cmd_scores.parquet` with the Commander ridge when present.
