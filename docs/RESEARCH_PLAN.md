@@ -207,3 +207,6 @@ Each finished step adds one line here and its result to CLAUDE.md.
   re-opened as an optional follow-up.
 - 06:50 **H**: app rebuilt on the final model and Commander head; precompute of
   all cards done on Kaggle; live engine parity 6e-5. Early update rerunning.
+- 10:25 **H done**: early update with the final prior (Kaggle CPU): prior 0.640
+  (was 0.621), day 1 model_prior 0.727, days 2+ unchanged within ±0.005; product
+  rule stands. App guide in `docs/APP_GUIDE.md`. Queue finished.

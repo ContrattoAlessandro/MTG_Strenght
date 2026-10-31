@@ -147,3 +147,5 @@ the model as a prior combined with day-1 17lands data; from day 2 the plain
 data-weighted update. `scripts/early_update.py` implements it (see
 `out/early_update_final/REPORT.md`). Adding it to the app is a possible next
 step.
+With the final model: before release 0.64, day 1 0.73, day 2 0.82, day 7 0.88
+(Spearman vs the final labels).

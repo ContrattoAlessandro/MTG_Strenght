@@ -339,7 +339,9 @@ Done so far (Oct 27):
   precision update is best (0.822, 0.851, 0.875, 0.886); model_prior falls
   ~0.02 behind by day 7 (its residual τ² over-shrinks); adding ATA hurts once
   game data exists. Product rule: ensemble pre-release, model_prior on day 1,
-  naive update from day 2. Provisional until step H reruns it with the final prior.
+  naive update from day 2. **Rerun with the final prior** (`out/early_update_final/`):
+  prior 0.640 (was 0.621); day 1 model_prior 0.727, day 2 naive 0.818, day 7 0.884,
+  all within ±0.005 of the old run, so the product rule stands.
 
 Decisions on validation (Oct 27-28, details in the plan's log):
 - **C contamination**: no encoder flagged (name-only and paraphrase probes).
