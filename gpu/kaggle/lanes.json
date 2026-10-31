@@ -1,16 +1,14 @@
 [
  [
-  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3 --max-epochs 8 --device cuda --cache-dir {cache} --seeds 0 --top-k 12 --max-epochs 10 --enc-lr 5e-05 --head-lr 0.001 --pair-w 1 --dropout 0.1 --batch-size 32 --weight-decay 0.01 --name d3_c00",
-  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3 --max-epochs 8 --device cuda --cache-dir {cache} --seeds 0 --top-k 12 --max-epochs 10 --enc-lr 0.0002 --head-lr 0.003 --pair-w 3 --dropout 0.1 --batch-size 32 --weight-decay 0.1 --name d3_c02",
-  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3 --max-epochs 8 --device cuda --cache-dir {cache} --seeds 0 --top-k 12 --max-epochs 10 --enc-lr 0.0001 --head-lr 0.003 --pair-w 0.3 --dropout 0.05 --batch-size 32 --weight-decay 0.01 --name d3_c04",
-  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3 --max-epochs 8 --device cuda --cache-dir {cache} --seeds 0 --top-k 12 --max-epochs 10 --enc-lr 1e-05 --head-lr 0.003 --pair-w 3 --dropout 0.1 --batch-size 16 --weight-decay 0.1 --name d3_c06",
-  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3 --max-epochs 8 --device cuda --cache-dir {cache} --seeds 0 --top-k 12 --max-epochs 10 --enc-lr 1e-05 --head-lr 0.001 --pair-w 3 --dropout 0.2 --batch-size 32 --weight-decay 0.01 --name d3_c08"
+  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10 --skip-val --epochs 10 --seeds 0 1 2 3 4 --name g_final --save-dir models/ft_card",
+  "pip install -q -r app/requirements.txt",
+  "python app/build.py",
+  "python app/precompute_ft.py --device cuda --ft-dir models/ft_card/g_final",
+  "python scripts/behaviour_probes.py --ft-dir models/ft_card/g_final --device cuda",
+  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10 --target label --label-csv out/phase4/commander_labels_first.csv --skip-val --epochs 10 --seeds 0 1 2 --name g_commander --save-dir models/ft_cmd",
+  "python app/precompute_ft.py --device cuda --ft-dir models/ft_cmd/g_commander --out out/app/ft_cmd_scores.parquet"
  ],
  [
-  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3 --max-epochs 8 --device cuda --cache-dir {cache} --seeds 0 --top-k 12 --max-epochs 10 --enc-lr 2e-05 --head-lr 0.0003 --pair-w 1 --dropout 0.05 --batch-size 16 --weight-decay 0.01 --name d3_c01",
-  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3 --max-epochs 8 --device cuda --cache-dir {cache} --seeds 0 --top-k 12 --max-epochs 10 --enc-lr 1e-05 --head-lr 0.001 --pair-w 0.3 --dropout 0.2 --batch-size 32 --weight-decay 0.1 --name d3_c03",
-  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3 --max-epochs 8 --device cuda --cache-dir {cache} --seeds 0 --top-k 12 --max-epochs 10 --enc-lr 0.0001 --head-lr 0.0003 --pair-w 3 --dropout 0.05 --batch-size 16 --weight-decay 0.01 --name d3_c05",
-  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3 --max-epochs 8 --device cuda --cache-dir {cache} --seeds 0 --top-k 12 --max-epochs 10 --enc-lr 0.0001 --head-lr 0.001 --pair-w 0.3 --dropout 0.05 --batch-size 64 --weight-decay 0.1 --name d3_c07",
-  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3 --max-epochs 8 --device cuda --cache-dir {cache} --seeds 0 --top-k 12 --max-epochs 10 --enc-lr 0.0001 --head-lr 0.001 --pair-w 3 --dropout 0.2 --batch-size 64 --weight-decay 0.1 --name d3_c09"
+  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10 --val-fold R --seeds 0 --name g_final_rolling"
  ]
 ]

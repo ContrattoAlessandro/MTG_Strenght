@@ -185,3 +185,16 @@ Each finished step adds one line here and its result to CLAUDE.md.
   then the final Commander head (3 seeds) and its precompute; lane 1 runs the
   rolling backtest (fold R, 10 sets). ~4.5 GPU h. `app/build.py` now averages
   `out/app/ft_cmd_scores.parquet` with the Commander ridge when present.
+- 2026-10-31 02:15 **F done.** Val, 3 seeds × 3 folds, vs d3_c00 (0.6487):
+  env encoder 0.6506 (+0.002 ± 0.003, 5/9, tie), no-ctx 0.6507 (+0.002 ±
+  0.006, 6/9, tie), aux head dropped earlier. **No architecture change is
+  adopted: the final Limited model is d3_c00's recipe** (Gemma-2 top-12, 10
+  epochs, set-context features, no env encoder), shipped 50/50 with gbt_tfidf as
+  before (val blend 0.653). **F2 Commander head adopted**: fine-tuned 0.795
+  (+0.027 ± 0.007, 8/9); 50/50 with the TF-IDF ridge 0.798 (+0.029 ± 0.004,
+  9/9), which is what the app will use. (A local RTX 5070 was tried for these
+  runs: 12 GB is too tight, 411 s/epoch vs 90 s on a T4, so it was stopped.)
+- 02:15 **G started** (job v14): final model 5 seeds on all 24 training sets
+  with saved weights, app bundle, precompute of every Scryfall card, behavioural
+  probes, final Commander head (3 seeds) and its precompute; rolling backtest
+  (fold R) on the other GPU.

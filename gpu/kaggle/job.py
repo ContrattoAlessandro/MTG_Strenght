@@ -24,6 +24,8 @@ WORK = "/kaggle/temp" if os.path.isdir("/kaggle/temp") else "/tmp"
 CACHE = os.path.join(WORK, "cache")   # hidden-state caches: big, not worth downloading
 # v10 (done): D3 sweep; defaults kept, 10 epochs (d3_c00). v11 (done): E1
 # stage 2; Gemma-2 kept (Qwen3 0.6B / 4B ties, +0.011 / +0.012 < 2 SE).
+# v13 (done): F1 seeds 1-2, nothing adopted. Job v14 = step G, lanes from
+# gpu/kaggle/lanes.json (copied from lanes_g.json).
 # v12 (done): F1 seed-0 screen: env +0.006 ± 0.003, no-ctx +0.005 ± 0.006.
 # Job v13 (after the Oct 31 quota reset): F1 seeds 1-2 for env and no-ctx;
 # session B runs the aux head and the Commander head (F2).
@@ -39,7 +41,7 @@ LANES = [[f"{GEMMA} --env set --seeds 1 --name f1_env"],
 #   "python scripts/phase3.py train --device cuda --work-dir /kaggle/input/mtg-p3"
 #   " --model-dir models --batch-size 4096"
 RESULTS = "/kaggle/working/results"
-USE_LANES_JSON = False  # True: take the lanes from gpu/kaggle/lanes.json on BRANCH
+USE_LANES_JSON = True   # True: take the lanes from gpu/kaggle/lanes.json on BRANCH
 
 
 def sh(cmd: str, cwd: str | None = None) -> None:
