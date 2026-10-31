@@ -32,8 +32,8 @@ GEMMA = ("python scripts/phase2.py train --encoder google/embeddinggemma-2 --val
 # One lane per GPU: lanes run in parallel (lane i sees only GPU i and gets its
 # own cache dir, {cache}); the commands within a lane run in order, and a
 # failed command does not stop the ones after it.
-LANES = [[f"{GEMMA} --env set --seeds 1 2 --name f1_env"],
-         [f"{GEMMA} --no-ctx --seeds 1 2 --name f1_noctx"]]
+LANES = [[f"{GEMMA} --env set --seeds 1 --name f1_env"],
+         [f"{GEMMA} --env set --seeds 2 --name f1_env"]]   # no-ctx seeds 1-2 run in session B
 # Data from a Kaggle dataset (dataset_sources in kernel-metadata.json) is
 # mounted read-only under /kaggle/input/<slug>/, e.g. for Phase 3:
 #   "python scripts/phase3.py train --device cuda --work-dir /kaggle/input/mtg-p3"

@@ -37,10 +37,9 @@ GEMMA = ("python scripts/phase2.py train --encoder google/embeddinggemma-2 --val
          " --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10")
 # b6 seed 0 (done): aux head tie (dropped); Commander head +0.025 ± 0.007.
 # At the reset: Commander seeds 1-2, one per lane.
-LANES = [[f"{GEMMA} --target label --label-csv out/phase4/commander_labels_first.csv"
-          " --name f2_commander --seeds 1"],
-         [f"{GEMMA} --target label --label-csv out/phase4/commander_labels_first.csv"
-          " --name f2_commander --seeds 2"]]
+CMD = " --target label --label-csv out/phase4/commander_labels_first.csv --name f2_commander"
+LANES = [[f"{GEMMA} --no-ctx --seeds 1 --name f1_noctx", f"{GEMMA}{CMD} --seeds 1"],
+         [f"{GEMMA} --no-ctx --seeds 2 --name f1_noctx", f"{GEMMA}{CMD} --seeds 2"]]
 # Data from a Kaggle dataset (dataset_sources in kernel-metadata.json) is
 # mounted read-only under /kaggle/input/<slug>/, e.g. for Phase 3:
 #   "python scripts/phase3.py train --device cuda --work-dir /kaggle/input/mtg-p3"
