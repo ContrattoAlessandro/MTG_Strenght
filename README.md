@@ -24,14 +24,11 @@ The first start builds `app/data/` (about a minute; it downloads the Scryfall
 oracle file if missing). `python app/server.py --rebuild` rebuilds it after
 new labels or model outputs.
 
-To score cards with the fine-tuned EmbeddingGemma-2 + GBT average (the best
-model), copy the `seed*.pt` files (`ft_embeddinggemma2_k4_saved`, in the
-project files, not in git) to `models/ft_card/ft_embeddinggemma2_k4_saved/`.
-This needs torch (CPU build), transformers, and access to the gated
-`google/embeddinggemma-2` on Hugging Face (accept the licence, then
-`hf auth login`); after the first download you can start with
-`HF_HUB_OFFLINE=1`. Loading takes about 50 s and 3 GB of RAM. Without the
-weights, or with `--no-ft`, the app uses the gradient-boosting model alone.
+All Scryfall cards are pre-scored with the final model (fine-tuned
+EmbeddingGemma-2 `g_final` + gradient boosting). To score custom cards with it
+too, put the weights in `models/ft_card/g_final/` (and the Commander head in
+`models/ft_cmd/g_commander/`); without them, or with `--no-ft`, custom cards use
+gradient boosting alone. Full install and usage guide: `docs/APP_GUIDE.md`.
 Details: `CLAUDE.md`, "Web app".
 
 ## Phase 0: data pipeline
