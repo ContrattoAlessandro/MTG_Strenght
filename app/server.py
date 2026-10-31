@@ -58,7 +58,7 @@ def records(df: pd.DataFrame) -> list[dict]:
 
 
 class State:
-    def __init__(self, ft_dir: str | None, threads: int):
+    def __init__(self, ft_dir: str | None, threads: int, ft_seeds: int | None = None):
         needed = ["bundle.joblib", "cards.parquet", "set_cards.parquet", "synergy.json", "meta.json"]
         if not all(os.path.exists(os.path.join(DATA, x)) for x in needed):
             print("app/data/ is missing: building it (about a minute)...", flush=True)
@@ -74,7 +74,7 @@ class State:
         self.by_id = self.cards.set_index("oracle_id")
         self.ft = None
         self.ft_status = "not configured"
-        self.ft_paths = engine.find_ft_weights(ft_dir) if ft_dir else []
+        self.ft_paths = (engine.find_ft_weights(ft_dir) if ft_dir else [])[:ft_seeds]
         if ft_dir and not self.ft_paths:
             self.ft_status = f"no seed*.pt files under {ft_dir}"
         if self.ft_paths:
@@ -283,13 +283,16 @@ def main():
     ap.add_argument("--ft-dir", default=os.environ.get("MTG_FT_DIR", os.path.join(ROOT, "models", "ft_card")),
                     help="folder with fine-tuned weights (<run>/seed*.pt); skipped if absent")
     ap.add_argument("--no-ft", action="store_true", help="never load the fine-tuned model")
+    ap.add_argument("--ft-seeds", type=int, default=None,
+                    help="load only the first N seeds (each adds ~1 GB of RAM; 5 seeds peak at ~10 GB)")
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--rebuild", action="store_true", help="rebuild app/data first")
     args = ap.parse_args()
     if args.rebuild:
         import build
         build.main()
-    S = State(None if args.no_ft or not os.path.isdir(args.ft_dir) else args.ft_dir, args.threads)
+    S = State(None if args.no_ft or not os.path.isdir(args.ft_dir) else args.ft_dir, args.threads,
+              args.ft_seeds)
     import uvicorn
     print(f"MTG card strength: http://{args.host}:{args.port}", flush=True)
     uvicorn.run(app, host=args.host, port=args.port, log_level="warning")

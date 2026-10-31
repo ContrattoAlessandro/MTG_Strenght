@@ -33,3 +33,4 @@ rolling-origin backtest (11 sets never used for any choice) as well.
 | 2026-10-27 14:57 | contamination_probe names (all encoders) | step C: name-only contamination diagnostic, no model choice |
 | 2026-10-31 06:02 | g_final, ft_embeddinggemma2_k4_saved | step G: final model (Gemma-2 top-12, 5 seeds), pre-registered single test look |
 | 2026-10-31 06:07 | all runs (phase2.py evaluate), g_final with human baselines | step G: tables and human comparison for the same final look; no selection |
+| 2026-10-31 06:47 | g_commander (and its 50/50 blend with the TF-IDF ridge) vs phase 4 Commander models | step G: final Commander head, single look after the F2 decision on validation |

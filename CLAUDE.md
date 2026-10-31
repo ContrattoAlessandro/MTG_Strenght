@@ -275,11 +275,16 @@ python app/server.py [--port 8000] [--ft-dir models/ft_card] [--no-ft] [--rebuil
   The search dropdown grades and set pages stay precomputed (GBT for cards
   without data; scoring all 33k Scryfall cards with Gemma would take ~3 h on
   4 CPUs). Training-set cards show the CV GBT estimate (FT is in-sample there).
-- **All-cards precompute (optional, not run yet)**: `python app/precompute_ft.py
-  [--device cuda]` scores every Scryfall card with the fine-tuned model
-  (~0.2 s/card on 4 CPUs, ~2 h; resumable) into `out/app/ft_scores.parquet`;
-  `app/build.py` then makes Gemma + GBT the precomputed score in search and
-  card pages. On hold until the research thread fixes the final card model.
+- **All-cards precompute (done, final model)**: `out/app/ft_scores.parquet`
+  (Limited, `g_final`, SD already rescaled) and `out/app/ft_cmd_scores.parquet`
+  (Commander, `g_commander`) hold every Scryfall card, computed on a Kaggle T4
+  with `python app/precompute_ft.py --device cuda --ft-dir models/ft_card/g_final`
+  (and `--ft-dir models/ft_cmd/g_commander --out out/app/ft_cmd_scores.parquet`).
+  `app/build.py` uses them: Limited = 0.5 Gemma + 0.5 GBT, Commander = 0.5
+  fine-tuned + 0.5 ridge. Test-set cards show the out-of-sample `g_final` +
+  gbt_tfidf ensemble. `engine.find_ft_weights` prefers `models/ft_card/g_final`.
+  With 5 top-12 seeds the live model peaks at ~10 GB RAM; `server.py
+  --ft-seeds N` loads fewer seeds (the precomputed scores are unaffected).
 
 ## Research queue (from Oct 27): one ordered plan
 
@@ -345,7 +350,21 @@ Decisions on validation (Oct 27-28, details in the plan's log):
 - **E encoder**: Qwen3-Embedding-0.6B (full FT, lr 3e-5) 0.660 and Qwen3-4B
   (LoRA r16, lr 1e-4) 0.661 are ties vs Gemma-2 (+0.011/+0.012 < 2 SE);
   Harrier-0.6B 0.622; 8B not run. **Gemma-2 top-12 stays the backbone.**
-- **F1** (env encoder, no-ctx) in progress; the Kaggle quota resets Oct 31.
+- **F**: env encoder (+0.002 ± 0.003), no-ctx (+0.002 ± 0.006) and the
+  deck-value aux head (+0.000) are ties: nothing adopted. Commander head
+  fine-tuned with the same recipe adopted (val 0.795 vs ridge 0.768).
+- **G final model** (`out/final/REPORT.md`): `g_final` = Gemma-2 top-12,
+  10 epochs, 5 seeds on all 24 training sets. **Test (single look) 0.652**
+  (old model 0.626, 7/7 sets; first-week ATA 0.652; Draftsim 0.551; model +
+  ATA 0.702), NDCG@20 0.814, MAE 1.71 pp; shipped 50/50 with gbt_tfidf (0.650,
+  MAE 1.66). Rolling backtest MKM-EOE 0.649 vs gbt_tfidf 0.616. Predicted SD is
+  rescaled by 7.8 (fitted on validation, `scripts/calibrate_sd.py`,
+  `runs/g_final/sd_scale.json`, `sd_scale` in the weights): test 90% coverage
+  0.90. Commander: 50/50 fine-tuned + ridge 0.764 vs ridge 0.749 on test.
+  Probes (`scripts/behaviour_probes.py`, `out/probes/`): a cheaper cost lowers
+  the score for 17% of cards, so the monotonicity regularizer is the obvious
+  next experiment. Weights: `/mnt/project-files/mtg_strength/models/ft_card/g_final/`
+  and `.../ft_cmd/g_commander/` (130 MB per seed; copy to `models/`).
 
 ## What is not done (next steps, in rough priority)
 

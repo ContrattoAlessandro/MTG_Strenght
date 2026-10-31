@@ -198,3 +198,12 @@ Each finished step adds one line here and its result to CLAUDE.md.
   with saved weights, app bundle, precompute of every Scryfall card, behavioural
   probes, final Commander head (3 seeds) and its precompute; rolling backtest
   (fold R) on the other GPU.
+- 06:50 **G done** (`out/final/REPORT.md`). Test, one look: final model 0.652
+  (prev. 0.626, +0.025 ± 0.006, 7/7), with gbt_tfidf 0.650; first-week ATA
+  0.652, Draftsim 0.551, model + ATA 0.702. Rolling backtest 0.649 vs gbt_tfidf
+  0.616 (8/10). SD recalibrated on validation (k 7.8): test 90% coverage 0.90.
+  Commander (one look): blend 0.764 vs ridge 0.749 (6/7). Probes: cheaper-cost
+  edit lowers the score for 17% of cards (GBT 11%): monotonicity regularizer
+  re-opened as an optional follow-up.
+- 06:50 **H**: app rebuilt on the final model and Commander head; precompute of
+  all cards done on Kaggle; live engine parity 6e-5. Early update rerunning.
