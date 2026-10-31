@@ -172,7 +172,9 @@ class FineTuned:
     Hugging Face checkpoint); the saved top layers, struct MLP and head on top.
     Runs on CPU or, with device="cuda", on a GPU."""
 
-    def __init__(self, paths: list[str], threads: int = 4, device: str = "cpu"):
+    def __init__(self, paths: list[str], threads: int = 4, device: str = "cpu", base: "FineTuned | None" = None):
+        """``base``: another FineTuned on the same encoder whose frozen lower
+        layers and embeddings are reused (e.g. the Commander head), saving RAM."""
         import torch
         from phase2 import load_model
         from mtgstrength.partial import load_encoder
@@ -180,7 +182,7 @@ class FineTuned:
         self.device = torch.device(device)
         import gc
         self.models = []
-        shared = {}   # frozen token embeddings: one copy for all seeds (~0.8 GB each for Gemma)
+        shared = base._shared if base is not None else {}   # frozen token embeddings: one copy for all seeds
         for p in paths:
             model, meta = load_model(p)
             cfg = meta["config"]
@@ -193,14 +195,17 @@ class FineTuned:
                         setattr(text, nm, shared.setdefault(nm, mod))
             self.models.append((model.to(self.device), meta))
             gc.collect()
+        self._shared = shared
         cfg = self.models[0][1]["config"]
         self.encoder = None if cfg["encoder"] == "none" else cfg["encoder"]
         self.top_k, self.max_len = cfg["top_k"], cfg["max_len"]
-        if self.encoder:
+        if self.encoder and base is not None and base.encoder == self.encoder:
+            self.tok, self.full = base.tok, base.full
+        elif self.encoder:
             self.tok, self.full, _ = load_encoder(self.encoder)
             self.full.to(self.device)
-            n = len(self.full.layers)
-            self.grab_layer = self.full.layers[n - self.top_k]
+        if self.encoder:
+            self.grab_layer = self.full.layers[len(self.full.layers) - self.top_k]
 
     def _lower_states(self, ids: list[list[int]]):
         """Hidden states entering the top k layers for a batch of token id
