@@ -1,0 +1,32 @@
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "d3_c03", "no_struct": false, "seeds": [0], "max_epochs": 10, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 1e-05, "head_lr": 0.001, "pair_w": 0.3, "threads": 4, "device": "cuda", "top_k": 12, "val_fold": ["V1", "V2", "V3"], "llrd": 1.0, "amp": "none", "peft": "none", "lora_r": 16, "enc_fp16": false, "grad_ckpt": false, "optim": "adamw", "weight_decay": 0.1, "warmup": 0.06, "dropout": 0.2, "text_variant": "original", "cache_dir": "/tmp/cache1", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": null}}
+{"fold": "V1", "epoch": 1, "nll": 0.9138, "bt": 1.0075, "sec": 92, "val_spearman": 0.5131, "val_ndcg": 0.808, "val_mae": 0.0943, "val_nll": -1.6332}
+{"fold": "V1", "epoch": 2, "nll": 0.1503, "bt": 0.5591, "sec": 98, "val_spearman": 0.5559, "val_ndcg": 0.8334, "val_mae": 0.1023, "val_nll": -1.6084}
+{"fold": "V1", "epoch": 3, "nll": 0.0325, "bt": 0.5167, "sec": 96, "val_spearman": 0.5637, "val_ndcg": 0.842, "val_mae": 0.0851, "val_nll": -1.759}
+{"fold": "V1", "epoch": 4, "nll": -0.0509, "bt": 0.4914, "sec": 96, "val_spearman": 0.5731, "val_ndcg": 0.836, "val_mae": 0.0872, "val_nll": -1.7378}
+{"fold": "V1", "epoch": 5, "nll": -0.1387, "bt": 0.4594, "sec": 94, "val_spearman": 0.5822, "val_ndcg": 0.8153, "val_mae": 0.0847, "val_nll": -1.7236}
+{"fold": "V1", "epoch": 6, "nll": -0.2509, "bt": 0.4306, "sec": 95, "val_spearman": 0.5749, "val_ndcg": 0.8156, "val_mae": 0.0883, "val_nll": -1.5867}
+{"fold": "V1", "epoch": 7, "nll": -0.3902, "bt": 0.3964, "sec": 95, "val_spearman": 0.5896, "val_ndcg": 0.8093, "val_mae": 0.0893, "val_nll": -1.5223}
+{"fold": "V1", "epoch": 8, "nll": -0.4783, "bt": 0.3788, "sec": 96, "val_spearman": 0.5846, "val_ndcg": 0.8025, "val_mae": 0.086, "val_nll": -1.3759}
+{"fold": "V1", "epoch": 9, "nll": -0.6203, "bt": 0.3558, "sec": 95, "val_spearman": 0.5863, "val_ndcg": 0.7947, "val_mae": 0.0866, "val_nll": -0.8285}
+{"fold": "V1", "epoch": 10, "nll": -0.6999, "bt": 0.3425, "sec": 95, "val_spearman": 0.5878, "val_ndcg": 0.79, "val_mae": 0.0874, "val_nll": -0.5708}
+{"fold": "V2", "epoch": 1, "nll": 0.8611, "bt": 0.9653, "sec": 114, "val_spearman": 0.5858, "val_ndcg": 0.8072, "val_mae": 0.0885, "val_nll": -1.7188}
+{"fold": "V2", "epoch": 2, "nll": 0.1255, "bt": 0.5559, "sec": 117, "val_spearman": 0.6264, "val_ndcg": 0.839, "val_mae": 0.0856, "val_nll": -1.7659}
+{"fold": "V2", "epoch": 3, "nll": 0.0399, "bt": 0.5225, "sec": 115, "val_spearman": 0.6515, "val_ndcg": 0.8476, "val_mae": 0.0817, "val_nll": -1.8351}
+{"fold": "V2", "epoch": 4, "nll": -0.0638, "bt": 0.4886, "sec": 116, "val_spearman": 0.6689, "val_ndcg": 0.8277, "val_mae": 0.0818, "val_nll": -1.8191}
+{"fold": "V2", "epoch": 5, "nll": -0.1664, "bt": 0.456, "sec": 116, "val_spearman": 0.6757, "val_ndcg": 0.8632, "val_mae": 0.0806, "val_nll": -1.8047}
+{"fold": "V2", "epoch": 6, "nll": -0.2951, "bt": 0.417, "sec": 114, "val_spearman": 0.6676, "val_ndcg": 0.8601, "val_mae": 0.0803, "val_nll": -1.5749}
+{"fold": "V2", "epoch": 7, "nll": -0.424, "bt": 0.3872, "sec": 115, "val_spearman": 0.6674, "val_ndcg": 0.8391, "val_mae": 0.0821, "val_nll": -1.3662}
+{"fold": "V2", "epoch": 8, "nll": -0.5685, "bt": 0.3569, "sec": 115, "val_spearman": 0.6788, "val_ndcg": 0.853, "val_mae": 0.0797, "val_nll": -1.2703}
+{"fold": "V2", "epoch": 9, "nll": -0.6857, "bt": 0.3369, "sec": 114, "val_spearman": 0.665, "val_ndcg": 0.8438, "val_mae": 0.0812, "val_nll": -0.4936}
+{"fold": "V2", "epoch": 10, "nll": -0.8252, "bt": 0.322, "sec": 116, "val_spearman": 0.6702, "val_ndcg": 0.8467, "val_mae": 0.0811, "val_nll": 0.1538}
+{"fold": "V3", "epoch": 1, "nll": 0.7473, "bt": 0.8977, "sec": 136, "val_spearman": 0.5467, "val_ndcg": 0.794, "val_mae": 0.0852, "val_nll": -1.7399}
+{"fold": "V3", "epoch": 2, "nll": 0.1174, "bt": 0.5487, "sec": 141, "val_spearman": 0.5951, "val_ndcg": 0.837, "val_mae": 0.0795, "val_nll": -1.8501}
+{"fold": "V3", "epoch": 3, "nll": 0.0138, "bt": 0.5124, "sec": 137, "val_spearman": 0.6016, "val_ndcg": 0.8421, "val_mae": 0.0784, "val_nll": -1.8929}
+{"fold": "V3", "epoch": 4, "nll": -0.0767, "bt": 0.481, "sec": 139, "val_spearman": 0.6265, "val_ndcg": 0.8472, "val_mae": 0.0775, "val_nll": -1.8955}
+{"fold": "V3", "epoch": 5, "nll": -0.2028, "bt": 0.4388, "sec": 138, "val_spearman": 0.6252, "val_ndcg": 0.8512, "val_mae": 0.0764, "val_nll": -1.9043}
+{"fold": "V3", "epoch": 6, "nll": -0.3496, "bt": 0.3996, "sec": 139, "val_spearman": 0.6112, "val_ndcg": 0.8467, "val_mae": 0.0786, "val_nll": -1.7197}
+{"fold": "V3", "epoch": 7, "nll": -0.5132, "bt": 0.366, "sec": 139, "val_spearman": 0.5931, "val_ndcg": 0.8252, "val_mae": 0.0817, "val_nll": -1.2617}
+{"fold": "V3", "epoch": 8, "nll": -0.6503, "bt": 0.3416, "sec": 138, "val_spearman": 0.6081, "val_ndcg": 0.8397, "val_mae": 0.0791, "val_nll": -1.0985}
+{"fold": "V3", "epoch": 9, "nll": -0.7859, "bt": 0.3237, "sec": 139, "val_spearman": 0.6126, "val_ndcg": 0.8339, "val_mae": 0.0792, "val_nll": -0.7868}
+{"fold": "V3", "epoch": 10, "nll": -0.8784, "bt": 0.3133, "sec": 139, "val_spearman": 0.6072, "val_ndcg": 0.8358, "val_mae": 0.0793, "val_nll": -0.3513}
+{"done": true, "val_folds": ["V1", "V2", "V3"], "epochs": 10}

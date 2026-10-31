@@ -58,7 +58,8 @@ def records(df: pd.DataFrame) -> list[dict]:
 
 
 class State:
-    def __init__(self, ft_dir: str | None, threads: int):
+    def __init__(self, ft_dir: str | None, threads: int, ft_seeds: int | None = None,
+                 cmd_dir: str | None = None):
         needed = ["bundle.joblib", "cards.parquet", "set_cards.parquet", "synergy.json", "meta.json"]
         if not all(os.path.exists(os.path.join(DATA, x)) for x in needed):
             print("app/data/ is missing: building it (about a minute)...", flush=True)
@@ -73,8 +74,10 @@ class State:
         self.meta = json.load(open(os.path.join(DATA, "meta.json")))
         self.by_id = self.cards.set_index("oracle_id")
         self.ft = None
+        self.ft_cmd = None   # fine-tuned Commander head (custom cards; the rest is precomputed)
+        self.cmd_paths = (engine.find_ft_weights(cmd_dir) if cmd_dir and ft_dir else [])[:ft_seeds]
         self.ft_status = "not configured"
-        self.ft_paths = engine.find_ft_weights(ft_dir) if ft_dir else []
+        self.ft_paths = (engine.find_ft_weights(ft_dir) if ft_dir else [])[:ft_seeds]
         if ft_dir and not self.ft_paths:
             self.ft_status = f"no seed*.pt files under {ft_dir}"
         if self.ft_paths:
@@ -87,6 +90,10 @@ class State:
             self.ft = engine.FineTuned(self.ft_paths, threads)
             self.ft_status = f"ready ({len(self.ft_paths)} seeds)"
             print(f"fine-tuned model loaded in {time.time() - t:.0f}s", flush=True)
+            if self.cmd_paths:
+                self.ft_cmd = engine.FineTuned(self.cmd_paths, threads, base=self.ft)
+                self.ft_status += f", Commander head ({len(self.cmd_paths)} seeds)"
+                print("fine-tuned Commander head loaded", flush=True)
         except Exception as e:   # noqa: BLE001 - keep serving with the GBT
             self.ft_status = f"failed: {type(e).__name__}: {e}"
             print(f"fine-tuned model not loaded: {e}", flush=True)
@@ -259,6 +266,9 @@ def predict(card: CustomCard):
         out["comparable"] = records(nb[["oracle_id", "name", "set", "rarity", "model_pred", "theta_vs_repl",
                                         "grade_obs", "image_small"]])
     cl = engine.commander_logit(df, f, b)[0]
+    if card.use_ft and S.ft_cmd is not None:   # 0.5 fine-tuned + 0.5 ridge, as precomputed
+        m_c, _ = S.ft_cmd.predict(df, lambda cols: engine.featurize(df, [env], b, cols, ft=True))
+        cl = 0.5 * (cl + m_c[0])
     out["cmd_incl"] = clean(engine.sigmoid(cl))
     out["cmd_pct"] = clean(100 * np.searchsorted(b["cmd_ref"], cl) / len(b["cmd_ref"]))
     cp = engine.constructed_prob(f, b)[0]
@@ -282,14 +292,19 @@ def main():
     ap.add_argument("--port", type=int, default=8000)
     ap.add_argument("--ft-dir", default=os.environ.get("MTG_FT_DIR", os.path.join(ROOT, "models", "ft_card")),
                     help="folder with fine-tuned weights (<run>/seed*.pt); skipped if absent")
+    ap.add_argument("--ft-cmd-dir", default=os.path.join(ROOT, "models", "ft_cmd"),
+                    help="fine-tuned Commander head (<run>/seed*.pt), loaded after --ft-dir if present")
     ap.add_argument("--no-ft", action="store_true", help="never load the fine-tuned model")
+    ap.add_argument("--ft-seeds", type=int, default=None,
+                    help="load only the first N seeds (each adds ~1 GB of RAM; 5 seeds peak at ~10 GB)")
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--rebuild", action="store_true", help="rebuild app/data first")
     args = ap.parse_args()
     if args.rebuild:
         import build
         build.main()
-    S = State(None if args.no_ft or not os.path.isdir(args.ft_dir) else args.ft_dir, args.threads)
+    S = State(None if args.no_ft or not os.path.isdir(args.ft_dir) else args.ft_dir, args.threads,
+              args.ft_seeds, args.ft_cmd_dir if os.path.isdir(args.ft_cmd_dir) else None)
     import uvicorn
     print(f"MTG card strength: http://{args.host}:{args.port}", flush=True)
     uvicorn.run(app, host=args.host, port=args.port, log_level="warning")

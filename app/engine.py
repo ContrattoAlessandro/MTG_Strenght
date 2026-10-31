@@ -172,27 +172,40 @@ class FineTuned:
     Hugging Face checkpoint); the saved top layers, struct MLP and head on top.
     Runs on CPU or, with device="cuda", on a GPU."""
 
-    def __init__(self, paths: list[str], threads: int = 4, device: str = "cpu"):
+    def __init__(self, paths: list[str], threads: int = 4, device: str = "cpu", base: "FineTuned | None" = None):
+        """``base``: another FineTuned on the same encoder whose frozen lower
+        layers and embeddings are reused (e.g. the Commander head), saving RAM."""
         import torch
         from phase2 import load_model
         from mtgstrength.partial import load_encoder
         torch.set_num_threads(threads)
         self.device = torch.device(device)
+        import gc
         self.models = []
+        shared = base._shared if base is not None else {}   # frozen token embeddings: one copy for all seeds
         for p in paths:
             model, meta = load_model(p)
             cfg = meta["config"]
             if cfg.get("env", "none") != "none":
                 raise ValueError(f"{p}: models with an environment encoder are not supported")
+            text = getattr(getattr(model, "encoder", None), "text", None)
+            if text is not None:
+                for nm, mod in list(text.named_children()):
+                    if isinstance(mod, torch.nn.Embedding) and not any(q.requires_grad for q in mod.parameters()):
+                        setattr(text, nm, shared.setdefault(nm, mod))
             self.models.append((model.to(self.device), meta))
+            gc.collect()
+        self._shared = shared
         cfg = self.models[0][1]["config"]
         self.encoder = None if cfg["encoder"] == "none" else cfg["encoder"]
         self.top_k, self.max_len = cfg["top_k"], cfg["max_len"]
-        if self.encoder:
+        if self.encoder and base is not None and base.encoder == self.encoder:
+            self.tok, self.full = base.tok, base.full
+        elif self.encoder:
             self.tok, self.full, _ = load_encoder(self.encoder)
             self.full.to(self.device)
-            n = len(self.full.layers)
-            self.grab_layer = self.full.layers[n - self.top_k]
+        if self.encoder:
+            self.grab_layer = self.full.layers[len(self.full.layers) - self.top_k]
 
     def _lower_states(self, ids: list[list[int]]):
         """Hidden states entering the top k layers for a batch of token id
@@ -239,7 +252,9 @@ class FineTuned:
                         kw.update(input_ids=enc[0], h=enc[1], attention_mask=enc[2])
                     mu, var = model(**kw)
                     mus[k, j] = mu.cpu().numpy() * meta["y_sd"] + meta["y_mu"]
-                    sds[k, j] = np.sqrt(var.cpu().numpy()) * meta["y_sd"]
+                    # sd_scale: post-hoc calibration fitted on the validation folds
+                    # (scripts/calibrate_sd.py); 1 for models saved before it.
+                    sds[k, j] = np.sqrt(var.cpu().numpy()) * meta["y_sd"] * meta.get("sd_scale", 1.0)
                 if log and bi % 20 == 0:
                     log(f"fine-tuned model: {min(n, (bi + 1) * batch)} / {n} cards")
         return mus.mean(0), sds.mean(0)
@@ -253,7 +268,9 @@ def find_ft_weights(model_dir: str) -> list[str]:
                     if x.startswith("seed") and x.endswith(".pt"))
     if direct:
         return direct
-    for sub in sorted(os.listdir(model_dir)):
+    # The step-G final model first, then any other run (alphabetical).
+    subs = sorted(os.listdir(model_dir), key=lambda x: (x != "g_final", x))
+    for sub in subs:
         got = find_ft_weights(os.path.join(model_dir, sub)) if os.path.isdir(os.path.join(model_dir, sub)) else []
         if got:
             return got

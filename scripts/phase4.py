@@ -2,6 +2,7 @@
 
     python scripts/phase4.py commander
     python scripts/phase4.py constructed
+    python scripts/phase4.py commander-folds   # validation folds, for step F2
 
 Both use the Phase 2 card table and the same temporal split (train on cards
 from the 24 training sets, test on the 7 newest), and score each model by
@@ -224,12 +225,60 @@ def constructed(args) -> None:
     print(json.dumps(info, indent=2))
 
 
+def commander_folds(args) -> None:
+    """Commander baselines on the validation folds (docs/RESEARCH_PLAN.md, F2).
+
+    Writes out/phase4/commander_labels_first.csv (the label on each card's
+    first printing only, so a reprint never carries its label across a fold
+    boundary; use it for phase2.py --label-csv in fold mode and for
+    compare_runs.py --label-csv) and runs/commander_tfidf_folds/ and
+    runs/commander_gbt_tfidf_folds/ val predictions in the phase2.py format.
+    """
+    from phase2 import FOLDS
+    from sklearn.decomposition import TruncatedSVD
+    res = os.path.join(args.out_dir, RES)
+    lab = pd.read_csv(os.path.join(res, "commander_labels.csv"))
+    allc = pd.read_parquet(os.path.join(args.out_dir, "phase2", "cards.parquet"))
+    lab = allc[["set", "oracle_id", "set_idx"]].merge(lab, on=["set", "oracle_id"], how="left")
+    first = lab.groupby("oracle_id")["set_idx"].transform("min")
+    lab.loc[lab["set_idx"] != first, "label"] = np.nan
+    lab[["set", "oracle_id", "label"]].to_csv(os.path.join(res, "commander_labels_first.csv"), index=False)
+    cards, f, _ = load(args.out_dir)
+    cards = cards.merge(lab[["set", "oracle_id", "label"]], on=["set", "oracle_id"], how="left")
+    ok = cards["label"].notna().to_numpy()
+    cards, f = cards[ok].reset_index(drop=True), f[ok].reset_index(drop=True)
+    y = cards["label"].to_numpy()
+    w = np.ones(len(y))
+    X = f.astype(float).to_numpy()
+    runs = os.path.join(args.out_dir, "phase2", "runs")
+    for name in ("commander_tfidf_folds", "commander_gbt_tfidf_folds"):
+        os.makedirs(os.path.join(runs, name), exist_ok=True)
+    for fold, sets in FOLDS.items():
+        first_idx = cards.loc[cards["set"].isin(sets), "set_idx"].min()
+        tr = cards["is_train"].to_numpy() & (cards["set_idx"] < first_idx).to_numpy()
+        fit_sets = list(dict.fromkeys(cards.loc[tr, "set"]))
+        inner = cards["set"].isin(fit_sets[-3:]).to_numpy()   # inner validation for alpha / rounds
+        va = cards["set"].isin(sets).to_numpy()
+        T = text_matrix(cards, tr)
+        R = sparse.csr_matrix(f[[f"rarity_{r}" for r in features.RARITIES]].to_numpy() * 3.0)
+        TR = sparse.hstack([T, R], format="csr")
+        p_ridge = fit_ridge(TR, y, w, tr, inner).predict(TR[va])
+        S = TruncatedSVD(32, random_state=0).fit(T[tr]).transform(T)
+        XS = np.hstack([X, S])
+        p_gbt = fit_gbt(XS, y, w, tr, inner).predict(XS[va])
+        for name, p in (("commander_tfidf_folds", p_ridge), ("commander_gbt_tfidf_folds", p_gbt)):
+            cards.loc[va, ["set", "oracle_id"]].assign(epoch=1, pred=p, pred_sd=np.nan).to_csv(
+                os.path.join(runs, name, f"val_pred_{fold}_seed0.csv"), index=False)
+        print(f"{fold}: {tr.sum()} fit cards, {va.sum()} val cards", flush=True)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["commander", "constructed"])
+    ap.add_argument("cmd", choices=["commander", "constructed", "commander-folds"])
     ap.add_argument("--out-dir", default="out")
     args = ap.parse_args()
-    {"commander": commander, "constructed": constructed}[args.cmd](args)
+    {"commander": commander, "constructed": constructed,
+     "commander-folds": commander_folds}[args.cmd](args)
 
 
 if __name__ == "__main__":

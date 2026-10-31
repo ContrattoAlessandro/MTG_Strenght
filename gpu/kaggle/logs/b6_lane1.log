@@ -1,0 +1,44 @@
+$ python scripts/phase2.py train --encoder google/embeddinggemma-2 --val-fold V1 V2 V3 --device cuda --cache-dir /tmp/cache1 --top-k 12 --max-epochs 10 --seeds 0 --target label --label-csv out/phase4/commander_labels_first.csv --name f2_commander
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "f2_commander", "no_struct": false, "seeds": [0], "max_epochs": 10, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": 12, "val_fold": ["V1", "V2", "V3"], "llrd": 1.0, "amp": "none", "peft": "none", "lora_r": 16, "enc_fp16": false, "grad_ckpt": false, "optim": "adamw", "weight_decay": 0.01, "warmup": 0.06, "dropout": 0.1, "text_variant": "original", "cache_dir": "/tmp/cache1", "deck_values": null, "target": "label", "label_csv": "out/phase4/commander_labels_first.csv", "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": null}}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  10%|▉         | 132/1376 [00:00<00:00, 1249.49it/s]Loading weights:  19%|█▊        | 257/1376 [00:00<00:00, 1132.58it/s]Loading weights:  28%|██▊       | 380/1376 [00:00<00:00, 1123.56it/s]Loading weights:  36%|███▌      | 493/1376 [00:00<00:00, 1004.66it/s]Loading weights:  43%|████▎     | 598/1376 [00:00<00:00, 1019.06it/s]Loading weights:  53%|█████▎    | 724/1376 [00:00<00:00, 1094.25it/s]Loading weights:  61%|██████    | 835/1376 [00:01<00:01, 344.04it/s] Loading weights:  81%|████████  | 1108/1376 [00:01<00:00, 624.23it/s]Loading weights:  94%|█████████▍| 1297/1376 [00:01<00:00, 806.61it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 789.98it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  17%|█▋        | 231/1376 [00:00<00:00, 2308.46it/s]Loading weights:  34%|███▎      | 462/1376 [00:00<00:00, 1916.85it/s]Loading weights:  48%|████▊     | 658/1376 [00:00<00:00, 1905.57it/s]Loading weights:  62%|██████▏   | 851/1376 [00:01<00:00, 574.94it/s] Loading weights:  94%|█████████▍| 1300/1376 [00:01<00:00, 1102.17it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1089.74it/s]
+cache google/embeddinggemma-2 k=12: batch 0
+cache google/embeddinggemma-2 k=12: batch 100
+cache google/embeddinggemma-2 k=12: batch 200
+cache google/embeddinggemma-2 k=12: batch 300
+cache google/embeddinggemma-2 k=12: batch 400
+cache google/embeddinggemma-2 k=12: batch 500
+{"fold": "V1", "epoch": 1, "nll": 0.4792, "bt": 0.6856, "sec": 92, "val_spearman": 0.2025, "val_ndcg": 0.4815, "val_mae": 5.8438, "val_nll": 20.5184}
+{"fold": "V1", "epoch": 2, "nll": 0.1362, "bt": 0.4526, "sec": 92, "val_spearman": 0.2136, "val_ndcg": 0.4189, "val_mae": 5.8357, "val_nll": 14.6507}
+{"fold": "V1", "epoch": 3, "nll": -0.028, "bt": 0.4128, "sec": 92, "val_spearman": 0.1522, "val_ndcg": 0.3979, "val_mae": 6.4062, "val_nll": 26.331}
+{"fold": "V1", "epoch": 4, "nll": -0.1751, "bt": 0.3641, "sec": 92, "val_spearman": 0.1701, "val_ndcg": 0.3933, "val_mae": 5.9569, "val_nll": 24.7008}
+{"fold": "V1", "epoch": 5, "nll": -0.3852, "bt": 0.3049, "sec": 93, "val_spearman": 0.1673, "val_ndcg": 0.3802, "val_mae": 6.164, "val_nll": 53.3503}
+{"fold": "V1", "epoch": 6, "nll": -0.6168, "bt": 0.2694, "sec": 94, "val_spearman": 0.1697, "val_ndcg": 0.3811, "val_mae": 5.9435, "val_nll": 66.9216}
+{"fold": "V1", "epoch": 7, "nll": -0.8606, "bt": 0.2413, "sec": 91, "val_spearman": 0.1398, "val_ndcg": 0.372, "val_mae": 6.0671, "val_nll": 139.3704}
+{"fold": "V1", "epoch": 8, "nll": -1.0808, "bt": 0.2261, "sec": 92, "val_spearman": 0.1672, "val_ndcg": 0.3775, "val_mae": 6.1123, "val_nll": 233.6197}
+{"fold": "V1", "epoch": 9, "nll": -1.2775, "bt": 0.2197, "sec": 92, "val_spearman": 0.1652, "val_ndcg": 0.3773, "val_mae": 6.1332, "val_nll": 527.8011}
+{"fold": "V1", "epoch": 10, "nll": -1.4681, "bt": 0.2131, "sec": 92, "val_spearman": 0.1611, "val_ndcg": 0.3739, "val_mae": 6.1235, "val_nll": 844.2473}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  19%|█▉        | 259/1376 [00:00<00:00, 2497.17it/s]Loading weights:  37%|███▋      | 509/1376 [00:00<00:00, 2419.02it/s]Loading weights:  55%|█████▍    | 751/1376 [00:00<00:00, 2135.92it/s]Loading weights:  70%|███████   | 968/1376 [00:00<00:00, 928.21it/s] Loading weights:  94%|█████████▎| 1287/1376 [00:00<00:00, 1324.00it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1360.13it/s]
+{"fold": "V2", "epoch": 1, "nll": 0.4678, "bt": 0.6556, "sec": 112, "val_spearman": 0.2614, "val_ndcg": 0.4512, "val_mae": 6.1625, "val_nll": 17.2979}
+{"fold": "V2", "epoch": 2, "nll": 0.0856, "bt": 0.4508, "sec": 111, "val_spearman": 0.2258, "val_ndcg": 0.4545, "val_mae": 5.9605, "val_nll": 15.5848}
+{"fold": "V2", "epoch": 3, "nll": -0.0289, "bt": 0.4026, "sec": 112, "val_spearman": 0.2276, "val_ndcg": 0.4502, "val_mae": 6.2598, "val_nll": 39.7961}
+{"fold": "V2", "epoch": 4, "nll": -0.2284, "bt": 0.3528, "sec": 112, "val_spearman": 0.2163, "val_ndcg": 0.4454, "val_mae": 6.1116, "val_nll": 33.435}
+{"fold": "V2", "epoch": 5, "nll": -0.4691, "bt": 0.295, "sec": 112, "val_spearman": 0.2363, "val_ndcg": 0.4638, "val_mae": 6.2186, "val_nll": 60.099}
+{"fold": "V2", "epoch": 6, "nll": -0.6902, "bt": 0.259, "sec": 112, "val_spearman": 0.2388, "val_ndcg": 0.4695, "val_mae": 5.6492, "val_nll": 73.7751}
+{"fold": "V2", "epoch": 7, "nll": -0.8477, "bt": 0.2363, "sec": 112, "val_spearman": 0.2298, "val_ndcg": 0.476, "val_mae": 6.0413, "val_nll": 161.1603}
+{"fold": "V2", "epoch": 8, "nll": -1.1133, "bt": 0.2237, "sec": 111, "val_spearman": 0.2382, "val_ndcg": 0.47, "val_mae": 5.934, "val_nll": 234.268}
+{"fold": "V2", "epoch": 9, "nll": -1.3168, "bt": 0.2154, "sec": 113, "val_spearman": 0.2314, "val_ndcg": 0.4746, "val_mae": 6.0797, "val_nll": 642.0577}
+{"fold": "V2", "epoch": 10, "nll": -1.5186, "bt": 0.2088, "sec": 112, "val_spearman": 0.2413, "val_ndcg": 0.4753, "val_mae": 6.0876, "val_nll": 1038.9988}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  22%|██▏       | 306/1376 [00:00<00:00, 3058.63it/s]Loading weights:  44%|████▍     | 612/1376 [00:00<00:00, 2886.74it/s]Loading weights:  66%|██████▌   | 902/1376 [00:00<00:00, 1187.62it/s]Loading weights:  93%|█████████▎| 1286/1376 [00:00<00:00, 1732.06it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1629.94it/s]
+{"fold": "V3", "epoch": 1, "nll": 0.4621, "bt": 0.6442, "sec": 131, "val_spearman": 0.2137, "val_ndcg": 0.3885, "val_mae": 6.4566, "val_nll": 16.5419}
+{"fold": "V3", "epoch": 2, "nll": 0.1186, "bt": 0.4441, "sec": 129, "val_spearman": 0.2204, "val_ndcg": 0.4414, "val_mae": 5.9176, "val_nll": 18.6883}
+{"fold": "V3", "epoch": 3, "nll": -0.0338, "bt": 0.4033, "sec": 130, "val_spearman": 0.185, "val_ndcg": 0.3918, "val_mae": 5.9081, "val_nll": 27.9487}
+{"fold": "V3", "epoch": 4, "nll": -0.1822, "bt": 0.3613, "sec": 130, "val_spearman": 0.1935, "val_ndcg": 0.3877, "val_mae": 5.7555, "val_nll": 21.6452}
+{"fold": "V3", "epoch": 5, "nll": -0.3559, "bt": 0.3093, "sec": 131, "val_spearman": 0.168, "val_ndcg": 0.3853, "val_mae": 6.3181, "val_nll": 51.8562}
+{"fold": "V3", "epoch": 6, "nll": -0.62, "bt": 0.2677, "sec": 130, "val_spearman": 0.1885, "val_ndcg": 0.3901, "val_mae": 6.2444, "val_nll": 73.2902}
+{"fold": "V3", "epoch": 7, "nll": -0.8435, "bt": 0.2423, "sec": 130, "val_spearman": 0.1842, "val_ndcg": 0.3774, "val_mae": 6.175, "val_nll": 151.4067}
+{"fold": "V3", "epoch": 8, "nll": -1.0636, "bt": 0.2267, "sec": 130, "val_spearman": 0.2006, "val_ndcg": 0.3961, "val_mae": 6.0386, "val_nll": 302.2741}
+{"fold": "V3", "epoch": 9, "nll": -1.2834, "bt": 0.2148, "sec": 131, "val_spearman": 0.1825, "val_ndcg": 0.3816, "val_mae": 6.1727, "val_nll": 581.8797}
+{"fold": "V3", "epoch": 10, "nll": -1.5067, "bt": 0.2081, "sec": 131, "val_spearman": 0.1852, "val_ndcg": 0.3952, "val_mae": 6.0543, "val_nll": 957.5937}
+{"done": true, "val_folds": ["V1", "V2", "V3"], "epochs": 10}
