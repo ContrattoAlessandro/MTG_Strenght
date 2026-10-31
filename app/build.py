@@ -182,7 +182,8 @@ def main() -> None:
     # Test sets: the Phase 2 ensemble (trained on earlier sets only) where available.
     df["model_pred"], df["model_sd"], df["model_source"] = oof, pred_sd, "cv"
     p2 = pd.read_csv(os.path.join(OUT, "phase2", "test_predictions.csv"))
-    p2["ens"] = 0.5 * p2["ft_embeddinggemma2_k4"] + 0.5 * p2["gbt_tfidf"]
+    ft_col = "g_final" if "g_final" in p2 else "ft_embeddinggemma2_k4"   # step G final model
+    p2["ens"] = 0.5 * p2[ft_col] + 0.5 * p2["gbt_tfidf"]
     ens = p2.dropna(subset=["ens"]).set_index(["set", "oracle_id"])["ens"]
     key = pd.MultiIndex.from_frame(df[["set", "oracle_id"]])
     has = key.isin(ens.index)
@@ -363,8 +364,9 @@ def main() -> None:
                   "has_synergy": any(k.startswith(s + "|") for k in syn)} for s in sets],
         "typical_sets": sets[-N_TYPICAL:],
         "pp_per_logit": engine.PP_PER_LOGIT,
-        "metrics": {"ensemble": metric("ens_embeddinggemma2_k4+gbt_tfidf"),
-                    "gbt_tfidf": metric("gbt_tfidf"), "ft_gemma2": metric("ft_embeddinggemma2_k4"),
+        "metrics": {"ensemble": metric("ens_g_final+gbt_tfidf") or metric("ens_embeddinggemma2_k4+gbt_tfidf"),
+                    "gbt_tfidf": metric("gbt_tfidf"),
+                    "ft_gemma2": metric("g_final") or metric("ft_embeddinggemma2_k4"),
                     "draftsim": metric("human_draftsim_prerelease"), "ata_week1": metric("human_ata_week1"),
                     "rarity_only": metric("rarity_only")},
         "sd_scale": float(bundle["sd_scale"]),

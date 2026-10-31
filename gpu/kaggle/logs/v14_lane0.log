@@ -1,0 +1,223 @@
+$ python scripts/phase2.py train --encoder google/embeddinggemma-2 --device cuda --cache-dir /tmp/cache0 --top-k 12 --max-epochs 10 --skip-val --epochs 10 --seeds 0 1 2 3 4 --name g_final --save-dir models/ft_card
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "g_final", "no_struct": false, "seeds": [0, 1, 2, 3, 4], "max_epochs": 10, "epochs": 10, "skip_val": true, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": 12, "val_fold": [], "llrd": 1.0, "amp": "none", "peft": "none", "lora_r": 16, "enc_fp16": false, "grad_ckpt": false, "optim": "adamw", "weight_decay": 0.01, "warmup": 0.06, "dropout": 0.1, "text_variant": "original", "cache_dir": "/tmp/cache0", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": "models/ft_card"}}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  10%|█         | 139/1376 [00:00<00:00, 1309.54it/s]Loading weights:  20%|█▉        | 270/1376 [00:00<00:00, 1128.68it/s]Loading weights:  28%|██▊       | 385/1376 [00:00<00:00, 1025.73it/s]Loading weights:  36%|███▌      | 489/1376 [00:00<00:00, 1023.00it/s]Loading weights:  43%|████▎     | 592/1376 [00:00<00:00, 971.43it/s] Loading weights:  50%|█████     | 690/1376 [00:00<00:00, 915.45it/s]Loading weights:  57%|█████▋    | 783/1376 [00:01<00:01, 298.91it/s]Loading weights:  76%|███████▌  | 1045/1376 [00:01<00:00, 576.76it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 958.23it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 799.10it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  12%|█▏        | 159/1376 [00:00<00:00, 1500.66it/s]Loading weights:  23%|██▎       | 310/1376 [00:00<00:00, 1474.19it/s]Loading weights:  33%|███▎      | 458/1376 [00:00<00:00, 1453.15it/s]Loading weights:  44%|████▍     | 604/1376 [00:00<00:00, 1295.32it/s]Loading weights:  55%|█████▍    | 754/1376 [00:01<00:01, 411.07it/s] Loading weights:  94%|█████████▍| 1295/1376 [00:01<00:00, 1028.52it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 942.18it/s] 
+cache google/embeddinggemma-2 k=12: batch 0
+cache google/embeddinggemma-2 k=12: batch 100
+cache google/embeddinggemma-2 k=12: batch 200
+cache google/embeddinggemma-2 k=12: batch 300
+cache google/embeddinggemma-2 k=12: batch 400
+cache google/embeddinggemma-2 k=12: batch 500
+{"epoch": 1, "nll": 0.454, "bt": 0.7274, "sec": 146}
+{"epoch": 2, "nll": 0.1139, "bt": 0.5341, "sec": 147}
+{"epoch": 3, "nll": -0.0025, "bt": 0.4974, "sec": 145}
+{"epoch": 4, "nll": -0.1348, "bt": 0.4462, "sec": 146}
+{"epoch": 5, "nll": -0.3255, "bt": 0.3831, "sec": 145}
+{"epoch": 6, "nll": -0.5762, "bt": 0.3286, "sec": 146}
+{"epoch": 7, "nll": -0.795, "bt": 0.2939, "sec": 149}
+{"epoch": 8, "nll": -1.0177, "bt": 0.277, "sec": 146}
+{"epoch": 9, "nll": -1.1885, "bt": 0.2638, "sec": 146}
+{"epoch": 10, "nll": -1.3975, "bt": 0.2553, "sec": 147}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  17%|█▋        | 240/1376 [00:00<00:00, 2191.11it/s]Loading weights:  33%|███▎      | 460/1376 [00:00<00:00, 1632.43it/s]Loading weights:  46%|████▌     | 631/1376 [00:00<00:00, 1604.96it/s]Loading weights:  58%|█████▊    | 796/1376 [00:00<00:00, 696.52it/s] Loading weights:  82%|████████▏ | 1123/1376 [00:00<00:00, 1135.69it/s]Loading weights:  97%|█████████▋| 1338/1376 [00:01<00:00, 1301.67it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1210.09it/s]
+{"epoch": 1, "nll": 2.2527, "bt": 0.778, "sec": 145}
+{"epoch": 2, "nll": 0.1157, "bt": 0.54, "sec": 145}
+{"epoch": 3, "nll": 0.0011, "bt": 0.4952, "sec": 148}
+{"epoch": 4, "nll": -0.1333, "bt": 0.447, "sec": 146}
+{"epoch": 5, "nll": -0.3262, "bt": 0.3843, "sec": 146}
+{"epoch": 6, "nll": -0.5658, "bt": 0.3289, "sec": 147}
+{"epoch": 7, "nll": -0.8036, "bt": 0.296, "sec": 146}
+{"epoch": 8, "nll": -0.9973, "bt": 0.2769, "sec": 146}
+{"epoch": 9, "nll": -1.1901, "bt": 0.2639, "sec": 146}
+{"epoch": 10, "nll": -1.3878, "bt": 0.2557, "sec": 148}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  18%|█▊        | 251/1376 [00:00<00:00, 2287.84it/s]Loading weights:  38%|███▊      | 524/1376 [00:00<00:00, 2537.26it/s]Loading weights:  57%|█████▋    | 779/1376 [00:00<00:00, 1035.73it/s]Loading weights:  89%|████████▊ | 1218/1376 [00:00<00:00, 1706.14it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1572.78it/s]
+{"epoch": 1, "nll": 0.4421, "bt": 0.7441, "sec": 145}
+{"epoch": 2, "nll": 0.1103, "bt": 0.5386, "sec": 145}
+{"epoch": 3, "nll": -0.0062, "bt": 0.4983, "sec": 147}
+{"epoch": 4, "nll": -0.1195, "bt": 0.4444, "sec": 145}
+{"epoch": 5, "nll": -0.3307, "bt": 0.3841, "sec": 146}
+{"epoch": 6, "nll": -0.5463, "bt": 0.3348, "sec": 145}
+{"epoch": 7, "nll": -0.7694, "bt": 0.2983, "sec": 146}
+{"epoch": 8, "nll": -1.0037, "bt": 0.2771, "sec": 147}
+{"epoch": 9, "nll": -1.1955, "bt": 0.2655, "sec": 148}
+{"epoch": 10, "nll": -1.3556, "bt": 0.2577, "sec": 146}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  21%|██        | 284/1376 [00:00<00:00, 2688.13it/s]Loading weights:  40%|████      | 553/1376 [00:00<00:00, 2237.75it/s]Loading weights:  57%|█████▋    | 781/1376 [00:00<00:00, 915.84it/s] Loading weights:  92%|█████████▏| 1260/1376 [00:00<00:00, 1649.81it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1461.55it/s]
+{"epoch": 1, "nll": 1.7362, "bt": 0.7511, "sec": 145}
+{"epoch": 2, "nll": 0.098, "bt": 0.5336, "sec": 146}
+{"epoch": 3, "nll": -0.0241, "bt": 0.4916, "sec": 146}
+{"epoch": 4, "nll": -0.1592, "bt": 0.438, "sec": 148}
+{"epoch": 5, "nll": -0.3521, "bt": 0.3762, "sec": 148}
+{"epoch": 6, "nll": -0.5866, "bt": 0.329, "sec": 147}
+{"epoch": 7, "nll": -0.8139, "bt": 0.294, "sec": 146}
+{"epoch": 8, "nll": -1.0046, "bt": 0.2752, "sec": 147}
+{"epoch": 9, "nll": -1.1907, "bt": 0.2647, "sec": 146}
+{"epoch": 10, "nll": -1.3773, "bt": 0.2561, "sec": 147}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  19%|█▊        | 256/1376 [00:00<00:00, 2559.26it/s]Loading weights:  42%|████▏     | 582/1376 [00:00<00:00, 2971.01it/s]Loading weights:  64%|██████▍   | 880/1376 [00:00<00:00, 1168.10it/s]Loading weights:  95%|█████████▌| 1309/1376 [00:00<00:00, 1797.01it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1676.05it/s]
+{"epoch": 1, "nll": 0.5837, "bt": 0.7564, "sec": 144}
+{"epoch": 2, "nll": 0.1061, "bt": 0.5361, "sec": 145}
+{"epoch": 3, "nll": 0.0001, "bt": 0.4988, "sec": 147}
+{"epoch": 4, "nll": -0.1435, "bt": 0.4463, "sec": 145}
+{"epoch": 5, "nll": -0.3292, "bt": 0.3814, "sec": 146}
+{"epoch": 6, "nll": -0.584, "bt": 0.3276, "sec": 147}
+{"epoch": 7, "nll": -0.8072, "bt": 0.2971, "sec": 146}
+{"epoch": 8, "nll": -1.018, "bt": 0.2746, "sec": 148}
+{"epoch": 9, "nll": -1.2273, "bt": 0.2633, "sec": 147}
+{"epoch": 10, "nll": -1.4001, "bt": 0.2553, "sec": 146}
+{"done": true, "epochs": 10}
+$ pip install -q -r app/requirements.txt
+$ python app/build.py
+[04:17:36] loading labels and Scryfall data
+[04:17:45] 8281 labelled (set, card) rows in 31 sets
+[04:17:49] Limited model: cross-validated estimates
+[04:18:28] Limited model: final fit on all sets
+[04:18:35] SD scale 0.940; 80% interval coverage 0.805
+[04:18:35] 1748 test-set cards use the pre-release ensemble
+[04:18:35] Commander model
+[04:18:40] Commander ridge alpha 1, 8046 cards with EDHREC data
+[04:18:40] Constructed model
+[04:18:41] 318 staples among 8128 labelled cards
+[04:18:41] scoring every Scryfall card
+[04:18:57] 33483 Scryfall cards scored
+[04:18:57] synergy pairs
+[04:18:58] done: bundle.joblib 3.2 MB, cards.parquet 12.6 MB, meta.json 0.0 MB, set_cards.parquet 2.3 MB, synergy.json 0.3 MB
+$ python app/precompute_ft.py --device cuda --ft-dir models/ft_card/g_final
+[04:19:03] 5 seeds of g_final on cuda; 0 cards done, 33483 to go
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  13%|█▎        | 181/1376 [00:00<00:00, 1761.02it/s]Loading weights:  26%|██▌       | 358/1376 [00:00<00:00, 1743.90it/s]Loading weights:  39%|███▊      | 533/1376 [00:00<00:00, 1583.63it/s]Loading weights:  50%|█████     | 693/1376 [00:00<00:00, 1533.35it/s]Loading weights:  62%|██████▏   | 848/1376 [00:00<00:00, 644.51it/s] Loading weights:  88%|████████▊ | 1209/1376 [00:01<00:00, 1127.96it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1099.87it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  18%|█▊        | 241/1376 [00:00<00:00, 2288.63it/s]Loading weights:  35%|███▍      | 475/1376 [00:00<00:00, 2313.57it/s]Loading weights:  51%|█████▏    | 707/1376 [00:00<00:00, 2195.53it/s]Loading weights:  67%|██████▋   | 928/1376 [00:00<00:00, 966.21it/s] Loading weights:  96%|█████████▌| 1322/1376 [00:00<00:00, 1518.60it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1469.36it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  15%|█▍        | 206/1376 [00:00<00:00, 2002.14it/s]Loading weights:  33%|███▎      | 457/1376 [00:00<00:00, 2295.87it/s]Loading weights:  50%|████▉     | 687/1376 [00:00<00:00, 2162.24it/s]Loading weights:  66%|██████▌   | 905/1376 [00:00<00:00, 797.18it/s] Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1437.70it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1411.16it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  19%|█▊        | 256/1376 [00:00<00:00, 2415.73it/s]Loading weights:  36%|███▌      | 498/1376 [00:00<00:00, 2354.15it/s]Loading weights:  53%|█████▎    | 734/1376 [00:00<00:00, 2003.41it/s]Loading weights:  68%|██████▊   | 940/1376 [00:00<00:00, 890.41it/s] Loading weights:  97%|█████████▋| 1339/1376 [00:00<00:00, 1436.25it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1413.01it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  18%|█▊        | 251/1376 [00:00<00:00, 2443.28it/s]Loading weights:  36%|███▌      | 496/1376 [00:00<00:00, 2374.10it/s]Loading weights:  53%|█████▎    | 734/1376 [00:00<00:00, 2291.02it/s]Loading weights:  70%|███████   | 964/1376 [00:00<00:00, 977.32it/s] Loading weights:  99%|█████████▉| 1363/1376 [00:00<00:00, 1513.81it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1521.71it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  19%|█▊        | 256/1376 [00:00<00:00, 2538.60it/s]Loading weights:  37%|███▋      | 510/1376 [00:00<00:00, 2458.47it/s]Loading weights:  55%|█████▍    | 756/1376 [00:00<00:00, 956.56it/s] Loading weights:  94%|█████████▍| 1300/1376 [00:00<00:00, 1845.07it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1674.75it/s]
+/tmp/repo/app/precompute_ft.py:84: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  done = pd.concat([done, new], ignore_index=True)
+[04:20:13] 1000 / 33483 cards (48.2/s, ~11 min left)
+[04:20:34] 2000 / 33483 cards (47.2/s, ~11 min left)
+[04:20:56] 3000 / 33483 cards (47.1/s, ~11 min left)
+[04:21:18] 4000 / 33483 cards (46.6/s, ~11 min left)
+[04:21:40] 5000 / 33483 cards (46.4/s, ~10 min left)
+[04:22:02] 6000 / 33483 cards (46.2/s, ~10 min left)
+[04:22:24] 7000 / 33483 cards (46.0/s, ~10 min left)
+[04:22:47] 8000 / 33483 cards (45.9/s, ~9 min left)
+[04:23:08] 9000 / 33483 cards (45.8/s, ~9 min left)
+[04:23:31] 10000 / 33483 cards (45.6/s, ~9 min left)
+[04:23:54] 11000 / 33483 cards (45.5/s, ~8 min left)
+[04:24:17] 12000 / 33483 cards (45.3/s, ~8 min left)
+[04:24:43] 13000 / 33483 cards (44.7/s, ~8 min left)
+[04:25:06] 14000 / 33483 cards (44.6/s, ~7 min left)
+[04:25:28] 15000 / 33483 cards (44.7/s, ~7 min left)
+[04:25:50] 16000 / 33483 cards (44.7/s, ~7 min left)
+[04:26:13] 17000 / 33483 cards (44.6/s, ~6 min left)
+[04:26:36] 18000 / 33483 cards (44.6/s, ~6 min left)
+[04:26:58] 19000 / 33483 cards (44.6/s, ~5 min left)
+[04:27:21] 20000 / 33483 cards (44.5/s, ~5 min left)
+[04:27:45] 21000 / 33483 cards (44.4/s, ~5 min left)
+[04:28:07] 22000 / 33483 cards (44.4/s, ~4 min left)
+[04:28:30] 23000 / 33483 cards (44.4/s, ~4 min left)
+[04:28:52] 24000 / 33483 cards (44.4/s, ~4 min left)
+[04:29:15] 25000 / 33483 cards (44.4/s, ~3 min left)
+[04:29:37] 26000 / 33483 cards (44.4/s, ~3 min left)
+[04:30:00] 27000 / 33483 cards (44.4/s, ~2 min left)
+[04:30:22] 28000 / 33483 cards (44.4/s, ~2 min left)
+[04:30:45] 29000 / 33483 cards (44.4/s, ~2 min left)
+[04:31:09] 30000 / 33483 cards (44.3/s, ~1 min left)
+[04:31:32] 31000 / 33483 cards (44.3/s, ~1 min left)
+[04:31:54] 32000 / 33483 cards (44.3/s, ~1 min left)
+[04:32:17] 33000 / 33483 cards (44.3/s, ~0 min left)
+[04:32:29] 33483 / 33483 cards (44.3/s, ~0 min left)
+[04:32:29] done: /tmp/repo/out/app/ft_scores.parquet (33483 cards). Run `python app/build.py` to use them.
+$ python scripts/behaviour_probes.py --ft-dir models/ft_card/g_final --device cuda
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  11%|█▏        | 157/1376 [00:00<00:00, 1488.98it/s]Loading weights:  23%|██▎       | 313/1376 [00:00<00:00, 1506.08it/s]Loading weights:  35%|███▌      | 488/1376 [00:00<00:00, 1581.18it/s]Loading weights:  47%|████▋     | 647/1376 [00:00<00:00, 1432.55it/s]Loading weights:  58%|█████▊    | 792/1376 [00:00<00:00, 629.67it/s] Loading weights:  93%|█████████▎| 1285/1376 [00:01<00:00, 1362.59it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1196.67it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  15%|█▍        | 201/1376 [00:00<00:00, 1875.55it/s]Loading weights:  28%|██▊       | 392/1376 [00:00<00:00, 1885.74it/s]Loading weights:  45%|████▍     | 618/1376 [00:00<00:00, 2037.61it/s]Loading weights:  60%|█████▉    | 822/1376 [00:00<00:00, 811.13it/s] Loading weights:  92%|█████████▏| 1270/1376 [00:00<00:00, 1467.45it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1311.14it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  18%|█▊        | 246/1376 [00:00<00:00, 2351.11it/s]Loading weights:  35%|███▌      | 488/1376 [00:00<00:00, 2308.72it/s]Loading weights:  53%|█████▎    | 728/1376 [00:00<00:00, 2346.52it/s]Loading weights:  70%|██████▉   | 963/1376 [00:00<00:00, 1085.53it/s]Loading weights:  93%|█████████▎| 1285/1376 [00:00<00:00, 1510.50it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1481.79it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  18%|█▊        | 251/1376 [00:00<00:00, 2497.51it/s]Loading weights:  37%|███▋      | 504/1376 [00:00<00:00, 2494.06it/s]Loading weights:  55%|█████▍    | 754/1376 [00:00<00:00, 1029.21it/s]Loading weights:  93%|█████████▎| 1284/1376 [00:00<00:00, 1929.22it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1686.24it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  19%|█▉        | 263/1376 [00:00<00:00, 2591.23it/s]Loading weights:  38%|███▊      | 523/1376 [00:00<00:00, 2447.10it/s]Loading weights:  56%|█████▌    | 769/1376 [00:00<00:00, 922.99it/s] Loading weights:  92%|█████████▏| 1267/1376 [00:00<00:00, 1676.31it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1466.64it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  20%|██        | 282/1376 [00:00<00:00, 2809.03it/s]Loading weights:  41%|████      | 566/1376 [00:00<00:00, 2744.37it/s]Loading weights:  61%|██████    | 841/1376 [00:00<00:00, 973.15it/s] Loading weights:  99%|█████████▉| 1367/1376 [00:00<00:00, 1766.57it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1627.92it/s]
+power+1 {'n': 993, 'ft_violation_rate': 0.032225579053373615, 'ft_mean_delta': 0.015099106722277817, 'gbt_violation_rate': 0.004028197381671702, 'gbt_mean_delta': 0.004176680635088974}
+toughness+1 {'n': 1002, 'ft_violation_rate': 0.046906187624750496, 'ft_mean_delta': 0.008098741259403571, 'gbt_violation_rate': 0.005988023952095809, 'gbt_mean_delta': 0.0029309216441106}
+generic-1 {'n': 1327, 'ft_violation_rate': 0.16654107008289373, 'ft_mean_delta': 0.012325345098231192, 'gbt_violation_rate': 0.10851544837980406, 'gbt_mean_delta': -0.00015477427205813168}
+reprints {'n_rows': 249, 'n_cards': 96, 'corr_ft': 0.33547851341976914, 'corr_gbt': 0.2835483268236161, 'sd_label_dev': 0.031435801667357516, 'sd_ft_dev': 0.006536325095453915}
+new mechanics {'n_new': 385, 'keywords': ['Airbend', 'Avian Telepathy', 'Blight', 'Boomerang', 'Brontosaurus', 'Converge', 'Cosmic Awareness', 'Cybernetic Senses', 'Density Control', 'Designed Only for Killing', 'Disappear', 'Earthbend', 'Embiggen Fist', 'Empower Jace', 'Enrage', 'Explosive', 'Firebending', 'Halflingcycling', 'Heal', 'I LOVE Squirrels!', 'Increment', 'Infusion', 'Intangibility', 'Legal Justice', 'Mental Organism', 'Net', 'No One Dies!', 'Opus', 'Paradigm', 'Photographic Reflexes', 'Power-up', 'Prepared', 'Radar Sense', 'Recruit', 'Repartee', 'Seismic Takedown', 'Sneak', 'Solar Beam', 'Sonic Attack', 'Storied', 'Street Justice', 'Teamwork', 'Technopathy', 'Trick Arrows', 'Tyrannosaurus Rex', 'Unbreakable Skin', 'Vivid', "Wasp's Sting", 'Waterbend', 'Wither'], 'ft_sd_new': 0.01239324658286649, 'ft_sd_old': 0.011975082086695746, 'abs_err_new': 0.08007922558309923, 'abs_err_old': 0.07603335505555026, 'spearman_sd_abs_err': 0.23355352059465445}
+wrote /tmp/repo/scripts/../out/probes/
+$ python scripts/phase2.py train --encoder google/embeddinggemma-2 --device cuda --cache-dir /tmp/cache0 --top-k 12 --max-epochs 10 --target label --label-csv out/phase4/commander_labels_first.csv --skip-val --epochs 10 --seeds 0 1 2 --name g_commander --save-dir models/ft_cmd
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "g_commander", "no_struct": false, "seeds": [0, 1, 2], "max_epochs": 10, "epochs": 10, "skip_val": true, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": 12, "val_fold": [], "llrd": 1.0, "amp": "none", "peft": "none", "lora_r": 16, "enc_fp16": false, "grad_ckpt": false, "optim": "adamw", "weight_decay": 0.01, "warmup": 0.06, "dropout": 0.1, "text_variant": "original", "cache_dir": "/tmp/cache0", "deck_values": null, "target": "label", "label_csv": "out/phase4/commander_labels_first.csv", "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": "models/ft_cmd"}}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  14%|█▎        | 189/1376 [00:00<00:00, 1669.54it/s]Loading weights:  26%|██▌       | 356/1376 [00:00<00:00, 1644.85it/s]Loading weights:  38%|███▊      | 521/1376 [00:00<00:00, 1555.76it/s]Loading weights:  49%|████▉     | 680/1376 [00:00<00:00, 1552.43it/s]Loading weights:  61%|██████    | 836/1376 [00:00<00:00, 693.25it/s] Loading weights:  93%|█████████▎| 1286/1376 [00:00<00:00, 1369.97it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1218.63it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+{"epoch": 1, "nll": 0.4264, "bt": 0.6491, "sec": 139}
+{"epoch": 2, "nll": 0.1258, "bt": 0.4474, "sec": 141}
+{"epoch": 3, "nll": -0.0426, "bt": 0.4004, "sec": 141}
+{"epoch": 4, "nll": -0.2197, "bt": 0.3494, "sec": 141}
+{"epoch": 5, "nll": -0.411, "bt": 0.2978, "sec": 141}
+{"epoch": 6, "nll": -0.6559, "bt": 0.2606, "sec": 141}
+{"epoch": 7, "nll": -0.9122, "bt": 0.2394, "sec": 141}
+{"epoch": 8, "nll": -1.0953, "bt": 0.2253, "sec": 143}
+{"epoch": 9, "nll": -1.288, "bt": 0.2158, "sec": 141}
+{"epoch": 10, "nll": -1.5008, "bt": 0.2101, "sec": 140}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  14%|█▍        | 194/1376 [00:00<00:00, 1920.08it/s]Loading weights:  31%|███       | 421/1376 [00:00<00:00, 1991.92it/s]Loading weights:  45%|████▌     | 620/1376 [00:00<00:00, 1963.60it/s]Loading weights:  59%|█████▉    | 817/1376 [00:00<00:00, 853.70it/s] Loading weights:  88%|████████▊ | 1217/1376 [00:00<00:00, 1444.97it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1306.49it/s]
+{"epoch": 1, "nll": 1.9616, "bt": 0.7127, "sec": 139}
+{"epoch": 2, "nll": 0.1204, "bt": 0.4526, "sec": 141}
+{"epoch": 3, "nll": -0.0285, "bt": 0.4051, "sec": 141}
+{"epoch": 4, "nll": -0.1629, "bt": 0.3587, "sec": 141}
+{"epoch": 5, "nll": -0.3806, "bt": 0.3118, "sec": 141}
+{"epoch": 6, "nll": -0.6282, "bt": 0.2691, "sec": 141}
+{"epoch": 7, "nll": -0.8374, "bt": 0.2424, "sec": 141}
+{"epoch": 8, "nll": -1.0841, "bt": 0.2262, "sec": 141}
+{"epoch": 9, "nll": -1.2905, "bt": 0.2182, "sec": 142}
+{"epoch": 10, "nll": -1.5095, "bt": 0.2114, "sec": 141}
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  27%|██▋       | 374/1376 [00:00<00:00, 3674.38it/s]Loading weights:  54%|█████▍    | 742/1376 [00:00<00:00, 2602.67it/s]Loading weights:  74%|███████▍  | 1021/1376 [00:00<00:00, 1124.43it/s]Loading weights:  97%|█████████▋| 1339/1376 [00:00<00:00, 1489.45it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1542.55it/s]
+{"epoch": 1, "nll": 0.4304, "bt": 0.6571, "sec": 140}
+{"epoch": 2, "nll": 0.1226, "bt": 0.4474, "sec": 142}
+{"epoch": 3, "nll": -0.0233, "bt": 0.4102, "sec": 143}
+{"epoch": 4, "nll": -0.1872, "bt": 0.3589, "sec": 143}
+{"epoch": 5, "nll": -0.3576, "bt": 0.306, "sec": 143}
+{"epoch": 6, "nll": -0.631, "bt": 0.268, "sec": 143}
+{"epoch": 7, "nll": -0.828, "bt": 0.2444, "sec": 142}
+{"epoch": 8, "nll": -1.0728, "bt": 0.229, "sec": 142}
+{"epoch": 9, "nll": -1.2898, "bt": 0.2153, "sec": 142}
+{"epoch": 10, "nll": -1.4934, "bt": 0.2094, "sec": 142}
+{"done": true, "epochs": 10}
+$ python app/precompute_ft.py --device cuda --ft-dir models/ft_cmd/g_commander --out out/app/ft_cmd_scores.parquet
+[05:48:43] 3 seeds of g_commander on cuda; 0 cards done, 33483 to go
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  14%|█▎        | 189/1376 [00:00<00:00, 1615.68it/s]Loading weights:  27%|██▋       | 375/1376 [00:00<00:00, 1738.06it/s]Loading weights:  40%|███▉      | 550/1376 [00:00<00:00, 1738.68it/s]Loading weights:  53%|█████▎    | 725/1376 [00:00<00:00, 1644.48it/s]Loading weights:  65%|██████▍   | 891/1376 [00:00<00:00, 855.86it/s] Loading weights:  91%|█████████ | 1250/1376 [00:00<00:00, 1407.70it/s]Loading weights: 100%|██████████| 1376/1376 [00:01<00:00, 1317.02it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  20%|██        | 278/1376 [00:00<00:00, 2738.56it/s]Loading weights:  40%|████      | 552/1376 [00:00<00:00, 2506.51it/s]Loading weights:  58%|█████▊    | 804/1376 [00:00<00:00, 1096.68it/s]Loading weights:  88%|████████▊ | 1216/1376 [00:00<00:00, 1724.81it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1543.91it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  18%|█▊        | 250/1376 [00:00<00:00, 2497.79it/s]Loading weights:  36%|███▋      | 500/1376 [00:00<00:00, 2210.98it/s]Loading weights:  53%|█████▎    | 736/1376 [00:00<00:00, 2272.64it/s]Loading weights:  70%|███████   | 965/1376 [00:00<00:00, 1205.42it/s]Loading weights:  92%|█████████▏| 1272/1376 [00:00<00:00, 1611.88it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1577.54it/s]
+Loading weights:   0%|          | 0/1376 [00:00<?, ?it/s]Loading weights:  18%|█▊        | 251/1376 [00:00<00:00, 2266.01it/s]Loading weights:  37%|███▋      | 511/1376 [00:00<00:00, 2448.26it/s]Loading weights:  55%|█████▌    | 757/1376 [00:00<00:00, 1100.87it/s]Loading weights:  86%|████████▌ | 1185/1376 [00:00<00:00, 1806.67it/s]Loading weights: 100%|██████████| 1376/1376 [00:00<00:00, 1539.44it/s]
+/tmp/repo/app/precompute_ft.py:84: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  done = pd.concat([done, new], ignore_index=True)
+[05:49:29] 1000 / 33483 cards (67.7/s, ~8 min left)
+[05:49:45] 2000 / 33483 cards (66.5/s, ~8 min left)
+[05:50:00] 3000 / 33483 cards (66.3/s, ~8 min left)
+[05:50:15] 4000 / 33483 cards (65.8/s, ~7 min left)
+[05:50:30] 5000 / 33483 cards (66.0/s, ~7 min left)
+[05:50:45] 6000 / 33483 cards (66.0/s, ~7 min left)
+[05:51:00] 7000 / 33483 cards (66.2/s, ~7 min left)
+[05:51:15] 8000 / 33483 cards (66.2/s, ~6 min left)
+[05:51:30] 9000 / 33483 cards (66.4/s, ~6 min left)
+[05:51:45] 10000 / 33483 cards (66.3/s, ~6 min left)
+[05:52:00] 11000 / 33483 cards (66.3/s, ~6 min left)
+[05:52:16] 12000 / 33483 cards (66.2/s, ~5 min left)
+[05:52:31] 13000 / 33483 cards (66.3/s, ~5 min left)
+[05:52:46] 14000 / 33483 cards (66.2/s, ~5 min left)
+[05:53:01] 15000 / 33483 cards (66.3/s, ~5 min left)
+[05:53:15] 16000 / 33483 cards (66.4/s, ~4 min left)
+[05:53:30] 17000 / 33483 cards (66.4/s, ~4 min left)
+[05:53:45] 18000 / 33483 cards (66.4/s, ~4 min left)
+[05:54:01] 19000 / 33483 cards (66.4/s, ~4 min left)
+[05:54:16] 20000 / 33483 cards (66.4/s, ~3 min left)
+[05:54:31] 21000 / 33483 cards (66.3/s, ~3 min left)
+[05:54:46] 22000 / 33483 cards (66.4/s, ~3 min left)
+[05:55:01] 23000 / 33483 cards (66.4/s, ~3 min left)
+[05:55:16] 24000 / 33483 cards (66.4/s, ~2 min left)
+[05:55:31] 25000 / 33483 cards (66.5/s, ~2 min left)
+[05:55:46] 26000 / 33483 cards (66.5/s, ~2 min left)
+[05:56:01] 27000 / 33483 cards (66.5/s, ~2 min left)
+[05:56:15] 28000 / 33483 cards (66.5/s, ~1 min left)
+[05:56:31] 29000 / 33483 cards (66.5/s, ~1 min left)
+[05:56:46] 30000 / 33483 cards (66.5/s, ~1 min left)
+[05:57:01] 31000 / 33483 cards (66.4/s, ~1 min left)
+[05:57:16] 32000 / 33483 cards (66.5/s, ~0 min left)
+[05:57:31] 33000 / 33483 cards (66.5/s, ~0 min left)
+[05:57:39] 33483 / 33483 cards (66.4/s, ~0 min left)
+[05:57:39] done: out/app/ft_cmd_scores.parquet (33483 cards). Run `python app/build.py` to use them.

@@ -31,3 +31,5 @@ rolling-origin backtest (11 sets never used for any choice) as well.
 | 2026-10-27 14:47 | ft_embeddinggemma2_k4_e4_gpu, ft_embeddinggemma2_k4_env, ft_embeddinggemma2_k4_noctx, ft_embeddinggemma2_k4_lambda | step B: Kaggle v7 screening (env, no-ctx, LambdaRank vs matched e4 baseline); no adoption, F re-decides on validation |
 | 2026-10-27 14:47 | ft_embeddinggemma2_k4_e4_gpu, ft_embeddinggemma2_k4_env, ft_embeddinggemma2_k4_noctx, ft_embeddinggemma2_k4_lambda | re-print of the previous look (same runs, table format) |
 | 2026-10-27 14:57 | contamination_probe names (all encoders) | step C: name-only contamination diagnostic, no model choice |
+| 2026-10-31 06:02 | g_final, ft_embeddinggemma2_k4_saved | step G: final model (Gemma-2 top-12, 5 seeds), pre-registered single test look |
+| 2026-10-31 06:07 | all runs (phase2.py evaluate), g_final with human baselines | step G: tables and human comparison for the same final look; no selection |

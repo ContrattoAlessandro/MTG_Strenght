@@ -795,16 +795,21 @@ def evaluate_all(args) -> None:
         ps = [pd.read_csv(os.path.join(runs_dir, name, x)) for x in files]
         m = pd.concat([p[["set", "oracle_id", "pred"]] for p in ps]).groupby(["set", "oracle_id"])["pred"].mean()
         sd = pd.concat([p[["set", "oracle_id", "pred_sd"]] for p in ps]).groupby(["set", "oracle_id"])["pred_sd"].mean()
+        cal = os.path.join(runs_dir, name, "sd_scale.json")   # scripts/calibrate_sd.py
+        if os.path.exists(cal):
+            sd = sd * json.load(open(cal))["sd_scale"]
         key = pd.MultiIndex.from_frame(out[["set", "oracle_id"]])
         out[name] = m.reindex(key).to_numpy()
         if sd.notna().any():
             sd_cols[name] = sd.reindex(key).to_numpy()
         print(f"{name}: {len(files)} seeds")
     # Ensembles with the best Phase 1 model.
-    runs = [c for c in out.columns if c.startswith(("ft_", "zs_", "struct_", "deck_"))]
+    runs = [c for c in out.columns if c.startswith(("ft_", "zs_", "struct_", "deck_", "g_"))]
     for c in runs:
         if c.startswith("ft_") and not c.endswith("_text"):
             out[f"ens_{c[3:]}+gbt_tfidf"] = 0.5 * out[c] + 0.5 * out["gbt_tfidf"]
+        if c.startswith("g_"):   # step G final model (docs/RESEARCH_PLAN.md)
+            out[f"ens_{c}+gbt_tfidf"] = 0.5 * out[c] + 0.5 * out["gbt_tfidf"]
     models = base_models + runs + [c for c in out.columns if c.startswith("ens_")]
     for c in models:
         out[c + "_pp"] = k * out[c]
