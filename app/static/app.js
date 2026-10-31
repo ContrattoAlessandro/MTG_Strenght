@@ -652,7 +652,7 @@ async function aboutPage() {
     <h2>Measured strength (17lands)</h2>
     <p>For ${META.sets.length} sets, from Kaldheim to ${esc(META.sets[META.sets.length - 1].name)}, strength is measured from the public 17lands game data with a hierarchical logistic regression. It controls for player skill, deck colours, play or draw and mulligans, so a card does not look good just because good players pick it. Cards with few games are pulled toward the average for their rarity and colour, and every number has a standard error.</p>
     <h2>Predicted strength (the model)</h2>
-    <p>For cards without data, a model reads the card itself: mana cost, type, power and toughness, keywords, rules text and rarity, plus a few numbers about the set it lives in. The default model is gradient boosting over 167 hand-built features and the text. When the fine-tuned EmbeddingGemma-2 weights are installed, custom cards are scored by the average of both.
+    <p>For cards without data, a model reads the card itself: mana cost, type, power and toughness, keywords, rules text and rarity, plus a few numbers about the set it lives in. It is the average of two models: EmbeddingGemma-2 fine-tuned on 24 sets of 17lands data (top 12 layers, 5 seeds), and gradient boosting over 167 hand-built features and the text. Every Scryfall card is pre-scored this way. Custom cards in the Card Lab use both models when the fine-tuned weights are installed, otherwise gradient boosting alone.
     ${META.ft_active ? "<b>The fine-tuned encoder is active.</b>" : `<span class="muted">Fine-tuned encoder: ${esc(META.ft_status)}.</span>`}</p>
     <p>On the 7 newest sets, which the model never saw, here is how well each predictor ranks the cards of a set (Spearman correlation with measured strength, 1 is perfect), how well it finds the top 20 (NDCG@20), and its average error:</p>
     <table><thead><tr><th>Predictor</th><th class="num">Ranking</th><th class="num">Top 20</th><th class="num">Error (pts)</th></tr></thead><tbody>
@@ -663,12 +663,12 @@ async function aboutPage() {
       ${row("First-week pick order", m.ata_week1, "17lands drafters")}
       ${row("Rarity only", m.rarity_only)}
     </tbody></table>
-    <p>The model beats expert pre-release ratings but not the drafting crowd after a week of play. The uncertainty ranges are calibrated: about 80% of cards land inside their 80% range.</p>
+    <p>Before a set is released, the model ranks its cards as well as the drafting crowd does after a week of play, and better than expert pre-release ratings. The uncertainty ranges are calibrated: about 80% of cards land inside their 80% range.</p>
     <h2>Grades</h2>
     <div class="grade-scale">${GRADES.map((g, i) => `<span title="${g}">${gradeBadge(g)}<span class="small muted"> ${GRADE_CUTS[i]}+</span></span>`).join(" ")}</div>
     <p>A grade is a percentile within the set. Grades from 17lands data rank the measured strength; grades from the model rank the model's estimates of that set's cards, so a custom card is compared with how the model rates the real cards.</p>
     <h2>Other formats</h2>
-    <p>Commander uses EDHREC inclusion rates, and Constructed uses MTGGoldfish staple lists. Both have their own models trained on cards from the Limited sets, so they are rough for older cards. Limited strength says almost nothing about either format.</p>
+    <p>Commander uses EDHREC inclusion rates (the average of a fine-tuned EmbeddingGemma-2 head and a text model), and Constructed uses MTGGoldfish staple lists. Both have their own models trained on cards from the Limited sets, so they are rough for older cards. Limited strength says almost nothing about either format.</p>
     <h2>Limits</h2>
     <ul>
       <li>The model only knows what a card says, not new mechanics it has never seen, and it cannot see the rest of a set beyond a few summary numbers.</li>
