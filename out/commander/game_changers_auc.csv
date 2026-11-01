@@ -1,0 +1,5 @@
+score,auc,n,n_game_changers
+observed inclusion (age-adjusted),0.9323122674008467,31694,53
+"model, out-of-fold ridge",0.7850209872192337,31694,53
+"model, shipped blend",0.7847884253354109,31694,53
+EDHREC salt,0.9943171416594067,31694,53

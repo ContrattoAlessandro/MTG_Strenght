@@ -156,6 +156,41 @@ def commander_logit(df: pd.DataFrame, f: pd.DataFrame, bundle: dict) -> np.ndarr
     return bundle["cmd_ridge"].predict(sparse.hstack([T, R], format="csr"))
 
 
+def commander_ridge(df: pd.DataFrame, cmd: dict, first_set_type: str = "expansion") -> np.ndarray:
+    """Commander strength ridge (scripts/commander.py, ``ridge_struct``) at the
+    reference age (2 years after first printing): logit of the expected EDHREC
+    inclusion rate. ``cmd`` is out/commander/model.joblib."""
+    from scipy import sparse
+    from commander import age_basis, commander_extras
+    d = df.copy()
+    d["first_set_type"] = first_set_type
+    if "scryfall_name" not in d:
+        d["scryfall_name"] = d["name"]
+    if "front_name" not in d:
+        d["front_name"] = d["name"].str.split(" // ").str[0]
+    f = features.engineered(d)
+    f = features.add_keywords(f, d, cmd["vocab"])
+    crea = (f["type_creature"] == 1) & f["pt_sum"].notna() & (f["pt_star"] == 0)
+    f["stat_eff"] = np.where(crea, f["pt_sum"] - np.polyval(cmd["curve"], f["mana_value"]), np.nan)
+    f = pd.concat([f, commander_extras(d)], axis=1)
+    X = np.hstack([f.reindex(columns=cmd["dense_cols"], fill_value=0).fillna(0).to_numpy(float),
+                   age_basis(np.full(len(d), float(cmd["ref_age"])))])
+    D = (X - cmd["dense_stats"][0]) / cmd["dense_stats"][1]
+    T = cmd["vec"].transform(input_text(d))
+    R = sparse.csr_matrix(f[[f"rarity_{r}" for r in features.RARITIES]].to_numpy() * 3.0)
+    return cmd["ridge"].predict(sparse.hstack([T, R, sparse.csr_matrix(D)], format="csr"))
+
+
+def commander_strength(ridge: np.ndarray, ft: np.ndarray | None, cmd: dict) -> np.ndarray:
+    """Shipped Commander blend: 0.5 ridge + 0.5 fine-tuned head (when available),
+    the head shifted by its age/era offset at the reference age."""
+    if ft is None:
+        return ridge
+    from commander import ft_age_shift
+    shift = ft_age_shift(np.array([float(cmd["ref_age"])]), cmd["ft_age_w"])[0]
+    return (1 - cmd["ft_weight"]) * ridge + cmd["ft_weight"] * (np.asarray(ft) + shift)
+
+
 def constructed_prob(f: pd.DataFrame, bundle: dict) -> np.ndarray:
     return bundle["con_gbt"].predict(f.to_numpy())
 

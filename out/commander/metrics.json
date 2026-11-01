@@ -1,0 +1,7 @@
+{
+ "test_spearman": 0.6981976469179261,
+ "test_spearman_old": 0.6736643646172357,
+ "coverage80": 0.7079866888519135,
+ "n_labelled": 31694,
+ "snapshot": "2026-11-01"
+}

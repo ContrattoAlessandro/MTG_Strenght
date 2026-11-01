@@ -1,0 +1,130 @@
+# Commander strength: plan and pre-registration (step I)
+
+2026-11-01. Follows the protocol of `docs/RESEARCH_PLAN.md` (selection on
+validation only, paired statistics, logged test looks). Written **before**
+any new model was scored.
+
+## Problem
+
+The shipped Commander head (step F2/G: 50/50 fine-tuned EmbeddingGemma-2 +
+TF-IDF ridge, test 0.764) has three weaknesses:
+
+1. **Wrong training population.** It is trained only on the ~6k cards first
+   printed in the 24 Limited sets. Most Commander cards (Commander precons,
+   Masters sets, older expansions, Secret Lairs) are not in that pool, yet the
+   app scores all 33k cards with it. Its error on those cards was never
+   measured.
+2. **No age adjustment.** The label is a current EDHREC snapshot, so a card
+   released last month has had little time to be adopted. Within-set ranking
+   is unaffected, but the app compares cards across sets (percentiles).
+3. **No strength value in the app.** The app shows an inclusion rate and a
+   percentile "among cards from recent Limited sets", not a strength score or
+   grade comparable to the Limited one.
+
+## Target
+
+Commander strength of card *c* = logit of its EDHREC inclusion rate
+(decks playing it / decks whose colour identity allows it), at a reference
+age of 2 years after first printing. There are no game outcomes for
+Commander, so this is a revealed-preference (play-rate) target; the
+Commander Game Changers list (WotC's own judgment of the strongest cards,
+Scryfall `game_changer`) is used as an external check that it tracks power and
+not only popularity. It is never a feature.
+
+## Data (new, `scripts/cmd_data.py`)
+
+- EDHREC num_decks / potential_decks for **every** Commander-legal card
+  (32k), fetched 2026-11-01. Label rows: potential_decks > 1000.
+- First paper printing (date, set, set type) from Scryfall Default Cards.
+  The oracle bulk file only has one recent printing per card.
+- All models below, old ones included, are scored against the **new**
+  snapshot, so comparisons are paired on the same labels.
+
+## Split (by first printing, so reprints cannot leak)
+
+| part | first printed |
+|---|---|
+| fold A: train / validate | < 2024-08-01 / 2024-08-01 … 2025-01-31 |
+| fold B: train / validate | < 2025-02-01 / 2025-02-01 … 2025-10-31 |
+| final refit | < 2025-11-01 |
+| **test** (one look) | 2025-11-01 … 2026-10-31 (same window as the Limited test) |
+
+Groups: a card's first-printing set. Metric: Spearman within group, averaged
+over groups with ≥ 20 labelled cards (as the Limited metric is within set).
+Secondary: NDCG@20 within group, pooled Spearman.
+Test strata: **T1** = cards of the 7 Limited test sets (comparable with the
+shipped 0.764); **T2** = all test groups (precons, Secret Lairs, …).
+
+## Hypotheses and decision rules (validation only)
+
+A difference is real if Δ > 2 SE across validation groups and it holds in
+≥ 2/3 of groups (as in `RESEARCH_PLAN.md`). GBT models: 3 seeds.
+
+- **H1 (training pool).** TF-IDF ridge trained on all Commander-legal cards
+  beats the same ridge trained on the Limited-set cards only, on all groups and
+  on Limited groups alone. Ablation: the full pool subsampled to the Limited
+  pool's size, to separate "more cards" from "the right cards".
+- **H2 (structured features).** Adding colour identity, card types, legendary
+  / commander-capable, mana value and log age to the ridge helps.
+- **H3 (non-linear model).** GBT on engineered features + TF-IDF SVD, and its
+  blend with the ridge (weight chosen on validation), beat the ridge.
+- **H4 (age).** A log-age term improves pooled (cross-set) Spearman on
+  validation; it is what makes the age-adjusted strength value possible.
+- **H5 (fine-tuned encoder on the full pool, GPU).** Only if H1 holds: the
+  F2 recipe retrained on the full pool. Prepared as a Kaggle job and run only
+  after Alessandro says yes.
+
+The shipped model (fine-tuned + Limited-pool ridge) cannot be scored on
+validation (its fine-tuned half saw the validation sets), so it is compared on
+test only, once, against the model chosen on validation.
+
+## App
+
+Commander strength shown as a grade (A+ … F, same cut-offs as Limited) and a
+0–100 percentile among all Commander-legal cards, with the expected inclusion
+rate at maturity and an 80% range. Measured strength (EDHREC, age-adjusted)
+is shown next to the model's when it exists.
+
+## Log
+
+(filled in as steps finish)
+- **13:35 data fix.** Prerelease promo printings (`pblb`, `pdsk`, …) came out
+  days before their set and were taken as first printings, which split each
+  Limited set into two groups and put Limited cards in "non-Limited" groups.
+  First printing is now the first non-promo paper printing. All runs redone.
+  Validation has 17 groups with ≥ 20 cards (7 Limited sets, 8 groups with no
+  Limited-pool card: Commander precons, Jumpstart, Spider-Man, …).
+- **13:45 validation decisions** (`out/commander/VAL.md`, ref = shipped
+  ridge recipe `ridge_lim`, mean within-group Spearman, all 17 groups):
+  - H1 alone (`ridge_all`, same features): +0.019 ± 0.018, tie. With the
+    structured features, the full pool beats the Limited pool by
+    +0.038 ± 0.020 (`ridge_struct` vs `ridge_struct_lim`). **Adopted with H2.**
+  - H2+H4 (`ridge_struct`: TF-IDF + colour identity, types, legendary /
+    commander-capable, set type, mana value, log-age curve): **+0.056 ± 0.022,
+    13/17, REAL**; Limited groups +0.020 ± 0.008 (6/7); non-Limited groups
+    0.41 → 0.52 (+0.109 ± 0.037, 7/8). **Adopted.**
+  - H4 age term: removing it costs 0.016 within group and 0.019 pooled
+    Spearman. Kept (it also gives the age adjustment).
+  - H3 GBT: alone a tie with `ridge_lim` and worse than the ridge; best blend
+    0.7 ridge + 0.3 GBT is +0.003 ± 0.005 over `ridge_struct`. **Not adopted.**
+  - Recency (since 2015, half-life 3 or 6 years): ties. Not adopted.
+  - Shipped fine-tuned head `ft_cmd`, on the 8 groups where it is
+    out-of-sample: 0.490 vs `ridge_struct` 0.516 (tie); 50/50 blend 0.534,
+    +0.018 ± 0.014 (6/8), tie. **Not adopted**; this is what H5 (fine-tune on
+    the full pool) would test.
+  - **Chosen model: `ridge_struct`.** Test look (one): `ridge_struct` vs the
+    shipped `ridge_lim*0.5+ft_cmd*0.5` on T1 and T2; secondary, reported but
+    not used for any choice: `ridge_struct*0.5+ft_cmd*0.5`, `ridge_lim`,
+    `ft_cmd`, `ridge_struct_noage`.
+- **13:47 test look (pre-registered).** `ridge_struct` 0.656 vs shipped
+  0.674 (−0.018 ± 0.019, tie). Its final refit chose alpha 30 by inner-split
+  MSE (validation folds had chosen 3 and 1). Secondary blend with the
+  fine-tuned head 0.688 (+0.014 ± 0.008, 11/13).
+- **13:50 post-hoc (logged as such).** Alpha fixed by the protocol's metric
+  (validation Spearman → 1). `ridge_struct_a1` + fine-tuned head: 0.698,
+  +0.025 ± 0.006, 12/13. **Shipped**, with the caveat that this choice was made
+  after a test look. Report: `out/commander/REPORT.md`.
+- **14:10 app.** `scripts/commander.py final` (fit on all 31.7k cards,
+  out-of-fold scores, age curve, fine-tuned head offset), `app/build.py` and
+  the card page / Card Lab show Commander strength (grade + score /100).
+- **Open: H5** (fine-tune on the full pool, GPU) not run; needs Alessandro's go.

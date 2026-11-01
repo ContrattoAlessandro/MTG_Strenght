@@ -196,9 +196,17 @@ def card(oracle_id: str):
     if not c["appearances"]:
         c.update(typical_score(oracle_id, c))
     c["cmd_incl_pred"] = clean(engine.sigmoid(c["cmd_pred"])) if c.get("cmd_pred") is not None else None
-    obs = c.get("edhrec_incl")
-    cmd = math.log(obs / (1 - obs)) if obs is not None else c["cmd_pred"]
-    c["cmd_pct"] = clean(100 * np.searchsorted(S.bundle["cmd_ref"], cmd) / len(S.bundle["cmd_ref"]))
+    if "cmd_model" in S.bundle:
+        if c.get("cmd_pred") is not None:   # 80% range of the strength percentile
+            ref, q = S.bundle["cmd_ref"], S.bundle["cmd_model"]["q80"]
+            c["cmd_pct_lo"] = clean(100 * np.searchsorted(ref, c["cmd_pred"] + q[0]) / len(ref))
+            c["cmd_pct_hi"] = clean(100 * np.searchsorted(ref, c["cmd_pred"] + q[1]) / len(ref))
+            c["cmd_incl_lo"] = clean(engine.sigmoid(c["cmd_pred"] + q[0]))
+            c["cmd_incl_hi"] = clean(engine.sigmoid(c["cmd_pred"] + q[1]))
+    else:   # app/data built without scripts/commander.py
+        obs = c.get("edhrec_incl")
+        cmd = math.log(obs / (1 - obs)) if obs is not None else c["cmd_pred"]
+        c["cmd_pct"] = clean(100 * np.searchsorted(S.bundle["cmd_ref"], cmd) / len(S.bundle["cmd_ref"]))
     c["con_pct"] = clean(100 * np.searchsorted(S.bundle["con_ref"], c["con_prob"]) / len(S.bundle["con_ref"]))
     return c
 
@@ -265,10 +273,20 @@ def predict(card: CustomCard):
         nb = recent.iloc[np.argsort(np.abs(recent["model_pred"].to_numpy() - mu))[:6]].sort_values("model_pred", ascending=False)
         out["comparable"] = records(nb[["oracle_id", "name", "set", "rarity", "model_pred", "theta_vs_repl",
                                         "grade_obs", "image_small"]])
-    cl = engine.commander_logit(df, f, b)[0]
-    if card.use_ft and S.ft_cmd is not None:   # 0.5 fine-tuned + 0.5 ridge, as precomputed
+    m_c = None
+    if card.use_ft and S.ft_cmd is not None:   # fine-tuned Commander head, as precomputed
         m_c, _ = S.ft_cmd.predict(df, lambda cols: engine.featurize(df, [env], b, cols, ft=True))
-        cl = 0.5 * (cl + m_c[0])
+    if "cmd_model" in b:
+        cmd = b["cmd_model"]
+        cl = engine.commander_strength(engine.commander_ridge(df, cmd), m_c, cmd)[0]
+        pct = lambda v: 100 * np.searchsorted(b["cmd_ref"], v) / len(b["cmd_ref"])  # noqa: E731
+        out.update(cmd_pred=clean(cl), cmd_grade=engine.grade(pct(cl)), cmd_model="ensemble" if m_c is not None else "ridge",
+                   cmd_pct_lo=clean(pct(cl + cmd["q80"][0])), cmd_pct_hi=clean(pct(cl + cmd["q80"][1])),
+                   cmd_incl_lo=clean(engine.sigmoid(cl + cmd["q80"][0])), cmd_incl_hi=clean(engine.sigmoid(cl + cmd["q80"][1])))
+    else:
+        cl = engine.commander_logit(df, f, b)[0]
+        if m_c is not None:
+            cl = 0.5 * (cl + m_c[0])
     out["cmd_incl"] = clean(engine.sigmoid(cl))
     out["cmd_pct"] = clean(100 * np.searchsorted(b["cmd_ref"], cl) / len(b["cmd_ref"]))
     cp = engine.constructed_prob(f, b)[0]

@@ -34,3 +34,5 @@ rolling-origin backtest (11 sets never used for any choice) as well.
 | 2026-10-31 06:02 | g_final, ft_embeddinggemma2_k4_saved | step G: final model (Gemma-2 top-12, 5 seeds), pre-registered single test look |
 | 2026-10-31 06:07 | all runs (phase2.py evaluate), g_final with human baselines | step G: tables and human comparison for the same final look; no selection |
 | 2026-10-31 06:47 | g_commander (and its 50/50 blend with the TF-IDF ridge) vs phase 4 Commander models | step G: final Commander head, single look after the F2 decision on validation |
+| 2026-11-01 13:47 | commander: ft_cmd, ridge_lim, ridge_struct, ridge_struct_noage | step I: Commander model on the full card pool (ridge_struct, chosen on validation) vs shipped; single pre-registered look |
+| 2026-11-01 13:50 | commander: ridge_struct_a1, ridge_struct_a3 | step I post-hoc diagnostic (after the pre-registered look): ridge_struct alpha fixed by validation Spearman instead of inner-split MSE; NOT a clean test result |

@@ -42,6 +42,29 @@ function gradeBadge(g, size = "") {
   return `<span class="grade ${size}${light}" style="--gc: var(${GRADE_VAR[g]})" title="Grade ${g}">${g}</span>`;
 }
 
+// Commander strength (scripts/commander.py): a percentile among every
+// Commander card with EDHREC data, graded like Limited, from the model's
+// expected inclusion rate once the card is established (2 years after release).
+const pctTxt = (x) => (x == null ? "–" : fmt(Math.min(99, Math.max(0, x)), 0));
+const inclTxt = (x) => (x == null ? "–" : fmt(100 * x, x < 0.01 ? 2 : 1) + "%");
+function commanderPanel(c, opts = {}) {
+  if (c.cmd_grade === undefined) return "";   // app data built without the Commander strength model
+  if (c.cmd_pred == null) return `<div class="panel"><h3>Commander</h3><p class="muted">Not legal in Commander.</p></div>`;
+  const obs = c.cmd_grade_obs != null && !opts.custom;
+  const young = obs && c.cmd_age_days != null && c.cmd_age_days < 730;
+  return `<div class="panel"><h3>Commander strength</h3>
+    <div class="verdict">${gradeBadge(obs ? c.cmd_grade_obs : c.cmd_grade, "lg")}
+      <div><div class="headline">${pctTxt(obs ? c.cmd_pct_obs : c.cmd_pct)}<span class="muted" style="font-size:.6em">/100</span> ${obs ? `<span class="tag">measured</span>` : `<span class="tag">model estimate</span>`}</div>
+      <div class="sub">${obs
+        ? `In <b>${inclTxt(c.edhrec_incl)}</b> of the EDHREC decks that could play it${c.edhrec_decks ? ` (${Number(c.edhrec_decks).toLocaleString()} decks)` : ""}${young ? ", adjusted for how recently it came out" : ""}.`
+        : `Expected in <b>${inclTxt(c.cmd_incl_pred ?? c.cmd_incl)}</b> of eligible decks once established (80% range ${inclTxt(c.cmd_incl_lo)} to ${inclTxt(c.cmd_incl_hi)}).`}</div></div>
+    </div>
+    ${obs ? `<div class="format-row" style="margin-top:12px"><div class="fname">Model</div><div class="fval">${gradeBadge(c.cmd_grade)} <b>${pctTxt(c.cmd_pct)}/100</b> <span class="muted small">predicted without its EDHREC data · expected ${inclTxt(c.cmd_incl_pred)} of eligible decks</span></div></div>` : ""}
+    <div class="meter" title="Percentile among all Commander cards"><div style="width:${pctTxt(obs ? c.cmd_pct_obs : c.cmd_pct)}%"></div></div>
+    <p class="note">Strength is a percentile among all ${META.cmd_metrics ? META.cmd_metrics.n_labelled.toLocaleString() : ""} Commander cards with EDHREC data: how often decks that can play the card do, once it has been out for two years. Model 80% range: ${gradeOf(c.cmd_pct_lo) || "–"} to ${gradeOf(c.cmd_pct_hi) || "–"}.</p>
+  </div>`;
+}
+
 function verdictWords(pct) {
   if (pct == null) return "Unrated";
   if (pct >= 95) return "A bomb";
@@ -315,10 +338,10 @@ async function cardPage(id, params) {
   const conObs = c.staple_pct != null;
   const formats = `
     <div class="panel"><h3>Other formats</h3>
-      <div class="format-row"><div class="fname">Commander</div><div class="fval">
+      ${c.cmd_grade !== undefined ? "" : `<div class="format-row"><div class="fname">Commander</div><div class="fval">
         <div><b>${cmdVal != null ? fmt(100 * cmdVal, cmdVal < 0.01 ? 2 : 1) + "%" : "–"}</b> of eligible decks ${cmdObs ? `<span class="muted">on EDHREC${c.edhrec_decks ? ` (${Number(c.edhrec_decks).toLocaleString()} decks)` : ""}</span>` : `<span class="tag">model estimate</span>`}</div>
         <div class="meter" title="Percentile among cards from recent Limited sets"><div style="width:${fmt(c.cmd_pct, 0)}%"></div></div>
-        <div class="small muted">More played than ${fmt(c.cmd_pct, 0)}% of cards from recent sets</div></div></div>
+        <div class="small muted">More played than ${fmt(c.cmd_pct, 0)}% of cards from recent sets</div></div></div>`}
       <div class="format-row"><div class="fname">Constructed</div><div class="fval">
         ${conObs ? `<div><b>Staple</b> in ${esc((c.staple_formats || "").replaceAll(",", ", "))}: up to ${fmt(c.staple_pct, 0)}% of top ${esc(c.staple_format)} decks <span class="muted">(MTGGoldfish top 50)</span></div>
                    <div class="small muted">The model alone would have given it a ${fmt(100 * c.con_prob, 1)}% chance.</div>`
@@ -346,6 +369,7 @@ async function cardPage(id, params) {
         ${setTabs}
         <div class="panel">${verdict}<div style="margin-top:18px">${chart}</div>${extra}</div>
         <div class="panel"><h3>${a ? "Limited numbers" : "Model estimate"}</h3><div class="tiles">${tiles}</div></div>
+        ${commanderPanel(c)}
         ${a ? `<div class="split" style="margin-top:16px">${neigh}${synergy || formats}</div>${synergy ? formats : ""}` : formats}
       </div>
     </div>`;
@@ -635,7 +659,9 @@ function showLab(r, d) {
         ${r.comparable.map((n) => `<a class="list-row" href="#/card/${n.oracle_id}?set=${n.set || r.env}">${n.image_small ? `<img src="${esc(n.image_small)}" alt="">` : "<img alt=''>"}<span class="lr-name">${esc(n.name)}</span><span class="lr-val">${n.set ? n.set + " · " : ""}played ${signed(pp(n.theta_vs_repl))}</span>${gradeBadge(n.grade_obs)}</a>`).join("")}
         <p class="note">Their actual 17lands result shows how much cards with the same estimate can differ.</p></div>
       <div class="panel"><h3>Other formats (rough estimates)</h3>
-        <div class="format-row"><div class="fname">Commander</div><div class="fval"><b>${fmt(100 * r.cmd_incl, r.cmd_incl < 0.01 ? 2 : 1)}%</b> of eligible decks<div class="meter"><div style="width:${fmt(r.cmd_pct, 0)}%"></div></div><div class="small muted">Above ${fmt(r.cmd_pct, 0)}% of cards from recent sets</div></div></div>
+        <div class="format-row"><div class="fname">Commander</div><div class="fval">${r.cmd_grade !== undefined
+          ? `${gradeBadge(r.cmd_grade)} <b>Strength ${pctTxt(r.cmd_pct)}/100</b><div class="meter"><div style="width:${pctTxt(r.cmd_pct)}%"></div></div><div class="small muted">Expected in ${inclTxt(r.cmd_incl)} of eligible decks once established (80% range ${inclTxt(r.cmd_incl_lo)} to ${inclTxt(r.cmd_incl_hi)}); percentile among all Commander cards</div>`
+          : `<b>${fmt(100 * r.cmd_incl, r.cmd_incl < 0.01 ? 2 : 1)}%</b> of eligible decks<div class="meter"><div style="width:${fmt(r.cmd_pct, 0)}%"></div></div><div class="small muted">Above ${fmt(r.cmd_pct, 0)}% of cards from recent sets</div>`}</div></div>
         <div class="format-row"><div class="fname">Constructed</div><div class="fval"><b>${fmt(100 * r.con_prob, 1)}%</b> chance to be a staple<div class="meter"><div style="width:${fmt(r.con_pct, 0)}%"></div></div><div class="small muted">Above ${fmt(r.con_pct, 0)}% of cards from recent sets</div></div></div>
       </div>
     </div>`;
@@ -668,7 +694,10 @@ async function aboutPage() {
     <div class="grade-scale">${GRADES.map((g, i) => `<span title="${g}">${gradeBadge(g)}<span class="small muted"> ${GRADE_CUTS[i]}+</span></span>`).join(" ")}</div>
     <p>A grade is a percentile within the set. Grades from 17lands data rank the measured strength; grades from the model rank the model's estimates of that set's cards, so a custom card is compared with how the model rates the real cards.</p>
     <h2>Other formats</h2>
-    <p>Commander uses EDHREC inclusion rates (the average of a fine-tuned EmbeddingGemma-2 head and a text model), and Constructed uses MTGGoldfish staple lists. Both have their own models trained on cards from the Limited sets, so they are rough for older cards. Limited strength says almost nothing about either format.</p>
+    ${META.cmd_metrics ? `<h2>Commander strength</h2>
+    <p>Commander has no game results, so strength there is revealed by deckbuilders: the share of EDHREC decks that play a card among the decks whose colours allow it (${META.cmd_metrics.n_labelled.toLocaleString()} cards, snapshot ${esc(META.cmd_metrics.snapshot)}). New cards are briefly over-played (hype) and then dip, so the measured value of a card younger than two years is adjusted to what it would be at two years. The strength score is the percentile of that value among all Commander cards, graded with the same cut-offs as Limited.</p>
+    <p>The model behind estimates is the average of a text model trained on every Commander-legal card (rules text, colour identity, types, whether it can be a commander, product type) and the fine-tuned EmbeddingGemma-2 Commander head. On cards first printed in the last 12 months, which neither model saw, it ranks the cards of a set with a Spearman correlation of ${fmt(META.cmd_metrics.test_spearman, 2)} (the previous model: ${fmt(META.cmd_metrics.test_spearman_old, 2)}). Its 80% range covers ${fmt(100 * META.cmd_metrics.coverage80, 0)}% of those cards.</p>` : ""}
+    <p>Constructed uses MTGGoldfish staple lists, with its own model trained on cards from the Limited sets, so it is rough for older cards. Limited strength says almost nothing about Commander or Constructed.</p>
     <h2>Limits</h2>
     <ul>
       <li>The model only knows what a card says, not new mechanics it has never seen, and it cannot see the rest of a set beyond a few summary numbers.</li>
