@@ -1,0 +1,64 @@
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "g_cmd_full", "no_struct": false, "seeds": [0], "max_epochs": 10, "epochs": null, "skip_val": false, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": 12, "res": "commander/p2", "folds_json": "out/commander/p2/folds.json", "val_fold": ["A"], "llrd": 1.0, "amp": "none", "peft": "none", "lora_r": 16, "enc_fp16": false, "grad_ckpt": false, "optim": "adamw", "weight_decay": 0.01, "warmup": 0.06, "dropout": 0.1, "text_variant": "original", "cache_dir": "/tmp/cache0", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": null}}
+cache google/embeddinggemma-2 k=12: batch 0
+cache google/embeddinggemma-2 k=12: batch 100
+cache google/embeddinggemma-2 k=12: batch 200
+cache google/embeddinggemma-2 k=12: batch 300
+cache google/embeddinggemma-2 k=12: batch 400
+cache google/embeddinggemma-2 k=12: batch 500
+cache google/embeddinggemma-2 k=12: batch 600
+cache google/embeddinggemma-2 k=12: batch 700
+cache google/embeddinggemma-2 k=12: batch 800
+cache google/embeddinggemma-2 k=12: batch 900
+cache google/embeddinggemma-2 k=12: batch 1000
+cache google/embeddinggemma-2 k=12: batch 1100
+cache google/embeddinggemma-2 k=12: batch 1200
+cache google/embeddinggemma-2 k=12: batch 1300
+cache google/embeddinggemma-2 k=12: batch 1400
+cache google/embeddinggemma-2 k=12: batch 1500
+cache google/embeddinggemma-2 k=12: batch 1600
+cache google/embeddinggemma-2 k=12: batch 1700
+cache google/embeddinggemma-2 k=12: batch 1800
+cache google/embeddinggemma-2 k=12: batch 1900
+{"fold": "A", "epoch": 1, "nll": 0.3748, "bt": 0.6217, "sec": 491, "val_spearman": 0.6468, "val_ndcg": 0.8484, "val_mae": 0.7592, "val_nll": 0.4594}
+{"fold": "A", "epoch": 2, "nll": -0.0066, "bt": 0.4752, "sec": 480, "val_spearman": 0.7353, "val_ndcg": 0.8718, "val_mae": 0.7775, "val_nll": 0.4695}
+{"fold": "A", "epoch": 3, "nll": -0.1351, "bt": 0.4233, "sec": 481, "val_spearman": 0.6769, "val_ndcg": 0.8758, "val_mae": 0.8375, "val_nll": 0.5609}
+{"fold": "A", "epoch": 4, "nll": -0.316, "bt": 0.362, "sec": 480, "val_spearman": 0.7466, "val_ndcg": 0.8906, "val_mae": 0.7332, "val_nll": 0.5159}
+{"fold": "A", "epoch": 5, "nll": -0.5536, "bt": 0.2991, "sec": 481, "val_spearman": 0.733, "val_ndcg": 0.8936, "val_mae": 0.7738, "val_nll": 0.7951}
+{"fold": "A", "epoch": 6, "nll": -0.7699, "bt": 0.2524, "sec": 481, "val_spearman": 0.7465, "val_ndcg": 0.8934, "val_mae": 0.7146, "val_nll": 1.0806}
+{"fold": "A", "epoch": 7, "nll": -0.986, "bt": 0.2255, "sec": 481, "val_spearman": 0.7533, "val_ndcg": 0.8964, "val_mae": 0.7786, "val_nll": 2.5799}
+{"fold": "A", "epoch": 8, "nll": -1.16, "bt": 0.2054, "sec": 480, "val_spearman": 0.7519, "val_ndcg": 0.8953, "val_mae": 0.8443, "val_nll": 4.3387}
+{"fold": "A", "epoch": 9, "nll": -1.3703, "bt": 0.1917, "sec": 477, "val_spearman": 0.7556, "val_ndcg": 0.8971, "val_mae": 0.7467, "val_nll": 5.4435}
+{"fold": "A", "epoch": 10, "nll": -1.5885, "bt": 0.1805, "sec": 479, "val_spearman": 0.7546, "val_ndcg": 0.8987, "val_mae": 0.7221, "val_nll": 5.9525}
+{"done": true, "val_folds": ["A"], "epochs": 10}
+{"config": {"cmd": "train", "model_path": [], "pred_out": null, "embeddings": [], "out_dir": "out", "oracle": "data/raw/scryfall_oracle_cards.jsonl.gz", "encoder": "google/embeddinggemma-2", "name": "g_cmd_full", "no_struct": false, "seeds": [0, 1, 2], "max_epochs": 10, "epochs": 10, "skip_val": true, "batch_size": 32, "max_len": 256, "enc_lr": 5e-05, "head_lr": 0.001, "pair_w": 1.0, "threads": 4, "device": "cuda", "top_k": 12, "res": "commander/p2", "folds_json": null, "val_fold": [], "llrd": 1.0, "amp": "none", "peft": "none", "lora_r": 16, "enc_fp16": false, "grad_ckpt": false, "optim": "adamw", "weight_decay": 0.01, "warmup": 0.06, "dropout": 0.1, "text_variant": "original", "cache_dir": "/tmp/cache0", "deck_values": null, "target": "theta", "label_csv": null, "aux_w": 0.0, "consistency_on_test": false, "limit_sets": null, "lambda_w": 0.0, "lambda_k": 0, "fixed_var": 0.0, "env": "none", "env_dim": 64, "env_emb": null, "no_ctx": false, "save_dir": null}}
+{"epoch": 1, "nll": 0.5115, "bt": 0.6138, "sec": 524}
+{"epoch": 2, "nll": 0.0066, "bt": 0.4786, "sec": 526}
+{"epoch": 3, "nll": -0.1481, "bt": 0.4237, "sec": 523}
+{"epoch": 4, "nll": -0.3134, "bt": 0.3658, "sec": 524}
+{"epoch": 5, "nll": -0.5432, "bt": 0.3024, "sec": 524}
+{"epoch": 6, "nll": -0.7735, "bt": 0.2584, "sec": 524}
+{"epoch": 7, "nll": -0.9528, "bt": 0.2283, "sec": 525}
+{"epoch": 8, "nll": -1.1585, "bt": 0.2067, "sec": 524}
+{"epoch": 9, "nll": -1.3665, "bt": 0.1922, "sec": 524}
+{"epoch": 10, "nll": -1.5817, "bt": 0.1817, "sec": 526}
+{"epoch": 1, "nll": 0.4187, "bt": 0.6417, "sec": 523}
+{"epoch": 2, "nll": -0.0057, "bt": 0.4781, "sec": 523}
+{"epoch": 3, "nll": -0.1399, "bt": 0.4258, "sec": 527}
+{"epoch": 4, "nll": -0.3198, "bt": 0.3679, "sec": 521}
+{"epoch": 5, "nll": -0.5408, "bt": 0.3051, "sec": 526}
+{"epoch": 6, "nll": -0.765, "bt": 0.2599, "sec": 525}
+{"epoch": 7, "nll": -0.9499, "bt": 0.2304, "sec": 524}
+{"epoch": 8, "nll": -1.1361, "bt": 0.2098, "sec": 525}
+{"epoch": 9, "nll": -1.3442, "bt": 0.1936, "sec": 524}
+{"epoch": 10, "nll": -1.5529, "bt": 0.1844, "sec": 524}
+{"epoch": 1, "nll": 0.2664, "bt": 0.6234, "sec": 522}
+{"epoch": 2, "nll": -0.0041, "bt": 0.4793, "sec": 525}
+{"epoch": 3, "nll": -0.154, "bt": 0.4275, "sec": 524}
+{"epoch": 4, "nll": -0.3155, "bt": 0.3687, "sec": 524}
+{"epoch": 5, "nll": -0.5209, "bt": 0.3065, "sec": 524}
+{"epoch": 6, "nll": -0.7608, "bt": 0.2596, "sec": 524}
+{"epoch": 7, "nll": -0.9539, "bt": 0.2307, "sec": 528}
+{"epoch": 8, "nll": -1.1553, "bt": 0.2094, "sec": 530}
+{"epoch": 9, "nll": -1.3661, "bt": 0.1945, "sec": 526}
+{"epoch": 10, "nll": -1.58, "bt": 0.1835, "sec": 523}
+{"done": true, "epochs": 10}

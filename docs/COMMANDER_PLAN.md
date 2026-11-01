@@ -151,3 +151,24 @@ Decisions, on validation only (`commander.py import-ft`, `compare`):
 3. The epoch count stays 10 (no second job); the per-epoch validation curve is
    reported, and a peak well before 10 is noted as a follow-up.
 Test: one look, the adopted blend vs the shipped one (0.698).
+
+### H5 result (2026-11-02 00:00, job c2, ~6.3 GPU h)
+
+- Epoch curve (`g_cmd_full`, mean within-set Spearman, folds A / B): epoch 1
+  0.646 / 0.561, 3 0.686 / 0.627, 5 0.694 / 0.586, 10 0.690 / 0.614. Flat
+  after epoch 3, so 10 epochs cost nothing in accuracy.
+- **Decision rule 1 (pre-registered): not adopted.** On the 8 groups where the
+  shipped head is out-of-sample, `ridge_struct_a1` + `g_cmd_full` (0.5) 0.538
+  vs `ridge_struct_a1` + `ft_cmd` 0.550: −0.012 ± 0.017, 2/8. Weights 0.3 /
+  0.7: −0.008 / −0.018. The head trained on 29k cards is no better a blend
+  partner than the one trained on 6k Limited cards.
+- Clean comparisons (all 17 groups, every model out-of-sample): `g_cmd_full`
+  alone 0.641 vs the ridge 0.656 (tie); ridge + `g_cmd_full` 0.680,
+  +0.024 ± 0.012 over the ridge (12/17, REAL). So a fine-tuned head adds about
+  as much to the ridge whichever pool it was trained on (+0.019 for `ft_cmd`
+  on the clean groups).
+- No test look (the rule called for one only if adopted). The test
+  predictions of `g_cmd_full` are saved in `out/commander/p2/runs/` unscored.
+  The shipped model is unchanged. `g_cmd_all` weights (3 seeds, trained on all
+  labelled cards) are in the Kaggle output of job c2 (`models/ft_cmd/g_cmd_all`),
+  not used by the app.
