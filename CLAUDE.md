@@ -368,6 +368,29 @@ Decisions on validation (Oct 27-28, details in the plan's log):
   next experiment. Weights: `/mnt/project-files/mtg_strength/models/ft_card/g_final/`
   and `.../ft_cmd/g_commander/` (130 MB per seed; copy to `models/`).
 
+### Commander strength (step I, Nov 1, `out/commander/REPORT.md`)
+
+- Plan / pre-registration / log: `docs/COMMANDER_PLAN.md`. Code:
+  `scripts/cmd_data.py` (EDHREC for all 32k Commander-legal cards, first
+  non-promo printing from Scryfall Default Cards), `scripts/commander.py`
+  (`prep`, `val`, `compare`, `test`, `final`, `report`). Split by first
+  printing: folds A (Aug 2024-Jan 2025) and B (Feb-Oct 2025), test Nov 2025-
+  Oct 2026; metric = mean within-first-printing-set Spearman.
+- Validation: ridge on TF-IDF + structured Commander features (colour
+  identity, types, commander-capable, product type, mana value, age curve)
+  trained on **all** Commander cards: +0.056 ± 0.022 over the old Limited-pool
+  ridge (13/17 sets); precon-type sets 0.41 → 0.52. GBT, recency weighting:
+  ties. More cards help only together with product type + age.
+- Test: pre-registered ridge (alpha 30 by inner MSE) tied the shipped model;
+  with alpha fixed by validation Spearman (1, post-hoc) and averaged with the
+  fine-tuned head: **0.698 vs 0.674** (+0.025 ± 0.006, 12/13). Shipped.
+- Strength = logit EDHREC inclusion at max(age, 2 years); app shows grade and
+  score /100 = percentile among 31.7k Commander cards. Game Changers AUC:
+  observed 0.93, model 0.88, salt 0.99. 80% range covers 71% of test cards.
+- Next: fine-tune EmbeddingGemma-2 on the full Commander pool (GPU, H5).
+  Rerun `cmd_data.py edhrec` + `commander.py prep/final` + `app/build.py
+  --rebuild` to refresh the EDHREC snapshot.
+
 ## What is not done (next steps, in rough priority)
 
 Superseded by the ordered plan and its "parked items" table in

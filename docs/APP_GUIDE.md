@@ -9,7 +9,9 @@ The app runs locally, on CPU, and contains everything the research adopted:
   pre-scored with it, so search and set pages are instant.
 - **Uncertainty**: an 80% range for every estimate, calibrated on validation
   (90% intervals cover 90% of test cards).
-- **Commander**: fine-tuned head + TF-IDF ridge, 50/50 (test 0.76 vs 0.75 ridge alone).
+- **Commander strength**: a grade (A+ … F) and a score out of 100 for every Commander-legal card,
+  measured from EDHREC play rates and predicted by a text model trained on all 32k Commander cards
+  averaged with the fine-tuned head (test 0.70 vs 0.67 for the previous model, `out/commander/REPORT.md`).
 - **Constructed**: probability of being a MTGGoldfish staple (rough).
 - **Synergy**: best partner cards from the deck model (new sets only).
 - **Card Lab**: grade a card you type in, live, with the same models.
@@ -105,8 +107,10 @@ sets). The dropdown shows the card's Limited grade. "🎲 Random card" opens one
 - *Set tabs*: if the card was in several Limited sets, one tab per set.
 - *Best partners*: cards it wins more with, from the deck model (new sets).
 - *Around it in the ranking*: the cards just above and below it in its set.
-- *Other formats*: Commander inclusion (observed EDHREC rate when known, else
-  the model) and Constructed staple probability.
+- *Commander strength*: grade and score /100 (percentile among all Commander cards
+  with EDHREC data). Measured when the card has EDHREC data (adjusted to 2 years
+  after release for new cards), with the model's out-of-sample estimate below it.
+- *Other formats*: Constructed staple probability.
 - *Test in another set*: copies the card into the Card Lab, where you can
   edit it or change the environment.
 

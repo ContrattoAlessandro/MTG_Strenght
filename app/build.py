@@ -285,16 +285,37 @@ def main() -> None:
     u["lim_pct"] = 100 * np.searchsorted(ref[TYPICAL], mu) / len(ref[TYPICAL])
     u["lim_grade"] = u["lim_pct"].map(engine.grade)
     u["cmd_pred"] = engine.commander_logit(un, fu, bundle)
-    # Fine-tuned Commander head (phase2.py --target label, scored by
-    # precompute_ft.py --out out/app/ft_cmd_scores.parquet): averaged with the
-    # TF-IDF ridge, the best Commander model on validation (plan, step F2).
-    cmd_path = os.path.join(OUT, "app", "ft_cmd_scores.parquet")
-    if os.path.exists(cmd_path):
-        fs = pd.read_parquet(cmd_path).drop_duplicates("oracle_id").set_index("oracle_id")
-        has = u["oracle_id"].isin(fs.index).to_numpy()
-        u.loc[has, "cmd_pred"] = 0.5 * (u.loc[has, "cmd_pred"].to_numpy()
-                                        + fs.loc[u.loc[has, "oracle_id"], "ft_pred"].to_numpy())
-        log(f"fine-tuned Commander scores for {has.sum()} of {len(u)} cards ({cmd_path})")
+    cmd_scores = os.path.join(OUT, "commander", "scores.parquet")
+    if os.path.exists(cmd_scores):
+        # Commander strength model (scripts/commander.py final, docs/COMMANDER_PLAN.md):
+        # ridge on all Commander-legal cards + fine-tuned head, at the reference
+        # age; out-of-fold for cards with EDHREC data.
+        cs = pd.read_parquet(cmd_scores).drop_duplicates("oracle_id").set_index("oracle_id")
+        u["cmd_pred"] = u["oracle_id"].map(cs["cmd_pred"])
+        u["cmd_obs_adj"] = u["oracle_id"].map(cs["cmd_obs_adj"])
+        u["cmd_age_days"] = u["oracle_id"].map(cs["age_days"])
+        lab = cs[cs["cmd_obs"].notna()]
+        ref_pred, ref_obs = np.sort(lab["cmd_pred"].to_numpy()), np.sort(lab["cmd_obs_adj"].to_numpy())
+        pct = lambda ref, v: 100 * np.searchsorted(ref, v) / len(ref)  # noqa: E731
+        u["cmd_pct"] = np.where(u["cmd_pred"].notna(), pct(ref_pred, u["cmd_pred"].fillna(0)), np.nan)
+        u["cmd_pct_obs"] = np.where(u["cmd_obs_adj"].notna(), pct(ref_obs, u["cmd_obs_adj"].fillna(0)), np.nan)
+        u["cmd_grade"] = u["cmd_pct"].map(engine.grade)
+        u["cmd_grade_obs"] = u["cmd_pct_obs"].map(engine.grade)
+        cmd = joblib.load(os.path.join(OUT, "commander", "model.joblib"))
+        bundle.update(cmd_model=cmd, cmd_ref=ref_pred, cmd_ref_obs=ref_obs)
+        log(f"Commander strength for {u['cmd_pred'].notna().sum()} of {len(u)} cards ({cmd_scores})")
+    else:
+        # Older head (phase4 ridge + fine-tuned), kept when scripts/commander.py
+        # has not been run.
+        cmd_path = os.path.join(OUT, "app", "ft_cmd_scores.parquet")
+        if os.path.exists(cmd_path):
+            fs = pd.read_parquet(cmd_path).drop_duplicates("oracle_id").set_index("oracle_id")
+            has = u["oracle_id"].isin(fs.index).to_numpy()
+            u.loc[has, "cmd_pred"] = 0.5 * (u.loc[has, "cmd_pred"].to_numpy()
+                                            + fs.loc[u.loc[has, "oracle_id"], "ft_pred"].to_numpy())
+            log(f"fine-tuned Commander scores for {has.sum()} of {len(u)} cards ({cmd_path})")
+        for c in ("cmd_obs_adj", "cmd_age_days", "cmd_pct", "cmd_pct_obs", "cmd_grade", "cmd_grade_obs"):
+            u[c] = np.nan
     u["con_prob"] = engine.constructed_prob(fu, bundle)
     u["color_identity"] = u["color_identity"].map(lambda c: "".join(c) if isinstance(c, (list, np.ndarray)) else (c or ""))
     k = u["front_name"].str.lower().str.strip()
@@ -304,14 +325,19 @@ def main() -> None:
     eu = e.set_index("oracle_id")
     u["edhrec_incl"] = u["oracle_id"].map(eu["incl"])
     u["edhrec_decks"] = u["oracle_id"].map(eu["num_decks"])
+    if os.path.exists(cmd_scores):   # the 2026-11-01 snapshot covers every Commander-legal card
+        ok = cs[cs["cmd_obs"].notna()]
+        u["edhrec_incl"] = u["oracle_id"].map((ok["num_decks"] + 1) / (ok["potential_decks"] + 2))
+        u["edhrec_decks"] = u["oracle_id"].map(ok["num_decks"])
     u["arena"] = u["games"].map(lambda g: "arena" in list(g) if isinstance(g, (list, np.ndarray)) else False)
     labelled_sets = df.groupby("oracle_id")["set"].agg(lambda x: ",".join(x))
     u["labelled_sets"] = u["oracle_id"].map(labelled_sets).fillna("")
     keep_u = ["oracle_id", "name", "front_name", "mana_cost", "cmc", "type_line", "oracle_text",
               "power", "toughness", "loyalty", "color_identity", "keywords", "layout", "rarity", "set",
               "released_at", "image", "image_small", "image_back", "art", "scryfall_uri", "lim_pred",
-              "lim_sd", "lim_model", "lim_gbt", "lim_gbt_sd", "lim_pct", "lim_grade", "cmd_pred", "con_prob", "staple_pct", "staple_format",
-              "staple_formats", "edhrec_incl", "edhrec_decks", "labelled_sets", "arena"]
+              "lim_sd", "lim_model", "lim_gbt", "lim_gbt_sd", "lim_pct", "lim_grade", "cmd_pred", "cmd_obs_adj",
+              "cmd_age_days", "cmd_pct", "cmd_pct_obs", "cmd_grade", "cmd_grade_obs", "con_prob", "staple_pct",
+              "staple_format", "staple_formats", "edhrec_incl", "edhrec_decks", "labelled_sets", "arena"]
     u = u[keep_u].copy()
     u["keywords"] = u["keywords"].map(lambda k: ", ".join(k) if isinstance(k, (list, np.ndarray)) else "")
     for c in ("power", "toughness", "loyalty", "mana_cost", "oracle_text"):
@@ -372,6 +398,9 @@ def main() -> None:
         "sd_scale": float(bundle["sd_scale"]),
         "n_scryfall": int(len(u)), "n_labelled": int(len(df)),
     }
+    cm = os.path.join(OUT, "commander", "metrics.json")
+    if os.path.exists(cm):
+        meta["cmd_metrics"] = json.load(open(cm))
     json.dump(meta, open(os.path.join(DATA, "meta.json"), "w"), indent=1)
     joblib.dump(bundle, os.path.join(DATA, "bundle.joblib"), compress=3)
     log("done: " + ", ".join(f"{x} {os.path.getsize(os.path.join(DATA, x)) / 1e6:.1f} MB"
