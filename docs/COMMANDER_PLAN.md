@@ -128,3 +128,26 @@ is shown next to the model's when it exists.
   out-of-fold scores, age curve, fine-tuned head offset), `app/build.py` and
   the card page / Card Lab show Commander strength (grade + score /100).
 - **Open: H5** (fine-tune on the full pool, GPU) not run; needs Alessandro's go.
+
+## H5: fine-tuned encoder on the full pool (pre-registered 2026-11-01 17:30, before the job ran)
+
+Kaggle job c2 (`gpu/kaggle/lanes_cmd.json`), EmbeddingGemma-2 top-12, the
+step-D recipe unchanged (10 epochs, default learning rates), struct = the
+Commander features + age curve, card tables from `commander.py p2prep`
+(`phase2.py --res commander/p2[_all]`). Runs:
+- `g_cmd_full` folds A and B, seed 0, per-epoch validation predictions;
+- `g_cmd_full` trained before the test window, 3 seeds, test predictions;
+- `g_cmd_all` trained on all labelled cards, 3 seeds, weights saved (app).
+
+Decisions, on validation only (`commander.py import-ft`, `compare`):
+1. **Adopt** `g_cmd_full` in place of the shipped head `ft_cmd` if the blend
+   `ridge_struct_a1` + `g_cmd_full` (epoch 10) beats `ridge_struct_a1` +
+   `ft_cmd` (both 0.5) by > 2 SE and on ≥ 2/3 of the groups where `ft_cmd`
+   is out-of-sample ("nonlimited"). On all 17 groups `ft_cmd` is partly
+   in-sample, so that comparison is reported but not used.
+2. If adopted, the blend weight of the fine-tuned head is chosen from
+   {0.3, 0.5, 0.7} on all 17 validation groups (`g_cmd_full` is out-of-sample
+   on every group).
+3. The epoch count stays 10 (no second job); the per-epoch validation curve is
+   reported, and a peak well before 10 is noted as a follow-up.
+Test: one look, the adopted blend vs the shipped one (0.698).

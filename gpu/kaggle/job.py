@@ -19,7 +19,7 @@ import subprocess
 import sys
 
 REPO = "https://github.com/ContrattoAlessandro/mtg_strenght"
-BRANCH = "research-queue"
+BRANCH = "commander-ft"
 WORK = "/kaggle/temp" if os.path.isdir("/kaggle/temp") else "/tmp"
 CACHE = os.path.join(WORK, "cache")   # hidden-state caches: big, not worth downloading
 # v10 (done): D3 sweep; defaults kept, 10 epochs (d3_c00). v11 (done): E1
