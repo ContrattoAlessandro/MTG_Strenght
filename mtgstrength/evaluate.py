@@ -16,6 +16,8 @@ def ndcg_at_k(y: np.ndarray, pred: np.ndarray, k: int = 20, n_tiebreaks: int = 5
     ideal = np.sort(gain)[::-1][:k]
     disc = 1.0 / np.log2(np.arange(2, k + 2))
     idcg = float(np.sum(ideal * disc[:len(ideal)]))
+    if idcg == 0:   # one card, or all equal (tiny groups in the Commander tables)
+        return float("nan")
     rng = np.random.default_rng(seed)
     has_ties = len(np.unique(pred)) < len(pred)
     vals = []

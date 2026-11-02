@@ -555,6 +555,83 @@ def report(args) -> None:
     print(m)
 
 
+# --------------------------------------------------------------------------- fine-tuning tables (H5)
+
+def p2prep(args) -> None:
+    """Card tables for phase2.py (--res commander/p2, commander/p2_all) so the
+    EmbeddingGemma-2 recipe can be fine-tuned on the full Commander pool.
+
+    One row per card; "set" is the first-printing set plus month (a set code
+    such as SLD spans years), ordered by date in set_idx. The label is put in
+    theta_vs_repl with a nominal SD of 10% of its spread (as phase2.py does for
+    --target label). Struct = the Commander features + the age curve.
+    p2:     labelled cards; is_train before the test window, is_test = test
+            window; folds.json = validation folds A and B (phase2.py --val-fold A B).
+    p2_all: every Commander card; trained on all labelled cards, predicts all.
+    """
+    df, f = load()
+    f = pd.concat([f, pd.DataFrame(age_basis(df["age_days"].to_numpy()),
+                                   columns=["age_log", "age_h3", "age_h24"], index=f.index)], axis=1)
+    df["set"] = df["first_set"].str.upper() + "@" + df["first_release"].str[:7]
+    first = df.groupby("set")["first_release"].min()
+    order = {k: i for i, k in enumerate(first.sort_values(kind="stable").index)}
+    df["set_idx"] = df["set"].map(order)
+    sd = 0.1 * np.nanstd(df["y"])
+    base = pd.DataFrame({
+        "set": df["set"], "set_idx": df["set_idx"], "name": df["name"], "oracle_id": df["oracle_id"],
+        "rarity": df["rarity"], "theta_vs_repl": df["y"], "theta_hand_sd": sd,
+        "ame_vs_repl_pp": df["y"], "n_games_in_hand": df["num_decks"], "text": df["text"],
+        "type_line": df["type_line"], "mana_cost": df["mana_cost"], "oracle_text": df["oracle_text"],
+        "power": None, "toughness": None, "cmc": f["mana_value"], "reprint_of_train": False})
+    lab = df["y"].notna().to_numpy()
+    fr = df["first_release"].to_numpy()
+    for name, rows, tr, va, te in (
+            ("p2", lab, fr < SPLITS["test"][0], (fr >= SPLITS["B"][1]) & (fr < SPLITS["B"][2]),
+             (fr >= SPLITS["test"][1]) & (fr < SPLITS["test"][2])),
+            ("p2_all", np.ones(len(df), bool), lab, np.zeros(len(df), bool), np.ones(len(df), bool))):
+        d = os.path.join(OUT, name)
+        os.makedirs(d, exist_ok=True)
+        c = base.assign(is_train=tr & lab, is_val=va & lab, is_test=te)[rows].reset_index(drop=True)
+        c.to_parquet(os.path.join(d, "cards.parquet"), index=False)
+        f[rows].reset_index(drop=True).astype(float).to_parquet(os.path.join(d, "struct.parquet"), index=False)
+        log(f"{name}: {len(c)} rows, train {c['is_train'].sum()}, test {c['is_test'].sum()}, "
+            f"{c['set'].nunique()} sets")
+    c = pd.read_parquet(os.path.join(OUT, "p2", "cards.parquet"))
+    fr = c["oracle_id"].map(df.set_index("oracle_id")["first_release"])
+    folds = {k: sorted(c.loc[(fr >= SPLITS[k][1]) & (fr < SPLITS[k][2]), "set"].unique().tolist()) for k in VAL}
+    json.dump(folds, open(os.path.join(OUT, "p2", "folds.json"), "w"), indent=1)
+    log(f"folds: " + ", ".join(f"{k} {len(v)} sets" for k, v in folds.items()))
+
+
+def import_ft(args) -> None:
+    """phase2.py predictions on the Commander tables -> runs in the
+    commander.py format: val (folds A, B; one run per epoch, <name>_e<k>) and
+    test (<name>)."""
+    df, _ = load()
+    grp = df.set_index("oracle_id")["first_set"]
+    y = df.set_index("oracle_id")["y"]
+    rd = os.path.join(OUT, "p2", "runs", args.name)
+    for fold in VAL:
+        for x in sorted(os.listdir(rd)):
+            if not x.startswith(f"val_pred_{fold}_seed"):
+                continue
+            seed = int(x.split("seed")[1].split(".")[0])
+            p = pd.read_csv(os.path.join(rd, x))
+            for ep, g in p.groupby("epoch"):
+                d = os.path.join(RUNS, f"{args.name}_e{ep}")
+                os.makedirs(d, exist_ok=True)
+                g.assign(group=g["oracle_id"].map(grp), y=g["oracle_id"].map(y))[
+                    ["oracle_id", "group", "y", "pred"]].to_csv(os.path.join(d, f"{fold}_seed{seed}.csv"), index=False)
+    for x in sorted(os.listdir(rd)):
+        if x.startswith("test_pred_seed"):
+            p = pd.read_csv(os.path.join(rd, x))
+            d = os.path.join(RUNS, args.name)
+            os.makedirs(d, exist_ok=True)
+            p.assign(group=p["oracle_id"].map(grp), y=p["oracle_id"].map(y))[
+                ["oracle_id", "group", "y", "pred"]].to_csv(os.path.join(d, x.replace("test_pred_", "test_")), index=False)
+    log(f"imported {args.name}")
+
+
 # --------------------------------------------------------------------------- commands
 
 ALL_MODELS = ["ridge_lim", "ridge_all", "ridge_sub", "ridge_struct", "ridge_struct_noage",
@@ -593,6 +670,9 @@ def main() -> None:
     sub.add_parser("prep")
     sub.add_parser("final")
     sub.add_parser("report")
+    sub.add_parser("p2prep")
+    p = sub.add_parser("import-ft")
+    p.add_argument("name")
     p = sub.add_parser("val")
     p.add_argument("--models", nargs="*")
     p = sub.add_parser("compare")
@@ -604,7 +684,8 @@ def main() -> None:
     p.add_argument("--models", nargs="+", required=True)
     p.add_argument("--why", required=True)
     args = ap.parse_args()
-    {"prep": prep, "val": val, "compare": cmd_compare, "test": test, "final": final, "report": report}[args.cmd](args)
+    {"prep": prep, "val": val, "compare": cmd_compare, "test": test, "final": final, "report": report,
+     "p2prep": p2prep, "import-ft": import_ft}[args.cmd](args)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,10 @@
+[
+ [
+  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10 --res commander/p2 --folds-json out/commander/p2/folds.json --val-fold A --seeds 0 --name g_cmd_full",
+  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10 --res commander/p2 --skip-val --epochs 10 --seeds 0 1 2 --name g_cmd_full"
+ ],
+ [
+  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10 --res commander/p2 --folds-json out/commander/p2/folds.json --val-fold B --seeds 0 --name g_cmd_full_b",
+  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10 --res commander/p2_all --skip-val --epochs 10 --seeds 0 1 2 --name g_cmd_all --save-dir models/ft_cmd"
+ ]
+]

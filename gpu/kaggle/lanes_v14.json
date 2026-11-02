@@ -1,0 +1,14 @@
+[
+ [
+  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10 --skip-val --epochs 10 --seeds 0 1 2 3 4 --name g_final --save-dir models/ft_card",
+  "pip install -q -r app/requirements.txt",
+  "python app/build.py",
+  "python app/precompute_ft.py --device cuda --ft-dir models/ft_card/g_final",
+  "python scripts/behaviour_probes.py --ft-dir models/ft_card/g_final --device cuda",
+  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10 --target label --label-csv out/phase4/commander_labels_first.csv --skip-val --epochs 10 --seeds 0 1 2 --name g_commander --save-dir models/ft_cmd",
+  "python app/precompute_ft.py --device cuda --ft-dir models/ft_cmd/g_commander --out out/app/ft_cmd_scores.parquet"
+ ],
+ [
+  "python scripts/phase2.py train --encoder google/embeddinggemma-2 --device cuda --cache-dir {cache} --top-k 12 --max-epochs 10 --val-fold R --seeds 0 --name g_final_rolling"
+ ]
+]

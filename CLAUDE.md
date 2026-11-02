@@ -387,9 +387,12 @@ Decisions on validation (Oct 27-28, details in the plan's log):
 - Strength = logit EDHREC inclusion at max(age, 2 years); app shows grade and
   score /100 = percentile among 31.7k Commander cards. Game Changers AUC:
   observed 0.93, model 0.88, salt 0.99. 80% range covers 71% of test cards.
-- Next: fine-tune EmbeddingGemma-2 on the full Commander pool (GPU, H5).
-  Rerun `cmd_data.py edhrec` + `commander.py prep/final` + `app/build.py
-  --rebuild` to refresh the EDHREC snapshot.
+- H5 (Kaggle job c2): EmbeddingGemma-2 top-12 fine-tuned on all 29k pre-test
+  Commander cards (`phase2.py --res commander/p2 --folds-json ...`) is no
+  better a blend partner than the shipped head (val −0.012 ± 0.017 on clean
+  sets): not adopted, no test look.
+- To refresh the EDHREC snapshot, rerun `cmd_data.py edhrec` +
+  `commander.py prep/final` + `app/build.py --rebuild`.
 
 ## What is not done (next steps, in rough priority)
 

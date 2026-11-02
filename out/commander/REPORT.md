@@ -122,8 +122,13 @@ cards.
 - GBT on engineered features + TF-IDF SVD: below the ridge everywhere.
 - Weighting recent cards more: no gain.
 - 303 cards (mostly split cards) have no EDHREC page under the slug used.
-- **Not run (GPU): fine-tuning EmbeddingGemma-2 on the full card pool (H5).**
-  The fine-tuned head only ever saw ~6k Limited cards and is still half of
-  the shipped score; on precon-type sets it is the weaker half. This is the
-  most promising next step and needs a Kaggle job (`phase2.py` would need a
-  card table that is not tied to Limited sets).
+- **H5, fine-tuning EmbeddingGemma-2 on the full card pool (Kaggle job c2,
+  pre-registered): not adopted.** As the ridge's blend partner it scored 0.538
+  vs 0.550 for the shipped head on the validation sets where the shipped head
+  is out-of-sample (−0.012 ± 0.017, 2/8). Alone it ties the ridge (0.641 vs
+  0.656 on all 17 validation sets); blended with the ridge it adds
+  +0.024 ± 0.012, about what the shipped head adds. Training the encoder on
+  5× more cards did not make it better at Commander, so the text model's
+  limit here is the label (play rate depends on things the card text does not
+  show), not the amount of data. No test look was taken. Details in
+  `docs/COMMANDER_PLAN.md`, "H5 result".

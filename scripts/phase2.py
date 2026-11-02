@@ -98,7 +98,7 @@ def text_variants(cards: pd.DataFrame) -> dict[str, pd.Series]:
 
 
 def prep(args) -> None:
-    res_dir = os.path.join(args.out_dir, RES)
+    res_dir = os.path.join(args.out_dir, args.res)
     os.makedirs(res_dir, exist_ok=True)
     df = features.attach_oracle(features.load_labels(args.out_dir, SETS),
                                 scryfall.load_oracle_cards(args.oracle))
@@ -545,7 +545,7 @@ def run_one(cards, X, enc_name, use_struct, fit_mask, pred_mask, epochs, seed, a
 def train(args) -> None:
     import torch
     torch.set_num_threads(args.threads)
-    res_dir = os.path.join(args.out_dir, RES)
+    res_dir = os.path.join(args.out_dir, args.res)
     run_dir = os.path.join(res_dir, "runs", args.name)
     os.makedirs(run_dir, exist_ok=True)
     cards = pd.read_parquet(os.path.join(res_dir, "cards.parquet"))
@@ -628,12 +628,17 @@ def train_folds(args, cards, f, enc, use_struct, run_dir, log) -> None:
     val_pred_<fold>_seed<k>.csv (columns set, oracle_id, epoch, pred,
     pred_sd), so the epoch count can be chosen afterwards from the mean
     curve over folds. Test sets are never predicted."""
-    order = {s: i for i, s in enumerate(SETS)}
+    # Set order from the card table itself, so tables other than the Limited one
+    # (--res, e.g. the Commander pool) work; for the Limited table it equals SETS.
+    order = cards.groupby("set")["set_idx"].min().to_dict()
+    folds = dict(FOLDS)
+    if args.folds_json:   # custom folds for another card table: {"name": [sets]}
+        folds = json.load(open(args.folds_json))
     epochs = args.epochs or args.max_epochs
     for fold in args.val_fold:
         # Fold R (rolling origin, step G): every set MKM..EOE predicted from
         # all sets before it, one training run per set, one output file.
-        parts = ([[s] for s in ROLLING] if fold == "R" else [FOLDS[fold]])
+        parts = ([[s] for s in ROLLING] if fold == "R" else [folds[fold]])
         for seed in args.seeds:
             out = os.path.join(run_dir, f"val_pred_{fold}_seed{seed}.csv")
             if os.path.exists(out):
@@ -723,7 +728,7 @@ def predict_saved(args) -> None:
     model reproduces the predictions made at the end of training."""
     import torch
     torch.set_num_threads(args.threads)
-    res_dir = os.path.join(args.out_dir, RES)
+    res_dir = os.path.join(args.out_dir, args.res)
     cards = pd.read_parquet(os.path.join(res_dir, "cards.parquet"))
     f = pd.read_parquet(os.path.join(res_dir, "struct.parquet"))
     mask = cards["set"].isin(args.limit_sets).to_numpy() if args.limit_sets else cards["is_test"].to_numpy()
@@ -749,7 +754,7 @@ def zeroshot(args) -> None:
     refitted on all training sets. Writes runs/zs_<name>/."""
     from sklearn.linear_model import Ridge
 
-    res_dir = os.path.join(args.out_dir, RES)
+    res_dir = os.path.join(args.out_dir, args.res)
     cards = pd.read_parquet(os.path.join(res_dir, "cards.parquet"))
     f = pd.read_parquet(os.path.join(res_dir, "struct.parquet"))
     tr, va, te = (cards[c].to_numpy() for c in ("is_train", "is_val", "is_test"))
@@ -778,7 +783,7 @@ def zeroshot(args) -> None:
 # --------------------------------------------------------------------------- evaluation
 
 def evaluate_all(args) -> None:
-    res_dir = os.path.join(args.out_dir, RES)
+    res_dir = os.path.join(args.out_dir, args.res)
     p1 = pd.read_csv(os.path.join(args.out_dir, "phase1", "test_predictions.csv"))
     k = json.load(open(os.path.join(args.out_dir, "phase1", "run_info.json")))["pp_per_logit"]
     base_models = ["rarity_only", "gbt", "tfidf", "gbt_tfidf", "lm_bge_base"]
@@ -929,7 +934,11 @@ def main() -> None:
                     help="fine-tune only the top k encoder layers, on cached lower-layer states;"
                          " -1 = all layers (full fine-tuning, no cache, embeddings frozen);"
                          " 0 = legacy full fine-tuning with mean pooling")
-    ap.add_argument("--val-fold", nargs="*", default=[], choices=sorted(FOLDS) + ["R"],
+    ap.add_argument("--res", default=RES, help="card table directory under --out-dir "
+                    "(cards.parquet, struct.parquet; runs/ is written there too)")
+    ap.add_argument("--folds-json", default=None, help="custom validation folds {name: [sets]} "
+                    "for --val-fold (default: V1 V2 V3)")
+    ap.add_argument("--val-fold", nargs="*", default=[],
                     help="validation-only run on these folds (no test predictions)")
     ap.add_argument("--llrd", type=float, default=1.0, help="layer-wise lr decay per layer")
     ap.add_argument("--amp", choices=["none", "fp16"], default="none",
